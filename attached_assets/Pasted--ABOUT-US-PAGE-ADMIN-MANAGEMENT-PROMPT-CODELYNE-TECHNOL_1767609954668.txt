@@ -1,0 +1,243 @@
+🏢 ABOUT US PAGE + ADMIN MANAGEMENT PROMPT – CODELYNE TECHNOLOGIES
+🎯 Objective
+
+Create a comprehensive “About Us” page for Codelyne Technologies that:
+
+Displays company hierarchy (org structure)
+
+Shows all employees exactly as defined in the PPT
+
+Clearly presents Vision & Mission
+
+Allows Admin to Add / Edit / Delete / Update employee details
+
+Is fully dynamic, CMS-driven, and future-scalable
+
+This page must be enterprise-grade, AI-first in design, and admin-controlled.
+
+🧭 ABOUT US PAGE – FRONTEND REQUIREMENTS
+1️⃣ ABOUT US HERO SECTION
+
+Page Title: About Codelyne Technologies
+
+Subtitle: AI-Driven Engineering. Founder-Led Innovation. Scalable Execution.
+
+AI-inspired background (blue/white theme)
+
+Smooth scroll indicator
+
+2️⃣ VISION & MISSION SECTION (MANDATORY)
+Vision
+
+To become a globally trusted AI-first technology company building intelligent platforms that power enterprises, institutions, and digital economies.
+
+Mission
+
+To design and deliver robust, scalable, and AI-native software products with speed, clarity, and long-term value.
+
+UI Requirements
+
+Two cards (Vision | Mission)
+
+Icons + subtle AI glow
+
+Editable via Admin Panel
+
+3️⃣ COMPANY HIERARCHY SECTION (ORG STRUCTURE)
+Title
+
+Our Leadership & Organization Structure
+
+Hierarchy Display (Top → Bottom)
+
+Founder & CEO
+
+Atul Kadam – Founder & CEO
+
+Co-Founders
+
+Hemant Nagrale – Co-Founder
+
+Nilima Shitole – Co-Founder & Head of Management, Admin & HR
+
+Management & Delivery
+
+Pratik Bingewar – Project Manager
+
+Divya Sakatkar – Lead Tester
+
+Engineering Team
+
+Rohit Sharma – Software Engineer (Backend Specialist)
+
+Vrushali Narkhede – Software Engineer (Frontend & UI)
+
+Prithviraj Patil – Software Engineer
+
+Administration
+
+Shubham Khamitkar – Admin
+
+UI Display Options
+
+Org-chart style (tree / flow)
+
+Or role-based grouped cards
+
+Fully responsive (mobile collapsible)
+
+4️⃣ EMPLOYEES SECTION (ALL STAFF LISTING)
+Title
+
+Meet the Team
+
+Each employee card must show:
+
+Profile photo (uploadable)
+
+Full Name
+
+Designation
+
+Department / Role
+
+Optional short description
+
+Design
+
+Clean professional cards
+
+Hover effects
+
+AI-inspired accents
+
+Pagination or lazy loading (if team grows)
+
+🔐 ADMIN FUNCTIONALITY – ABOUT US (MANDATORY)
+1️⃣ ADMIN → ABOUT US MODULE
+
+Admin Panel must include a dedicated section:
+Admin → About Us Management
+
+2️⃣ EMPLOYEE MANAGEMENT (CRUD)
+
+Admin must be able to:
+
+✅ Add Employee
+
+Name
+
+Designation
+
+Department
+
+Role Level (Founder / Management / Engineer / Admin)
+
+Profile Image
+
+Display Order
+
+Active / Inactive toggle
+
+✏️ Edit Employee
+
+Update any field
+
+Change photo
+
+Change position in hierarchy
+
+❌ Delete Employee
+
+Soft delete (recommended)
+
+Or permanent delete (admin-only)
+
+🔄 Reorder Employees
+
+Drag & drop ordering
+
+Controls hierarchy display on frontend
+
+3️⃣ HIERARCHY CONTROL
+
+Admin must be able to:
+
+Assign hierarchy level (Founder / Co-Founder / Manager / Engineer / Admin)
+
+Change reporting order
+
+Enable / disable hierarchy section
+
+Switch between “Org Chart View” and “List View”
+
+4️⃣ VISION & MISSION MANAGEMENT
+
+Admin can:
+
+Edit Vision text
+
+Edit Mission text
+
+Save drafts
+
+Publish changes instantly
+
+Preview before publishing
+
+🗄️ DATABASE MODELS (REQUIRED)
+Employee Table
+id
+name
+designation
+department
+role_level
+bio (optional)
+profile_image_url
+display_order
+status (active/inactive)
+created_at
+updated_at
+
+About_Us_Content Table
+id
+vision_text
+mission_text
+updated_by
+updated_at
+
+🔒 SECURITY & PERMISSIONS
+
+Only Admin / Super Admin can modify employees
+
+Editors can only view
+
+All actions logged (audit trail)
+
+Image upload validation (size/type)
+
+Confirmation modal before delete
+
+🎨 UX REQUIREMENTS
+
+Clean typography
+
+Clear hierarchy visuals
+
+Strong contrast for readability
+
+AI-first aesthetic
+
+Smooth animations (light only)
+
+Mobile-friendly org structure
+
+🏁 FINAL EXPECTATION
+
+After implementation:
+
+✔ Visitors clearly understand who leads Codelyne
+✔ Team credibility & transparency is visible
+✔ Company vision & mission are clearly communicated
+✔ Admin can fully manage the team without developer dependency
+✔ Page scales easily as company grows
