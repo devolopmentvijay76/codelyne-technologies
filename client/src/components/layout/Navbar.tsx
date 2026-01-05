@@ -9,9 +9,10 @@ export function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Products", href: "#products" },
-    { name: "Solutions", href: "#features" },
-    { name: "Contact", href: "#contact" },
+    { name: "Founders", href: "/founders" },
+    { name: "Products", href: "/#products" },
+    { name: "Solutions", href: "/#features" },
+    { name: "Contact", href: "/#contact" },
   ];
 
   return (
