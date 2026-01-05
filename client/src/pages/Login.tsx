@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +15,13 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLocation("/admin");
+    }
+  }, [isAuthenticated, setLocation]);
+
   if (isAuthenticated) {
-    setLocation("/admin");
     return null;
   }
 

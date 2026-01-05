@@ -5,6 +5,7 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 import {
   insertEmployeeSchema,
   insertContactSubmissionSchema,
@@ -23,15 +24,14 @@ declare global {
   }
 }
 
-// Password hashing (simple for now - in production use bcrypt)
-function hashPassword(password: string): string {
-  // In production, use bcrypt or similar
-  return password;
+const SALT_ROUNDS = 10;
+
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
 }
 
-function verifyPassword(password: string, hash: string): boolean {
-  // In production, use bcrypt.compare
-  return password === hash;
+async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
 }
 
 // Configure Passport
@@ -43,7 +43,8 @@ passport.use(
         return done(null, false, { message: "Incorrect username or password" });
       }
 
-      if (!verifyPassword(password, user.password)) {
+      const isValid = await verifyPassword(password, user.password);
+      if (!isValid) {
         return done(null, false, { message: "Incorrect username or password" });
       }
 
@@ -292,9 +293,10 @@ export async function registerRoutes(
     try {
       const existingUser = await storage.getUserByUsername("admin");
       if (!existingUser) {
+        const hashedPassword = await hashPassword("admin123");
         await storage.createUser({
           username: "admin",
-          password: hashPassword("admin123"), // Change in production
+          password: hashedPassword,
         });
         console.log("Default admin user created (username: admin, password: admin123)");
       }
