@@ -12,7 +12,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
                <JarvisLogo size="sm" />
               <span className="text-lg font-heading font-bold text-white">CODELYNE TECHNOLOGIES</span>
             </div>
