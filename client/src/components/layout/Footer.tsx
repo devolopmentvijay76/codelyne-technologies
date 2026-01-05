@@ -1,5 +1,6 @@
-import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { MapPin, Phone, Mail, Linkedin, Twitter, Instagram } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import logo from "@assets/FINAL_CODELYNE_LOGO_WHITE_1767597548677.png";
 
 export function Footer() {
   return (
@@ -12,10 +13,10 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/50">
-                <div className="w-4 h-4 bg-primary rounded-full" />
+              <div className="p-1.5 rounded-lg border border-primary/30 bg-primary/10">
+                 <img src={logo} alt="Codelyne Logo" className="h-6 w-auto" />
               </div>
-              <span className="text-xl font-heading font-bold text-white">CODELYNE</span>
+              <span className="text-lg font-heading font-bold text-white">CODELYNE TECHNOLOGIES</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Pioneering AI-driven software solutions for the enterprise of tomorrow. Building trust through technical excellence.

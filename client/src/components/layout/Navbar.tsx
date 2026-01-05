@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import logo from "@assets/FINAL_CODELYNE_LOGO_WHITE_1767597548677.png";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,14 +19,15 @@ export function Navbar() {
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
-          <a className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/50 group-hover:border-primary group-hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
-              <div className="w-5 h-5 bg-primary rounded-full relative">
-                <div className="absolute inset-0 bg-primary blur-sm animate-pulse" />
-              </div>
+          <a className="flex items-center gap-3 group">
+            {/* Logo Frame */}
+            <div className="relative p-1.5 rounded-lg border border-primary/30 bg-primary/10 group-hover:border-primary/60 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all duration-300 backdrop-blur-sm">
+              <div className="absolute inset-0 bg-primary/5 rounded-lg animate-pulse" />
+              <img src={logo} alt="Codelyne Logo" className="h-8 w-auto relative z-10" />
             </div>
-            <span className="text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
-              CODELYNE
+            
+            <span className="text-lg md:text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
+              CODELYNE <span className="hidden sm:inline text-primary/80">TECHNOLOGIES</span>
             </span>
           </a>
         </Link>

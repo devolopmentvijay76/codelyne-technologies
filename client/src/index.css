@@ -85,10 +85,14 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground selection:bg-primary/20 selection:text-primary;
+    background-size: 200% 200%;
     background-image: 
       radial-gradient(circle at 50% 0%, hsla(190, 90%, 50%, 0.1), transparent 40%),
-      radial-gradient(circle at 0% 100%, hsla(222, 47%, 20%, 0.1), transparent 40%);
-    background-attachment: fixed;
+      radial-gradient(circle at 0% 100%, hsla(222, 47%, 20%, 0.1), transparent 40%),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+    animation: background-pan 30s ease infinite;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -107,6 +111,18 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(190, 90%, 40%);
+  }
+}
+
+@keyframes background-pan {
+  0% {
+    background-position: 0% 0%, 0% 100%, 0 0, 0 0;
+  }
+  50% {
+    background-position: 100% 50%, 50% 100%, 25px 25px, 25px 25px;
+  }
+  100% {
+    background-position: 0% 0%, 0% 100%, 50px 50px, 50px 50px;
   }
 }
 
