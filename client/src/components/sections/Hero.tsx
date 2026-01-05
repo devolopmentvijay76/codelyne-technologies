@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Cpu, Network, ShieldCheck, Globe, Database } from "lucide-react";
-import heroBg from "@assets/generated_images/abstract_neural_network_background,_deep_blue_and_cyan_connection_lines.png";
+import heroVideo from "@assets/generated_videos/abstract_ai_neural_network_background_video.mp4";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useState } from "react";
@@ -56,13 +56,17 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Background Image with Overlay */}
+      {/* Background Video with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroBg} 
-          alt="AI Neural Network Background" 
-          className="w-full h-full object-cover opacity-40 animate-[pulse_10s_ease-in-out_infinite]"
-        />
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-full object-cover opacity-60"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>
 
