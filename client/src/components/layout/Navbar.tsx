@@ -20,14 +20,13 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/">
           <a className="flex items-center gap-3 group">
-            {/* Logo Frame */}
-            <div className="relative p-1.5 rounded-lg border border-primary/30 bg-primary/10 group-hover:border-primary/60 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all duration-300 backdrop-blur-sm">
-              <div className="absolute inset-0 bg-primary/5 rounded-lg animate-pulse" />
-              <img src={logo} alt="Codelyne Logo" className="h-8 w-auto relative z-10" />
+            {/* Logo Frame - Removed blue box, just the logo image directly to match expectation if the image itself has the background or if user wants just the logo */}
+            <div className="relative flex items-center justify-center">
+              <img src={logo} alt="Codelyne Logo" className="h-10 w-auto object-contain" />
             </div>
             
             <span className="text-lg md:text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
-              CODELYNE <span className="hidden sm:inline text-primary/80">TECHNOLOGIES</span>
+              CODELYNE <span className="text-primary font-extrabold">TECHNOLOGIES</span>
             </span>
           </a>
         </Link>

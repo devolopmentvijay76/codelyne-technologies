@@ -13,9 +13,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg border border-primary/30 bg-primary/10">
-                 <img src={logo} alt="Codelyne Logo" className="h-6 w-auto" />
-              </div>
+               <img src={logo} alt="Codelyne Logo" className="h-8 w-auto" />
               <span className="text-lg font-heading font-bold text-white">CODELYNE TECHNOLOGIES</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
