@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@assets/FINAL_CODELYNE_LOGO_WHITE_1767597548677.png";
+import { JarvisLogo } from "@/components/ui/JarvisLogo";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +20,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/">
           <a className="flex items-center gap-3 group">
-            {/* Logo Frame - Removed blue box, just the logo image directly to match expectation if the image itself has the background or if user wants just the logo */}
-            <div className="relative flex items-center justify-center">
-              <img src={logo} alt="Codelyne Logo" className="h-10 w-auto object-contain" />
-            </div>
+            <JarvisLogo size="md" />
             
             <span className="text-lg md:text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
               CODELYNE <span className="text-primary font-extrabold">TECHNOLOGIES</span>

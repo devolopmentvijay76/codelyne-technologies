@@ -1,6 +1,6 @@
 import { MapPin, Phone, Mail, Linkedin, Twitter, Instagram } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import logo from "@assets/FINAL_CODELYNE_LOGO_WHITE_1767597548677.png";
+import { JarvisLogo } from "@/components/ui/JarvisLogo";
 
 export function Footer() {
   return (
@@ -13,7 +13,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-               <img src={logo} alt="Codelyne Logo" className="h-8 w-auto" />
+               <JarvisLogo size="sm" />
               <span className="text-lg font-heading font-bold text-white">CODELYNE TECHNOLOGIES</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">

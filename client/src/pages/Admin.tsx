@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Lock, LayoutDashboard, FileText, Image as ImageIcon, Settings, LogOut, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { JarvisLogo } from "@/components/ui/JarvisLogo";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -48,10 +49,8 @@ export default function Admin() {
       <div className="min-h-screen bg-[#0b0f19] flex">
         {/* Sidebar */}
         <div className="w-64 bg-card border-r border-white/5 p-6 hidden md:flex flex-col">
-          <div className="flex items-center gap-2 mb-10">
-            <div className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded-full" />
-            </div>
+          <div className="flex items-center gap-3 mb-10">
+            <JarvisLogo size="sm" heartbeat />
             <span className="font-heading font-bold text-white text-lg">Admin Panel</span>
           </div>
           
@@ -170,8 +169,8 @@ export default function Admin() {
 
       <div className="w-full max-w-md relative z-10 px-6">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/20 border border-primary/50 mb-6">
-             <Lock className="w-8 h-8 text-primary" />
+          <div className="inline-flex items-center justify-center mb-6">
+             <JarvisLogo size="lg" heartbeat />
           </div>
           <h1 className="text-3xl font-heading font-bold text-white mb-2">Admin Portal</h1>
           <p className="text-gray-400">Secure access for authorized personnel only.</p>
