@@ -1,26 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { 
   LayoutDashboard, 
-  FileText, 
-  Image as ImageIcon, 
-  Settings, 
   LogOut, 
-  ChevronRight, 
   Users, 
   Edit, 
   Trash2, 
   Plus,
   Save,
-  ArrowUp,
-  ArrowDown
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -41,65 +35,123 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-
-// Mock Data for "Database"
-const initialEmployees = [
-  { id: 1, name: "Atul Kadam", designation: "Founder & CEO", department: "Executive", role_level: "Founder", display_order: 1, status: "active" },
-  { id: 2, name: "Hemant Nagrale", designation: "Co-Founder", department: "Executive", role_level: "Co-Founder", display_order: 2, status: "active" },
-  { id: 3, name: "Nilima Shitole", designation: "Co-Founder & Head of Management", department: "Executive", role_level: "Co-Founder", display_order: 3, status: "active" },
-  { id: 4, name: "Pratik Bingewar", designation: "Project Manager", department: "Management", role_level: "Management", display_order: 4, status: "active" },
-  { id: 5, name: "Divya Sakatkar", designation: "Lead Tester", department: "Management", role_level: "Management", display_order: 5, status: "active" },
-  { id: 6, name: "Rohit Sharma", designation: "Software Engineer (Backend)", department: "Engineering", role_level: "Engineer", display_order: 6, status: "active" },
-  { id: 7, name: "Vrushali Narkhede", designation: "Software Engineer (Frontend)", department: "Engineering", role_level: "Engineer", display_order: 7, status: "active" },
-  { id: 8, name: "Prithviraj Patil", designation: "Software Engineer", department: "Engineering", role_level: "Engineer", display_order: 8, status: "active" },
-  { id: 9, name: "Shubham Khamitkar", designation: "Admin", department: "Administration", role_level: "Admin", display_order: 9, status: "active" },
-];
-
-const initialVision = "To become a globally trusted AI-first technology company building intelligent platforms that power enterprises, institutions, and digital economies.";
-const initialMission = "To design and deliver robust, scalable, and AI-native software products with speed, clarity, and long-term value.";
+import { useAuth } from "@/hooks/useAuth";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useContent } from "@/hooks/useContent";
 
 // Form Schema
 const employeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
-  designation: z.string().min(2, "Designation is required"),
+  role: z.string().min(2, "Role is required"),
   department: z.string().min(2, "Department is required"),
-  role_level: z.string().min(1, "Role Level is required"),
+  email: z.string().email("Valid email is required"),
+  phone: z.string().min(10, "Valid phone number is required"),
+  joinDate: z.string().min(1, "Join date is required"),
 });
 
 export default function Admin() {
+  const [, setLocation] = useLocation();
+  const { isAuthenticated, isLoading: authLoading, logout, user } = useAuth();
+  const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee } = useEmployees();
+  const { allContent, updateContent, createContent, isUpdating } = useContent();
+  const { toast } = useToast();
+
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [employees, setEmployees] = useState(initialEmployees);
-  const [vision, setVision] = useState(initialVision);
-  const [mission, setMission] = useState(initialMission);
   const [isEditingVision, setIsEditingVision] = useState(false);
   const [editEmployee, setEditEmployee] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
+
+  const [vision, setVision] = useState("");
+  const [mission, setMission] = useState("");
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      setLocation("/login");
+    }
+  }, [isAuthenticated, authLoading, setLocation]);
+
+  useEffect(() => {
+    const visionContent = allContent.find(c => c.key === "vision");
+    const missionContent = allContent.find(c => c.key === "mission");
+    
+    if (visionContent) setVision(visionContent.value);
+    if (missionContent) setMission(missionContent.value);
+  }, [allContent]);
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
       name: "",
-      designation: "",
+      role: "",
       department: "",
-      role_level: "Engineer",
+      email: "",
+      phone: "",
+      joinDate: new Date().toISOString().split('T')[0],
     },
   });
 
+  if (authLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center">
+        <div className="text-center">
+          <JarvisLogo size="md" heartbeat />
+          <p className="text-gray-400 mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   const handleSaveVisionMission = () => {
+    const visionContent = allContent.find(c => c.key === "vision");
+    const missionContent = allContent.find(c => c.key === "mission");
+
+    if (visionContent) {
+      updateContent({ key: "vision", value: vision }, {
+        onSuccess: () => {
+          toast({ title: "Vision Updated", description: "Vision statement has been saved." });
+        },
+      });
+    } else {
+      createContent({ key: "vision", value: vision }, {
+        onSuccess: () => {
+          toast({ title: "Vision Created", description: "Vision statement has been created." });
+        },
+      });
+    }
+
+    if (missionContent) {
+      updateContent({ key: "mission", value: mission }, {
+        onSuccess: () => {
+          toast({ title: "Mission Updated", description: "Mission statement has been saved." });
+        },
+      });
+    } else {
+      createContent({ key: "mission", value: mission }, {
+        onSuccess: () => {
+          toast({ title: "Mission Created", description: "Mission statement has been created." });
+        },
+      });
+    }
+
     setIsEditingVision(false);
-    toast({
-      title: "Content Updated",
-      description: "Vision and Mission statements have been updated successfully.",
-    });
   };
 
   const handleDeleteEmployee = (id: number) => {
-    setEmployees(employees.filter(emp => emp.id !== id));
-    toast({
-      title: "Employee Deleted",
-      description: "Employee has been removed from the directory.",
-      variant: "destructive"
+    deleteEmployee(id, {
+      onSuccess: () => {
+        toast({
+          title: "Employee Deleted",
+          description: "Employee has been removed from the directory.",
+          variant: "destructive"
+        });
+      },
+      onError: (error: Error) => {
+        toast({
+          title: "Delete Failed",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
     });
   };
 
@@ -107,9 +159,11 @@ export default function Admin() {
     setEditEmployee(employee);
     form.reset({
       name: employee.name,
-      designation: employee.designation,
+      role: employee.role,
       department: employee.department,
-      role_level: employee.role_level,
+      email: employee.email,
+      phone: employee.phone,
+      joinDate: employee.joinDate,
     });
     setIsDialogOpen(true);
   };
@@ -118,34 +172,49 @@ export default function Admin() {
     setEditEmployee(null);
     form.reset({
       name: "",
-      designation: "",
+      role: "",
       department: "",
-      role_level: "Engineer",
+      email: "",
+      phone: "",
+      joinDate: new Date().toISOString().split('T')[0],
     });
     setIsDialogOpen(true);
   };
 
   const onSubmitEmployee = (values: z.infer<typeof employeeSchema>) => {
     if (editEmployee) {
-      setEmployees(employees.map(emp => 
-        emp.id === editEmployee.id ? { ...emp, ...values } : emp
-      ));
-      toast({ title: "Employee Updated", description: `${values.name}'s details saved.` });
+      updateEmployee({ id: editEmployee.id, data: values }, {
+        onSuccess: () => {
+          toast({ title: "Employee Updated", description: `${values.name}'s details saved.` });
+          setIsDialogOpen(false);
+        },
+        onError: (error: Error) => {
+          toast({ title: "Update Failed", description: error.message, variant: "destructive" });
+        }
+      });
     } else {
-      const newEmployee = {
-        id: employees.length + 1,
-        ...values,
-        display_order: employees.length + 1,
-        status: "active"
-      };
-      setEmployees([...employees, newEmployee]);
-      toast({ title: "Employee Added", description: `${values.name} has been added to the team.` });
+      createEmployee(values, {
+        onSuccess: () => {
+          toast({ title: "Employee Added", description: `${values.name} has been added to the team.` });
+          setIsDialogOpen(false);
+        },
+        onError: (error: Error) => {
+          toast({ title: "Creation Failed", description: error.message, variant: "destructive" });
+        }
+      });
     }
-    setIsDialogOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        setLocation("/login");
+      }
+    });
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] flex">
+    <div className="min-h-screen bg-[#0b0f19] flex" data-testid="page-admin">
       {/* Sidebar */}
       <div className="w-64 bg-card border-r border-white/5 p-6 hidden md:flex flex-col">
         <div className="flex items-center gap-3 mb-10">
@@ -161,6 +230,7 @@ export default function Admin() {
                 ? "bg-primary/10 text-primary border border-primary/20" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
             }`}
+            data-testid="button-tab-dashboard"
           >
             <LayoutDashboard className="w-4 h-4" />
             Dashboard
@@ -172,33 +242,34 @@ export default function Admin() {
                  ? "bg-primary/10 text-primary border border-primary/20" 
                  : "text-gray-400 hover:text-white hover:bg-white/5"
              }`}
+             data-testid="button-tab-about"
            >
              <Users className="w-4 h-4" />
              About Us & Team
            </button>
         </nav>
 
-        <Link href="/">
-          <Button 
-            variant="ghost" 
-            className="text-red-400 hover:text-red-300 hover:bg-red-500/10 justify-start w-full"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Back to Site
-          </Button>
-        </Link>
+        <Button 
+          variant="ghost" 
+          className="text-red-400 hover:text-red-300 hover:bg-red-500/10 justify-start w-full"
+          onClick={handleLogout}
+          data-testid="button-logout"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Logout
+        </Button>
       </div>
 
       {/* Content */}
       <div className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-white" data-testid="text-page-title">
             {activeTab === "dashboard" ? "Dashboard Overview" : "About Us Management"}
           </h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-400">admin@codelyne.tech</span>
+            <span className="text-sm text-gray-400" data-testid="text-user-email">{user?.username}</span>
             <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/50 flex items-center justify-center text-primary font-bold">
-              A
+              {user?.username?.charAt(0).toUpperCase()}
             </div>
           </div>
         </header>
@@ -211,10 +282,31 @@ export default function Admin() {
                    <CardTitle className="text-sm font-medium text-gray-400">Total Employees</CardTitle>
                  </CardHeader>
                  <CardContent>
-                   <div className="text-3xl font-bold text-white">{employees.length}</div>
+                   <div className="text-3xl font-bold text-white" data-testid="text-employee-count">
+                     {employeesLoading ? "..." : employees.length}
+                   </div>
                  </CardContent>
                </Card>
-               {/* Other dashboard cards... */}
+               <Card className="bg-white/5 border-white/10">
+                 <CardHeader className="pb-2">
+                   <CardTitle className="text-sm font-medium text-gray-400">Departments</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                   <div className="text-3xl font-bold text-white" data-testid="text-department-count">
+                     {employeesLoading ? "..." : new Set(employees.map(e => e.department)).size}
+                   </div>
+                 </CardContent>
+               </Card>
+               <Card className="bg-white/5 border-white/10">
+                 <CardHeader className="pb-2">
+                   <CardTitle className="text-sm font-medium text-gray-400">Content Items</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                   <div className="text-3xl font-bold text-white" data-testid="text-content-count">
+                     {allContent.length}
+                   </div>
+                 </CardContent>
+               </Card>
             </div>
           </div>
         )}
@@ -229,14 +321,34 @@ export default function Admin() {
                    <CardDescription className="text-gray-400">Manage company core values displayed on the About Us page.</CardDescription>
                 </div>
                 {!isEditingVision ? (
-                  <Button variant="outline" size="sm" onClick={() => setIsEditingVision(true)} className="border-primary/50 text-primary hover:bg-primary/10">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setIsEditingVision(true)} 
+                    className="border-primary/50 text-primary hover:bg-primary/10"
+                    data-testid="button-edit-content"
+                  >
                     <Edit className="w-4 h-4 mr-2" /> Edit Content
                   </Button>
                 ) : (
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="sm" onClick={() => setIsEditingVision(false)} className="text-gray-400">Cancel</Button>
-                    <Button size="sm" onClick={handleSaveVisionMission} className="bg-primary text-background font-bold">
-                      <Save className="w-4 h-4 mr-2" /> Save Changes
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setIsEditingVision(false)} 
+                      className="text-gray-400"
+                      data-testid="button-cancel-content"
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      onClick={handleSaveVisionMission} 
+                      className="bg-primary text-background font-bold"
+                      disabled={isUpdating}
+                      data-testid="button-save-content"
+                    >
+                      <Save className="w-4 h-4 mr-2" /> {isUpdating ? "Saving..." : "Save Changes"}
                     </Button>
                   </div>
                 )}
@@ -249,9 +361,10 @@ export default function Admin() {
                       className="w-full bg-background/50 border border-white/10 rounded-md p-3 text-white focus:border-primary/50 min-h-[80px]" 
                       value={vision}
                       onChange={(e) => setVision(e.target.value)}
+                      data-testid="textarea-vision"
                     />
                   ) : (
-                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5">{vision}</p>
+                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5" data-testid="text-vision">{vision || "No vision set"}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -261,9 +374,10 @@ export default function Admin() {
                       className="w-full bg-background/50 border border-white/10 rounded-md p-3 text-white focus:border-primary/50 min-h-[80px]" 
                       value={mission}
                       onChange={(e) => setMission(e.target.value)}
+                      data-testid="textarea-mission"
                     />
                   ) : (
-                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5">{mission}</p>
+                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5" data-testid="text-mission">{mission || "No mission set"}</p>
                   )}
                 </div>
               </CardContent>
@@ -278,7 +392,11 @@ export default function Admin() {
                 </div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button onClick={handleAddEmployee} className="bg-primary text-background font-bold hover:bg-primary/90">
+                    <Button 
+                      onClick={handleAddEmployee} 
+                      className="bg-primary text-background font-bold hover:bg-primary/90"
+                      data-testid="button-add-employee"
+                    >
                       <Plus className="w-4 h-4 mr-2" /> Add Employee
                     </Button>
                   </DialogTrigger>
@@ -298,7 +416,7 @@ export default function Admin() {
                             <FormItem>
                               <FormLabel>Full Name</FormLabel>
                               <FormControl>
-                                <Input {...field} className="bg-white/5 border-white/10 text-white" />
+                                <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-name" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -306,12 +424,12 @@ export default function Admin() {
                         />
                         <FormField
                           control={form.control}
-                          name="designation"
+                          name="role"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Designation</FormLabel>
+                              <FormLabel>Role</FormLabel>
                               <FormControl>
-                                <Input {...field} className="bg-white/5 border-white/10 text-white" />
+                                <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-role" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -325,7 +443,7 @@ export default function Admin() {
                                 <FormItem>
                                   <FormLabel>Department</FormLabel>
                                   <FormControl>
-                                    <Input {...field} className="bg-white/5 border-white/10 text-white" />
+                                    <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-department" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -333,31 +451,53 @@ export default function Admin() {
                             />
                             <FormField
                               control={form.control}
-                              name="role_level"
+                              name="joinDate"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Role Level</FormLabel>
-                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                                        <SelectValue placeholder="Select level" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent className="bg-[#0b0f19] border-white/10 text-white">
-                                      <SelectItem value="Founder">Founder</SelectItem>
-                                      <SelectItem value="Co-Founder">Co-Founder</SelectItem>
-                                      <SelectItem value="Management">Management</SelectItem>
-                                      <SelectItem value="Engineer">Engineer</SelectItem>
-                                      <SelectItem value="Admin">Admin</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                  <FormLabel>Join Date</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      {...field} 
+                                      type="date" 
+                                      className="bg-white/5 border-white/10 text-white" 
+                                      data-testid="input-employee-joindate"
+                                    />
+                                  </FormControl>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
                          </div>
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input {...field} type="email" className="bg-white/5 border-white/10 text-white" data-testid="input-employee-email" />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone</FormLabel>
+                              <FormControl>
+                                <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-phone" />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                         <DialogFooter>
-                          <Button type="submit" className="bg-primary text-background font-bold">Save Details</Button>
+                          <Button type="submit" className="bg-primary text-background font-bold" data-testid="button-submit-employee">
+                            Save Details
+                          </Button>
                         </DialogFooter>
                       </form>
                     </Form>
@@ -365,45 +505,59 @@ export default function Admin() {
                 </Dialog>
               </CardHeader>
               <CardContent>
-                <div className="rounded-md border border-white/10 overflow-hidden">
-                  <table className="w-full text-sm text-left">
-                    <thead className="bg-white/5 text-gray-300 font-medium">
-                      <tr>
-                        <th className="p-4">Name</th>
-                        <th className="p-4">Designation</th>
-                        <th className="p-4">Role Level</th>
-                        <th className="p-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                      {employees.map((employee) => (
-                        <tr key={employee.id} className="hover:bg-white/5 transition-colors group">
-                          <td className="p-4 text-white font-medium">{employee.name}</td>
-                          <td className="p-4 text-gray-400">{employee.designation}</td>
-                          <td className="p-4">
-                             <Badge variant="outline" className={`
-                               ${employee.role_level.includes('Founder') ? 'border-primary/50 text-primary bg-primary/10' : ''}
-                               ${employee.role_level === 'Management' ? 'border-purple-500/50 text-purple-400 bg-purple-500/10' : ''}
-                               ${employee.role_level === 'Engineer' ? 'border-blue-500/50 text-blue-400 bg-blue-500/10' : ''}
-                             `}>
-                               {employee.role_level}
-                             </Badge>
-                          </td>
-                          <td className="p-4 text-right">
-                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={() => handleEditEmployee(employee)}>
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10" onClick={() => handleDeleteEmployee(employee.id)}>
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </td>
+                {employeesLoading ? (
+                  <div className="text-center py-8 text-gray-400">Loading employees...</div>
+                ) : employees.length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">No employees found. Add your first team member!</div>
+                ) : (
+                  <div className="rounded-md border border-white/10 overflow-hidden">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-white/5 text-gray-300 font-medium">
+                        <tr>
+                          <th className="p-4">Name</th>
+                          <th className="p-4">Role</th>
+                          <th className="p-4">Department</th>
+                          <th className="p-4 text-right">Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {employees.map((employee) => (
+                          <tr key={employee.id} className="hover:bg-white/5 transition-colors group" data-testid={`row-employee-${employee.id}`}>
+                            <td className="p-4 text-white font-medium" data-testid={`text-employee-name-${employee.id}`}>{employee.name}</td>
+                            <td className="p-4 text-gray-400" data-testid={`text-employee-role-${employee.id}`}>{employee.role}</td>
+                            <td className="p-4">
+                               <Badge variant="outline" className="border-blue-500/50 text-blue-400 bg-blue-500/10" data-testid={`badge-employee-department-${employee.id}`}>
+                                 {employee.department}
+                               </Badge>
+                            </td>
+                            <td className="p-4 text-right">
+                              <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="h-8 w-8 text-gray-400 hover:text-white" 
+                                  onClick={() => handleEditEmployee(employee)}
+                                  data-testid={`button-edit-employee-${employee.id}`}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10" 
+                                  onClick={() => handleDeleteEmployee(employee.id)}
+                                  data-testid={`button-delete-employee-${employee.id}`}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
