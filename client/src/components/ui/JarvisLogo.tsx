@@ -15,11 +15,12 @@ export function JarvisLogo({ className, heartbeat = false, size = "md" }: Jarvis
     xl: "w-24 h-24",
   };
 
-  const imageSizeClasses = {
-    sm: "h-4",
-    md: "h-5",
-    lg: "h-8",
-    xl: "h-12",
+  // Size of the inner circle container for the image
+  const innerCircleClasses = {
+    sm: "w-5 h-5",
+    md: "w-6 h-6",
+    lg: "w-10 h-10",
+    xl: "w-14 h-14",
   };
 
   return (
@@ -41,12 +42,15 @@ export function JarvisLogo({ className, heartbeat = false, size = "md" }: Jarvis
         heartbeat ? "animate-pulse" : "group-hover:bg-primary/10"
       )} />
 
-      {/* Actual Logo Image */}
-      <div className="relative z-10 flex items-center justify-center">
+      {/* Actual Logo Image - Circular Crop & Zoomed In */}
+      <div className={cn("relative z-10 flex items-center justify-center rounded-full overflow-hidden bg-primary/10", innerCircleClasses[size])}>
         <img 
           src={logo} 
           alt="Codelyne Logo" 
-          className={cn("w-auto object-contain transition-transform duration-300", imageSizeClasses[size], heartbeat && "scale-110")} 
+          className={cn(
+            "w-full h-full object-cover transition-transform duration-300 scale-[1.7] translate-x-[2%]", 
+            heartbeat && "scale-[1.8]"
+          )} 
         />
       </div>
 
