@@ -5,7 +5,7 @@ export function usePublicTeam() {
   const { data: team = [], isLoading } = useQuery<Employee[]>({
     queryKey: ["publicTeam"],
     queryFn: async () => {
-      const response = await fetch("/api/employees");
+      const response = await fetch("/api/public/team");
       if (!response.ok) throw new Error("Failed to fetch team");
       return response.json();
     },

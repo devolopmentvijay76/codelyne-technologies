@@ -135,8 +135,29 @@ export async function registerRoutes(
     }
   });
 
-  // Employee routes (GET is public for About Us page, others are protected)
-  app.get("/api/employees", async (req, res) => {
+  // Public team endpoint for About Us page (sanitized data only)
+  app.get("/api/public/team", async (req, res) => {
+    try {
+      const employees = await storage.getAllEmployees();
+      const publicData = employees.map(e => ({
+        id: e.id,
+        name: e.name,
+        role: e.role,
+        department: e.department,
+        memberType: e.memberType,
+        photoUrl: e.photoUrl,
+        description: e.description,
+        quote: e.quote,
+        focusAreas: e.focusAreas,
+      }));
+      res.json(publicData);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch team" });
+    }
+  });
+
+  // Employee routes (protected for admin)
+  app.get("/api/employees", isAuthenticated, async (req, res) => {
     try {
       const employees = await storage.getAllEmployees();
       res.json(employees);
