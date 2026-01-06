@@ -291,14 +291,14 @@ export async function registerRoutes(
   // Initialize default admin user if none exists
   (async () => {
     try {
-      const existingUser = await storage.getUserByUsername("admin");
+      const existingUser = await storage.getUserByUsername("codelyne_admin");
       if (!existingUser) {
-        const hashedPassword = await hashPassword("admin123");
+        const hashedPassword = await hashPassword("Codelyne@2025#Secure");
         await storage.createUser({
-          username: "admin",
+          username: "codelyne_admin",
           password: hashedPassword,
         });
-        console.log("Default admin user created (username: admin, password: admin123)");
+        console.log("Default admin user created");
       }
     } catch (error) {
       console.error("Failed to create default admin user:", error);
