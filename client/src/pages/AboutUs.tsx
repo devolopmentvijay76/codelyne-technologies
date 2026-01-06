@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Badge } from "@/components/ui/badge";
+import { ProtectedImage } from "@/components/ui/ProtectedImage";
 import { Target, Lightbulb, ArrowDown, Brain, Rocket, Users } from "lucide-react";
 import { usePublicTeam } from "@/hooks/usePublicTeam";
 
@@ -64,7 +65,7 @@ export default function AboutUs() {
                       <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-card">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
                         {founder.photoUrl ? (
-                          <img src={founder.photoUrl} alt={founder.name} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                          <ProtectedImage src={founder.photoUrl} alt={founder.name} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
                         ) : (
                           <div className="w-full aspect-square bg-gray-800 flex items-center justify-center">
                             <IconComponent className="w-24 h-24 text-primary/30" />
@@ -135,7 +136,7 @@ export default function AboutUs() {
                     <div key={member.id} className="group bg-white/5 border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
                       <div className="aspect-square overflow-hidden bg-gray-900/50">
                         {member.photoUrl ? (
-                          <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                          <ProtectedImage src={member.photoUrl} alt={member.name} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gray-800">
                             <Users className="w-16 h-16 text-gray-600" />

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ProtectedImage } from "@/components/ui/ProtectedImage";
 import { Brain, Rocket, Users, Target, ShieldCheck, Zap, Layers, Lightbulb } from "lucide-react";
 import atulImg from "@assets/generated_images/professional_portrait_of_atul_kadam,_founder_&_ceo.png";
 import hemantImg from "@assets/generated_images/professional_portrait_of_hemant_nagrale,_co-founder.png";
@@ -61,7 +62,7 @@ export default function Founders() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={heroBg} alt="Background" className="w-full h-full object-cover opacity-20" />
+          <ProtectedImage src={heroBg} alt="Background" className="w-full h-full object-cover opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         </div>
         
@@ -85,7 +86,7 @@ export default function Founders() {
                 <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-2xl group-hover:bg-primary/30 transition-all duration-500" />
                 <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-card">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-                  <img src={founder.image} alt={founder.name} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                  <ProtectedImage src={founder.image} alt={founder.name} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute bottom-0 left-0 w-full p-6 z-20">
                     <founder.icon className="w-8 h-8 text-primary mb-2" />
                     <h3 className="text-2xl font-bold text-white">{founder.name}</h3>
