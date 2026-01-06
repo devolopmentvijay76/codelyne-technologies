@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { ObjectStorageService, ObjectNotFoundError } from "./objectStorage";
+import { setObjectAclPolicy } from "./objectAcl";
 
 /**
  * Register object storage routes for file uploads.
@@ -59,6 +60,30 @@ export function registerObjectStorageRoutes(app: Express): void {
     } catch (error) {
       console.error("Error generating upload URL:", error);
       res.status(500).json({ error: "Failed to generate upload URL" });
+    }
+  });
+
+  /**
+   * Mark an uploaded object as public (for profile photos).
+   */
+  app.post("/api/uploads/make-public", async (req, res) => {
+    try {
+      const { objectPath } = req.body;
+      if (!objectPath) {
+        return res.status(400).json({ error: "Missing objectPath" });
+      }
+      if (!objectPath.startsWith("/objects/")) {
+        return res.json({ success: true, objectPath, skipped: true });
+      }
+      const objectFile = await objectStorageService.getObjectEntityFile(objectPath);
+      await setObjectAclPolicy(objectFile, {
+        owner: "system",
+        visibility: "public",
+      });
+      res.json({ success: true, objectPath });
+    } catch (error) {
+      console.error("Error setting public ACL:", error);
+      res.status(500).json({ error: "Failed to set public access" });
     }
   });
 

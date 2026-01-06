@@ -66,6 +66,7 @@ export default function Admin() {
   const [editEmployee, setEditEmployee] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string>("");
+  const [isFixingPhotos, setIsFixingPhotos] = useState(false);
 
   const [vision, setVision] = useState("");
   const [mission, setMission] = useState("");
@@ -234,6 +235,23 @@ export default function Admin() {
     });
   };
 
+  const handleFixPhotos = async () => {
+    setIsFixingPhotos(true);
+    try {
+      const response = await fetch("/api/admin/fix-photos", { method: "POST" });
+      const data = await response.json();
+      if (response.ok) {
+        toast({ title: "Photos Fixed", description: `Fixed visibility for ${data.results?.filter((r: any) => r.status === "fixed").length || 0} photos.` });
+      } else {
+        toast({ title: "Error", description: data.message, variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error", description: "Failed to fix photos", variant: "destructive" });
+    } finally {
+      setIsFixingPhotos(false);
+    }
+  };
+
   const founders = employees.filter(e => e.memberType === "founder");
   const teamMembers = employees.filter(e => e.memberType !== "founder");
 
@@ -352,6 +370,25 @@ export default function Admin() {
                  </CardContent>
                </Card>
             </div>
+
+            {/* Photo Visibility Fix */}
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                   <CardTitle className="text-white">Photo Visibility</CardTitle>
+                   <CardDescription className="text-gray-400">Fix photo visibility for published site. Run this after uploading new photos.</CardDescription>
+                </div>
+                <Button 
+                  onClick={handleFixPhotos}
+                  disabled={isFixingPhotos}
+                  className="bg-primary text-background font-bold"
+                  data-testid="button-fix-photos"
+                >
+                  <ImageIcon className="w-4 h-4 mr-2" />
+                  {isFixingPhotos ? "Fixing..." : "Fix All Photos"}
+                </Button>
+              </CardHeader>
+            </Card>
 
             {/* Vision & Mission Editor */}
             <Card className="bg-white/5 border-white/10">

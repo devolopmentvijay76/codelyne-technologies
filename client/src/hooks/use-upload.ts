@@ -105,6 +105,20 @@ export function useUpload(options: UseUploadOptions = {}) {
   );
 
   /**
+   * Mark an uploaded object as public.
+   */
+  const makePublic = useCallback(async (objectPath: string): Promise<void> => {
+    const response = await fetch("/api/uploads/make-public", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ objectPath }),
+    });
+    if (!response.ok) {
+      console.warn("Failed to set public access for:", objectPath);
+    }
+  }, []);
+
+  /**
    * Upload a file using the presigned URL flow.
    *
    * @param file - The file to upload
@@ -125,6 +139,10 @@ export function useUpload(options: UseUploadOptions = {}) {
         setProgress(30);
         await uploadToPresignedUrl(file, uploadResponse.uploadURL);
 
+        // Step 3: Mark the uploaded file as public (for profile photos)
+        setProgress(80);
+        await makePublic(uploadResponse.objectPath);
+
         setProgress(100);
         options.onSuccess?.(uploadResponse);
         return uploadResponse;
@@ -137,7 +155,7 @@ export function useUpload(options: UseUploadOptions = {}) {
         setIsUploading(false);
       }
     },
-    [requestUploadUrl, uploadToPresignedUrl, options]
+    [requestUploadUrl, uploadToPresignedUrl, makePublic, options]
   );
 
   /**

@@ -13,7 +13,7 @@ import {
   type User,
 } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
-import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
+import { registerObjectStorageRoutes, ObjectStorageService, setObjectAclPolicy } from "./replit_integrations/object_storage";
 
 // Extend Express Request to include user
 declare global {
@@ -157,6 +157,36 @@ export async function registerRoutes(
       res.json(publicData);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch team" });
+    }
+  });
+
+  // Admin endpoint to fix all existing team photos (make them public)
+  app.post("/api/admin/fix-photos", isAuthenticated, async (req, res) => {
+    try {
+      const objectStorageService = new ObjectStorageService();
+      const employees = await storage.getAllEmployees();
+      const results: { name: string; status: string }[] = [];
+
+      for (const emp of employees) {
+        if (emp.photoUrl && emp.photoUrl.startsWith("/objects/")) {
+          try {
+            const objectFile = await objectStorageService.getObjectEntityFile(emp.photoUrl);
+            await setObjectAclPolicy(objectFile, {
+              owner: "system",
+              visibility: "public",
+            });
+            results.push({ name: emp.name, status: "fixed" });
+          } catch (err) {
+            results.push({ name: emp.name, status: "error" });
+          }
+        } else {
+          results.push({ name: emp.name, status: "skipped" });
+        }
+      }
+
+      res.json({ message: "Photos fixed", results });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fix photos" });
     }
   });
 
