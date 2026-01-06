@@ -65,14 +65,34 @@ export function useEmployees() {
     },
   });
 
+  const reorderMutation = useMutation({
+    mutationFn: async (orders: { id: number; displayOrder: number }[]) => {
+      const response = await fetch("/api/employees/reorder", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orders }),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to reorder employees");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+
   return {
     employees,
     isLoading,
     createEmployee: createMutation.mutate,
     updateEmployee: updateMutation.mutate,
     deleteEmployee: deleteMutation.mutate,
+    reorderEmployees: reorderMutation.mutate,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
+    isReordering: reorderMutation.isPending,
   };
 }

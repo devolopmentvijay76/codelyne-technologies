@@ -15,7 +15,7 @@ import {
   type InsertContactSubmission,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 
 export interface IStorage {
   // User methods
@@ -29,6 +29,7 @@ export interface IStorage {
   createEmployee(employee: InsertEmployee): Promise<Employee>;
   updateEmployee(id: number, employee: InsertEmployee): Promise<Employee | undefined>;
   deleteEmployee(id: number): Promise<boolean>;
+  updateDisplayOrders(orders: { id: number; displayOrder: number }[]): Promise<boolean>;
 
   // Content methods
   getContentByKey(key: string): Promise<Content | undefined>;
@@ -61,7 +62,7 @@ export class DatabaseStorage implements IStorage {
 
   // Employee methods
   async getAllEmployees(): Promise<Employee[]> {
-    return await db.select().from(employees).orderBy(desc(employees.createdAt));
+    return await db.select().from(employees).orderBy(asc(employees.displayOrder), desc(employees.createdAt));
   }
 
   async getEmployee(id: number): Promise<Employee | undefined> {
@@ -86,6 +87,21 @@ export class DatabaseStorage implements IStorage {
   async deleteEmployee(id: number): Promise<boolean> {
     const result = await db.delete(employees).where(eq(employees.id, id)).returning();
     return result.length > 0;
+  }
+
+  async updateDisplayOrders(orders: { id: number; displayOrder: number }[]): Promise<boolean> {
+    try {
+      for (const order of orders) {
+        await db
+          .update(employees)
+          .set({ displayOrder: order.displayOrder })
+          .where(eq(employees.id, order.id));
+      }
+      return true;
+    } catch (error) {
+      console.error("Error updating display orders:", error);
+      return false;
+    }
   }
 
   // Content methods

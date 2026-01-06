@@ -18,6 +18,9 @@ import {
   Save,
   Image as ImageIcon,
   Upload,
+  ArrowUp,
+  ArrowDown,
+  GripVertical,
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -57,7 +60,7 @@ const employeeSchema = z.object({
 export default function Admin() {
   const [, setLocation] = useLocation();
   const { isAuthenticated, isLoading: authLoading, logout, user } = useAuth();
-  const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee } = useEmployees();
+  const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee, reorderEmployees, isReordering } = useEmployees();
   const { allContent, updateContent, createContent, isUpdating } = useContent();
   const { toast } = useToast();
 
@@ -203,6 +206,30 @@ export default function Admin() {
       }
       await uploadFile(file);
     }
+  };
+
+  const handleMoveUp = (memberList: any[], index: number) => {
+    if (index <= 0) return;
+    const orders = memberList.map((m, i) => ({
+      id: m.id,
+      displayOrder: i === index ? index - 1 : i === index - 1 ? index : i,
+    }));
+    reorderEmployees(orders, {
+      onSuccess: () => toast({ title: "Order Updated" }),
+      onError: (error: Error) => toast({ title: "Reorder Failed", description: error.message, variant: "destructive" }),
+    });
+  };
+
+  const handleMoveDown = (memberList: any[], index: number) => {
+    if (index >= memberList.length - 1) return;
+    const orders = memberList.map((m, i) => ({
+      id: m.id,
+      displayOrder: i === index ? index + 1 : i === index + 1 ? index : i,
+    }));
+    reorderEmployees(orders, {
+      onSuccess: () => toast({ title: "Order Updated" }),
+      onError: (error: Error) => toast({ title: "Reorder Failed", description: error.message, variant: "destructive" }),
+    });
   };
 
   const onSubmitEmployee = (values: z.infer<typeof employeeSchema>) => {
@@ -588,9 +615,32 @@ export default function Admin() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {founders.map((member) => (
+                    {founders.map((member, index) => (
                       <div key={member.id} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-primary/30 transition-all group" data-testid={`card-founder-${member.id}`}>
                         <div className="flex items-start gap-4">
+                          <div className="flex flex-col gap-1">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
+                              onClick={() => handleMoveUp(founders, index)}
+                              disabled={index === 0 || isReordering}
+                              data-testid={`button-move-up-founder-${member.id}`}
+                            >
+                              <ArrowUp className="w-3 h-3" />
+                            </Button>
+                            <span className="text-xs text-gray-500 text-center">{index + 1}</span>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
+                              onClick={() => handleMoveDown(founders, index)}
+                              disabled={index === founders.length - 1 || isReordering}
+                              data-testid={`button-move-down-founder-${member.id}`}
+                            >
+                              <ArrowDown className="w-3 h-3" />
+                            </Button>
+                          </div>
                           {member.photoUrl ? (
                             <img src={member.photoUrl} alt={member.name} className="w-16 h-16 rounded-lg object-cover" />
                           ) : (
@@ -638,6 +688,7 @@ export default function Admin() {
                     <table className="w-full text-sm text-left">
                       <thead className="bg-white/5 text-gray-300 font-medium">
                         <tr>
+                          <th className="p-4 w-20">Order</th>
                           <th className="p-4">Photo</th>
                           <th className="p-4">Name</th>
                           <th className="p-4">Designation</th>
@@ -646,8 +697,33 @@ export default function Admin() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
-                        {teamMembers.map((member) => (
+                        {teamMembers.map((member, index) => (
                           <tr key={member.id} className="hover:bg-white/5 transition-colors group" data-testid={`row-employee-${member.id}`}>
+                            <td className="p-4">
+                              <div className="flex items-center gap-1">
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
+                                  onClick={() => handleMoveUp(teamMembers, index)}
+                                  disabled={index === 0 || isReordering}
+                                  data-testid={`button-move-up-${member.id}`}
+                                >
+                                  <ArrowUp className="w-3 h-3" />
+                                </Button>
+                                <span className="text-xs text-gray-500 min-w-[16px] text-center">{index + 1}</span>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
+                                  onClick={() => handleMoveDown(teamMembers, index)}
+                                  disabled={index === teamMembers.length - 1 || isReordering}
+                                  data-testid={`button-move-down-${member.id}`}
+                                >
+                                  <ArrowDown className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </td>
                             <td className="p-4">
                               {member.photoUrl ? (
                                 <img src={member.photoUrl} alt={member.name} className="w-10 h-10 rounded-lg object-cover" />

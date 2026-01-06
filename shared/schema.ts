@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, serial } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, serial, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -29,14 +29,20 @@ export const employees = pgTable("employees", {
   description: text("description"), // Bio/description
   quote: text("quote"), // Optional quote for founders
   focusAreas: text("focus_areas"), // Comma-separated focus areas
-  displayOrder: serial("display_order"), // For ordering in display
+  displayOrder: integer("display_order").default(0), // For ordering in display
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const insertEmployeeSchema = createInsertSchema(employees).omit({
   id: true,
-  displayOrder: true,
   createdAt: true,
+});
+
+export const updateDisplayOrderSchema = z.object({
+  orders: z.array(z.object({
+    id: z.number(),
+    displayOrder: z.number(),
+  })),
 });
 
 export type InsertEmployee = z.infer<typeof insertEmployeeSchema>;
