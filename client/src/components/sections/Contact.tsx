@@ -32,7 +32,7 @@ export function Contact() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // In a real app, this would be an API call
-    console.log("Form submitted to kadamatulp@gmail.com:", values);
+    console.log("Form submitted to Codelynetechnologies@gmail.com:", values);
     
     // Simulating success
     setIsSubmitted(true);

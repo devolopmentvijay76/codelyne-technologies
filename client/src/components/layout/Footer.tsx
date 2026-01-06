@@ -40,9 +40,9 @@ export function Footer() {
                   <Phone className="w-5 h-5 text-primary" />
                   +91 99228 44271
                 </a>
-                <a href="mailto:kadamatulp@gmail.com" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
+                <a href="mailto:Codelynetechnologies@gmail.com" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
                   <Mail className="w-5 h-5 text-primary" />
-                  kadamatulp@gmail.com
+                  Codelynetechnologies@gmail.com
                 </a>
               </div>
             </div>
