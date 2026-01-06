@@ -17,6 +17,7 @@ import {
   Plus,
   Save,
   Image as ImageIcon,
+  Upload,
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -40,6 +41,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useContent } from "@/hooks/useContent";
+import { useUpload } from "@/hooks/use-upload";
 
 const employeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -63,9 +65,21 @@ export default function Admin() {
   const [isEditingVision, setIsEditingVision] = useState(false);
   const [editEmployee, setEditEmployee] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string>("");
 
   const [vision, setVision] = useState("");
   const [mission, setMission] = useState("");
+
+  const { uploadFile, isUploading } = useUpload({
+    onSuccess: (response) => {
+      form.setValue("photoUrl", response.objectPath);
+      setPhotoPreview(response.objectPath);
+      toast({ title: "Photo Uploaded", description: "Profile photo has been uploaded successfully." });
+    },
+    onError: (error) => {
+      toast({ title: "Upload Failed", description: error.message, variant: "destructive" });
+    },
+  });
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -145,6 +159,7 @@ export default function Admin() {
 
   const handleEditEmployee = (employee: any) => {
     setEditEmployee(employee);
+    setPhotoPreview(employee.photoUrl || "");
     form.reset({
       name: employee.name,
       role: employee.role,
@@ -160,6 +175,7 @@ export default function Admin() {
 
   const handleAddEmployee = () => {
     setEditEmployee(null);
+    setPhotoPreview("");
     form.reset({
       name: "",
       role: "",
@@ -171,6 +187,21 @@ export default function Admin() {
       focusAreas: "",
     });
     setIsDialogOpen(true);
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast({ title: "Invalid File", description: "Please select an image file.", variant: "destructive" });
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast({ title: "File Too Large", description: "Please select an image under 5MB.", variant: "destructive" });
+        return;
+      }
+      await uploadFile(file);
+    }
   };
 
   const onSubmitEmployee = (values: z.infer<typeof employeeSchema>) => {
@@ -449,8 +480,29 @@ export default function Admin() {
 
                       <FormField control={form.control} name="photoUrl" render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Photo URL</FormLabel>
-                          <FormControl><Input {...field} placeholder="/attached_assets/..." className="bg-white/5 border-white/10 text-white" data-testid="input-employee-photo" /></FormControl>
+                          <FormLabel>Profile Photo</FormLabel>
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-4">
+                              {(photoPreview || field.value) ? (
+                                <img src={photoPreview || field.value} alt="Preview" className="w-20 h-20 rounded-lg object-cover border border-white/10" />
+                              ) : (
+                                <div className="w-20 h-20 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                                  <ImageIcon className="w-8 h-8 text-gray-500" />
+                                </div>
+                              )}
+                              <div className="flex-1 space-y-2">
+                                <label className="flex items-center gap-2 cursor-pointer px-4 py-2 bg-primary/10 text-primary border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors w-fit">
+                                  <Upload className="w-4 h-4" />
+                                  <span className="text-sm font-medium">{isUploading ? "Uploading..." : "Upload Photo"}</span>
+                                  <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={isUploading} data-testid="input-upload-photo" />
+                                </label>
+                                <p className="text-xs text-gray-500">Max 5MB. JPG, PNG, WebP supported.</p>
+                              </div>
+                            </div>
+                            <FormControl>
+                              <Input {...field} placeholder="Or enter URL manually" className="bg-white/5 border-white/10 text-white text-sm" data-testid="input-employee-photo" />
+                            </FormControl>
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )} />

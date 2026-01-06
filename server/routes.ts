@@ -13,6 +13,7 @@ import {
   type User,
 } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
+import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
 
 // Extend Express Request to include user
 declare global {
@@ -99,6 +100,9 @@ export async function registerRoutes(
 
   app.use(passport.initialize());
   app.use(passport.session());
+
+  // Register object storage routes for file uploads
+  registerObjectStorageRoutes(app);
 
   // Authentication routes
   app.post("/api/auth/login", (req, res, next) => {
