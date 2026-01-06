@@ -5,8 +5,9 @@ import * as z from "zod";
 import { useLocation } from "wouter";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   LayoutDashboard, 
   LogOut, 
@@ -15,6 +16,7 @@ import {
   Trash2, 
   Plus,
   Save,
+  Image as ImageIcon,
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -39,14 +41,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useContent } from "@/hooks/useContent";
 
-// Form Schema
 const employeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
-  role: z.string().min(2, "Role is required"),
-  department: z.string().min(2, "Department is required"),
-  email: z.string().email("Valid email is required"),
-  phone: z.string().min(10, "Valid phone number is required"),
-  joinDate: z.string().min(1, "Join date is required"),
+  role: z.string().min(2, "Role/Designation is required"),
+  department: z.string().min(1, "Department is required"),
+  memberType: z.string().min(1, "Member type is required"),
+  photoUrl: z.string().optional(),
+  description: z.string().optional(),
+  quote: z.string().optional(),
+  focusAreas: z.string().optional(),
 });
 
 export default function Admin() {
@@ -73,7 +76,6 @@ export default function Admin() {
   useEffect(() => {
     const visionContent = allContent.find(c => c.key === "vision");
     const missionContent = allContent.find(c => c.key === "mission");
-    
     if (visionContent) setVision(visionContent.value);
     if (missionContent) setMission(missionContent.value);
   }, [allContent]);
@@ -83,10 +85,12 @@ export default function Admin() {
     defaultValues: {
       name: "",
       role: "",
-      department: "",
-      email: "",
-      phone: "",
-      joinDate: new Date().toISOString().split('T')[0],
+      department: "Engineering",
+      memberType: "engineer",
+      photoUrl: "",
+      description: "",
+      quote: "",
+      focusAreas: "",
     },
   });
 
@@ -107,29 +111,21 @@ export default function Admin() {
 
     if (visionContent) {
       updateContent({ key: "vision", value: vision }, {
-        onSuccess: () => {
-          toast({ title: "Vision Updated", description: "Vision statement has been saved." });
-        },
+        onSuccess: () => toast({ title: "Vision Updated" }),
       });
     } else {
       createContent({ key: "vision", value: vision }, {
-        onSuccess: () => {
-          toast({ title: "Vision Created", description: "Vision statement has been created." });
-        },
+        onSuccess: () => toast({ title: "Vision Created" }),
       });
     }
 
     if (missionContent) {
       updateContent({ key: "mission", value: mission }, {
-        onSuccess: () => {
-          toast({ title: "Mission Updated", description: "Mission statement has been saved." });
-        },
+        onSuccess: () => toast({ title: "Mission Updated" }),
       });
     } else {
       createContent({ key: "mission", value: mission }, {
-        onSuccess: () => {
-          toast({ title: "Mission Created", description: "Mission statement has been created." });
-        },
+        onSuccess: () => toast({ title: "Mission Created" }),
       });
     }
 
@@ -139,18 +135,10 @@ export default function Admin() {
   const handleDeleteEmployee = (id: number) => {
     deleteEmployee(id, {
       onSuccess: () => {
-        toast({
-          title: "Employee Deleted",
-          description: "Employee has been removed from the directory.",
-          variant: "destructive"
-        });
+        toast({ title: "Team Member Deleted", variant: "destructive" });
       },
       onError: (error: Error) => {
-        toast({
-          title: "Delete Failed",
-          description: error.message,
-          variant: "destructive"
-        });
+        toast({ title: "Delete Failed", description: error.message, variant: "destructive" });
       }
     });
   };
@@ -161,9 +149,11 @@ export default function Admin() {
       name: employee.name,
       role: employee.role,
       department: employee.department,
-      email: employee.email,
-      phone: employee.phone,
-      joinDate: employee.joinDate,
+      memberType: employee.memberType || "employee",
+      photoUrl: employee.photoUrl || "",
+      description: employee.description || "",
+      quote: employee.quote || "",
+      focusAreas: employee.focusAreas || "",
     });
     setIsDialogOpen(true);
   };
@@ -173,10 +163,12 @@ export default function Admin() {
     form.reset({
       name: "",
       role: "",
-      department: "",
-      email: "",
-      phone: "",
-      joinDate: new Date().toISOString().split('T')[0],
+      department: "Engineering",
+      memberType: "engineer",
+      photoUrl: "",
+      description: "",
+      quote: "",
+      focusAreas: "",
     });
     setIsDialogOpen(true);
   };
@@ -185,7 +177,7 @@ export default function Admin() {
     if (editEmployee) {
       updateEmployee({ id: editEmployee.id, data: values }, {
         onSuccess: () => {
-          toast({ title: "Employee Updated", description: `${values.name}'s details saved.` });
+          toast({ title: "Team Member Updated", description: `${values.name}'s details saved.` });
           setIsDialogOpen(false);
         },
         onError: (error: Error) => {
@@ -195,7 +187,7 @@ export default function Admin() {
     } else {
       createEmployee(values, {
         onSuccess: () => {
-          toast({ title: "Employee Added", description: `${values.name} has been added to the team.` });
+          toast({ title: "Team Member Added", description: `${values.name} has been added.` });
           setIsDialogOpen(false);
         },
         onError: (error: Error) => {
@@ -207,10 +199,21 @@ export default function Admin() {
 
   const handleLogout = () => {
     logout(undefined, {
-      onSuccess: () => {
-        setLocation("/login");
-      }
+      onSuccess: () => setLocation("/login")
     });
+  };
+
+  const founders = employees.filter(e => e.memberType === "founder");
+  const teamMembers = employees.filter(e => e.memberType !== "founder");
+
+  const getMemberTypeBadge = (type: string) => {
+    const styles: Record<string, string> = {
+      founder: "border-primary/50 text-primary bg-primary/10",
+      management: "border-purple-500/50 text-purple-400 bg-purple-500/10",
+      engineer: "border-blue-500/50 text-blue-400 bg-blue-500/10",
+      admin: "border-green-500/50 text-green-400 bg-green-500/10",
+    };
+    return styles[type] || "border-gray-500/50 text-gray-400 bg-gray-500/10";
   };
 
   return (
@@ -236,16 +239,16 @@ export default function Admin() {
             Dashboard
           </button>
           <button 
-             onClick={() => setActiveTab("about-us")}
+             onClick={() => setActiveTab("team")}
              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-               activeTab === "about-us" 
+               activeTab === "team" 
                  ? "bg-primary/10 text-primary border border-primary/20" 
                  : "text-gray-400 hover:text-white hover:bg-white/5"
              }`}
-             data-testid="button-tab-about"
+             data-testid="button-tab-team"
            >
              <Users className="w-4 h-4" />
-             About Us & Team
+             Team Management
            </button>
         </nav>
 
@@ -264,7 +267,7 @@ export default function Admin() {
       <div className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-white" data-testid="text-page-title">
-            {activeTab === "dashboard" ? "Dashboard Overview" : "About Us Management"}
+            {activeTab === "dashboard" ? "Dashboard Overview" : "Team Management"}
           </h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400" data-testid="text-user-email">{user?.username}</span>
@@ -276,10 +279,10 @@ export default function Admin() {
 
         {activeTab === "dashboard" && (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                <Card className="bg-white/5 border-white/10">
                  <CardHeader className="pb-2">
-                   <CardTitle className="text-sm font-medium text-gray-400">Total Employees</CardTitle>
+                   <CardTitle className="text-sm font-medium text-gray-400">Total Team</CardTitle>
                  </CardHeader>
                  <CardContent>
                    <div className="text-3xl font-bold text-white" data-testid="text-employee-count">
@@ -289,36 +292,42 @@ export default function Admin() {
                </Card>
                <Card className="bg-white/5 border-white/10">
                  <CardHeader className="pb-2">
-                   <CardTitle className="text-sm font-medium text-gray-400">Departments</CardTitle>
+                   <CardTitle className="text-sm font-medium text-gray-400">Founders</CardTitle>
                  </CardHeader>
                  <CardContent>
-                   <div className="text-3xl font-bold text-white" data-testid="text-department-count">
-                     {employeesLoading ? "..." : new Set(employees.map(e => e.department)).size}
+                   <div className="text-3xl font-bold text-primary" data-testid="text-founders-count">
+                     {employeesLoading ? "..." : founders.length}
                    </div>
                  </CardContent>
                </Card>
                <Card className="bg-white/5 border-white/10">
                  <CardHeader className="pb-2">
-                   <CardTitle className="text-sm font-medium text-gray-400">Content Items</CardTitle>
+                   <CardTitle className="text-sm font-medium text-gray-400">Engineers</CardTitle>
                  </CardHeader>
                  <CardContent>
-                   <div className="text-3xl font-bold text-white" data-testid="text-content-count">
-                     {allContent.length}
+                   <div className="text-3xl font-bold text-blue-400">
+                     {employeesLoading ? "..." : employees.filter(e => e.memberType === "engineer").length}
+                   </div>
+                 </CardContent>
+               </Card>
+               <Card className="bg-white/5 border-white/10">
+                 <CardHeader className="pb-2">
+                   <CardTitle className="text-sm font-medium text-gray-400">Management</CardTitle>
+                 </CardHeader>
+                 <CardContent>
+                   <div className="text-3xl font-bold text-purple-400">
+                     {employeesLoading ? "..." : employees.filter(e => e.memberType === "management").length}
                    </div>
                  </CardContent>
                </Card>
             </div>
-          </div>
-        )}
 
-        {activeTab === "about-us" && (
-          <div className="space-y-8">
             {/* Vision & Mission Editor */}
             <Card className="bg-white/5 border-white/10">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                    <CardTitle className="text-white">Vision & Mission</CardTitle>
-                   <CardDescription className="text-gray-400">Manage company core values displayed on the About Us page.</CardDescription>
+                   <CardDescription className="text-gray-400">Manage company core values.</CardDescription>
                 </div>
                 {!isEditingVision ? (
                   <Button 
@@ -328,27 +337,13 @@ export default function Admin() {
                     className="border-primary/50 text-primary hover:bg-primary/10"
                     data-testid="button-edit-content"
                   >
-                    <Edit className="w-4 h-4 mr-2" /> Edit Content
+                    <Edit className="w-4 h-4 mr-2" /> Edit
                   </Button>
                 ) : (
                   <div className="flex gap-2">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => setIsEditingVision(false)} 
-                      className="text-gray-400"
-                      data-testid="button-cancel-content"
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      onClick={handleSaveVisionMission} 
-                      className="bg-primary text-background font-bold"
-                      disabled={isUpdating}
-                      data-testid="button-save-content"
-                    >
-                      <Save className="w-4 h-4 mr-2" /> {isUpdating ? "Saving..." : "Save Changes"}
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditingVision(false)} className="text-gray-400">Cancel</Button>
+                    <Button size="sm" onClick={handleSaveVisionMission} className="bg-primary text-background font-bold" disabled={isUpdating}>
+                      <Save className="w-4 h-4 mr-2" /> Save
                     </Button>
                   </div>
                 )}
@@ -357,197 +352,233 @@ export default function Admin() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Company Vision</label>
                   {isEditingVision ? (
-                    <textarea 
-                      className="w-full bg-background/50 border border-white/10 rounded-md p-3 text-white focus:border-primary/50 min-h-[80px]" 
-                      value={vision}
-                      onChange={(e) => setVision(e.target.value)}
-                      data-testid="textarea-vision"
-                    />
+                    <textarea className="w-full bg-background/50 border border-white/10 rounded-md p-3 text-white focus:border-primary/50 min-h-[80px]" value={vision} onChange={(e) => setVision(e.target.value)} />
                   ) : (
-                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5" data-testid="text-vision">{vision || "No vision set"}</p>
+                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5">{vision || "No vision set"}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Company Mission</label>
                   {isEditingVision ? (
-                    <textarea 
-                      className="w-full bg-background/50 border border-white/10 rounded-md p-3 text-white focus:border-primary/50 min-h-[80px]" 
-                      value={mission}
-                      onChange={(e) => setMission(e.target.value)}
-                      data-testid="textarea-mission"
-                    />
+                    <textarea className="w-full bg-background/50 border border-white/10 rounded-md p-3 text-white focus:border-primary/50 min-h-[80px]" value={mission} onChange={(e) => setMission(e.target.value)} />
                   ) : (
-                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5" data-testid="text-mission">{mission || "No mission set"}</p>
+                    <p className="text-gray-300 p-3 bg-white/5 rounded-md border border-white/5">{mission || "No mission set"}</p>
                   )}
                 </div>
               </CardContent>
             </Card>
+          </div>
+        )}
 
-            {/* Employee Management */}
+        {activeTab === "team" && (
+          <div className="space-y-8">
+            {/* Add Employee Button */}
+            <div className="flex justify-end">
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={handleAddEmployee} className="bg-primary text-background font-bold hover:bg-primary/90" data-testid="button-add-employee">
+                    <Plus className="w-4 h-4 mr-2" /> Add Team Member
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-[#0b0f19] border-white/10 text-white sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>{editEmployee ? "Edit Team Member" : "Add New Team Member"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editEmployee ? "Update details for this team member." : "Add a new member to the organization."}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmitEmployee)} className="space-y-4 py-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField control={form.control} name="name" render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl><Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-name" /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )} />
+                        <FormField control={form.control} name="role" render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Designation</FormLabel>
+                            <FormControl><Input {...field} placeholder="e.g., Software Engineer" className="bg-white/5 border-white/10 text-white" data-testid="input-employee-role" /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )} />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField control={form.control} name="department" render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Department</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                                  <SelectValue placeholder="Select department" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className="bg-[#0b0f19] border-white/10 text-white">
+                                <SelectItem value="Executive">Executive</SelectItem>
+                                <SelectItem value="Management">Management</SelectItem>
+                                <SelectItem value="Engineering">Engineering</SelectItem>
+                                <SelectItem value="Administration">Administration</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )} />
+                        <FormField control={form.control} name="memberType" render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Member Type</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                                  <SelectValue placeholder="Select type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className="bg-[#0b0f19] border-white/10 text-white">
+                                <SelectItem value="founder">Founder</SelectItem>
+                                <SelectItem value="management">Management</SelectItem>
+                                <SelectItem value="engineer">Engineer</SelectItem>
+                                <SelectItem value="admin">Admin</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )} />
+                      </div>
+
+                      <FormField control={form.control} name="photoUrl" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Photo URL</FormLabel>
+                          <FormControl><Input {...field} placeholder="/attached_assets/..." className="bg-white/5 border-white/10 text-white" data-testid="input-employee-photo" /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+
+                      <FormField control={form.control} name="description" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description / Bio</FormLabel>
+                          <FormControl><Textarea {...field} placeholder="Brief description about the team member..." className="bg-white/5 border-white/10 text-white min-h-[80px]" data-testid="input-employee-description" /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+
+                      <FormField control={form.control} name="quote" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Quote (Optional - for Founders)</FormLabel>
+                          <FormControl><Input {...field} placeholder="Inspirational quote..." className="bg-white/5 border-white/10 text-white" data-testid="input-employee-quote" /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+
+                      <FormField control={form.control} name="focusAreas" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Focus Areas (comma-separated)</FormLabel>
+                          <FormControl><Input {...field} placeholder="AI Architecture, Product Engineering, ..." className="bg-white/5 border-white/10 text-white" data-testid="input-employee-focus" /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+
+                      <DialogFooter>
+                        <Button type="submit" className="bg-primary text-background font-bold" data-testid="button-submit-employee">Save Details</Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Founders Section */}
+            {founders.length > 0 && (
+              <Card className="bg-white/5 border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <span className="text-primary">Founders</span>
+                    <Badge className="bg-primary/20 text-primary">{founders.length}</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {founders.map((member) => (
+                      <div key={member.id} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-primary/30 transition-all group" data-testid={`card-founder-${member.id}`}>
+                        <div className="flex items-start gap-4">
+                          {member.photoUrl ? (
+                            <img src={member.photoUrl} alt={member.name} className="w-16 h-16 rounded-lg object-cover" />
+                          ) : (
+                            <div className="w-16 h-16 rounded-lg bg-primary/20 flex items-center justify-center">
+                              <ImageIcon className="w-6 h-6 text-primary/50" />
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-white truncate">{member.name}</h4>
+                            <p className="text-sm text-gray-400">{member.role}</p>
+                            <Badge variant="outline" className={`mt-2 text-xs ${getMemberTypeBadge(member.memberType)}`}>{member.memberType}</Badge>
+                          </div>
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={() => handleEditEmployee(member)} data-testid={`button-edit-${member.id}`}>
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10" onClick={() => handleDeleteEmployee(member.id)} data-testid={`button-delete-${member.id}`}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        {member.description && <p className="text-sm text-gray-400 mt-3 line-clamp-2">{member.description}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Team Members Section */}
             <Card className="bg-white/5 border-white/10">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="text-white">Employee Directory</CardTitle>
-                  <CardDescription className="text-gray-400">Manage team members, roles, and hierarchy.</CardDescription>
-                </div>
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button 
-                      onClick={handleAddEmployee} 
-                      className="bg-primary text-background font-bold hover:bg-primary/90"
-                      data-testid="button-add-employee"
-                    >
-                      <Plus className="w-4 h-4 mr-2" /> Add Employee
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-[#0b0f19] border-white/10 text-white sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>{editEmployee ? "Edit Employee" : "Add New Employee"}</DialogTitle>
-                      <DialogDescription className="text-gray-400">
-                        {editEmployee ? "Update details for this team member." : "Add a new member to the organization."}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmitEmployee)} className="space-y-4 py-4">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Full Name</FormLabel>
-                              <FormControl>
-                                <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-name" />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="role"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Role</FormLabel>
-                              <FormControl>
-                                <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-role" />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                         <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name="department"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Department</FormLabel>
-                                  <FormControl>
-                                    <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-department" />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="joinDate"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Join Date</FormLabel>
-                                  <FormControl>
-                                    <Input 
-                                      {...field} 
-                                      type="date" 
-                                      className="bg-white/5 border-white/10 text-white" 
-                                      data-testid="input-employee-joindate"
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                         </div>
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input {...field} type="email" className="bg-white/5 border-white/10 text-white" data-testid="input-employee-email" />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Phone</FormLabel>
-                              <FormControl>
-                                <Input {...field} className="bg-white/5 border-white/10 text-white" data-testid="input-employee-phone" />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <DialogFooter>
-                          <Button type="submit" className="bg-primary text-background font-bold" data-testid="button-submit-employee">
-                            Save Details
-                          </Button>
-                        </DialogFooter>
-                      </form>
-                    </Form>
-                  </DialogContent>
-                </Dialog>
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  Team Members
+                  <Badge className="bg-blue-500/20 text-blue-400">{teamMembers.length}</Badge>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {employeesLoading ? (
-                  <div className="text-center py-8 text-gray-400">Loading employees...</div>
-                ) : employees.length === 0 ? (
-                  <div className="text-center py-8 text-gray-400">No employees found. Add your first team member!</div>
+                  <div className="text-center py-8 text-gray-400">Loading team...</div>
+                ) : teamMembers.length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">No team members found. Add your first team member!</div>
                 ) : (
                   <div className="rounded-md border border-white/10 overflow-hidden">
                     <table className="w-full text-sm text-left">
                       <thead className="bg-white/5 text-gray-300 font-medium">
                         <tr>
+                          <th className="p-4">Photo</th>
                           <th className="p-4">Name</th>
-                          <th className="p-4">Role</th>
-                          <th className="p-4">Department</th>
+                          <th className="p-4">Designation</th>
+                          <th className="p-4">Type</th>
                           <th className="p-4 text-right">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
-                        {employees.map((employee) => (
-                          <tr key={employee.id} className="hover:bg-white/5 transition-colors group" data-testid={`row-employee-${employee.id}`}>
-                            <td className="p-4 text-white font-medium" data-testid={`text-employee-name-${employee.id}`}>{employee.name}</td>
-                            <td className="p-4 text-gray-400" data-testid={`text-employee-role-${employee.id}`}>{employee.role}</td>
+                        {teamMembers.map((member) => (
+                          <tr key={member.id} className="hover:bg-white/5 transition-colors group" data-testid={`row-employee-${member.id}`}>
                             <td className="p-4">
-                               <Badge variant="outline" className="border-blue-500/50 text-blue-400 bg-blue-500/10" data-testid={`badge-employee-department-${employee.id}`}>
-                                 {employee.department}
-                               </Badge>
+                              {member.photoUrl ? (
+                                <img src={member.photoUrl} alt={member.name} className="w-10 h-10 rounded-lg object-cover" />
+                              ) : (
+                                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+                                  <ImageIcon className="w-4 h-4 text-gray-500" />
+                                </div>
+                              )}
+                            </td>
+                            <td className="p-4 text-white font-medium">{member.name}</td>
+                            <td className="p-4 text-gray-400">{member.role}</td>
+                            <td className="p-4">
+                               <Badge variant="outline" className={getMemberTypeBadge(member.memberType)}>{member.memberType}</Badge>
                             </td>
                             <td className="p-4 text-right">
                               <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="h-8 w-8 text-gray-400 hover:text-white" 
-                                  onClick={() => handleEditEmployee(employee)}
-                                  data-testid={`button-edit-employee-${employee.id}`}
-                                >
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={() => handleEditEmployee(member)} data-testid={`button-edit-employee-${member.id}`}>
                                   <Edit className="w-4 h-4" />
                                 </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10" 
-                                  onClick={() => handleDeleteEmployee(employee.id)}
-                                  data-testid={`button-delete-employee-${employee.id}`}
-                                >
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10" onClick={() => handleDeleteEmployee(member.id)} data-testid={`button-delete-employee-${member.id}`}>
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
                               </div>

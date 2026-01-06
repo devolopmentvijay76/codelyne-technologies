@@ -135,8 +135,8 @@ export async function registerRoutes(
     }
   });
 
-  // Employee routes (protected)
-  app.get("/api/employees", isAuthenticated, async (req, res) => {
+  // Employee routes (GET is public for About Us page, others are protected)
+  app.get("/api/employees", async (req, res) => {
     try {
       const employees = await storage.getAllEmployees();
       res.json(employees);

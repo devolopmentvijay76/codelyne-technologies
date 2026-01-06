@@ -18,20 +18,24 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
-// Employees table for team management
+// Employees table for team management (includes founders and all team members)
 export const employees = pgTable("employees", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  role: text("role").notNull(),
-  department: text("department").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone").notNull(),
-  joinDate: text("join_date").notNull(),
+  role: text("role").notNull(), // e.g., "Founder & CEO", "Co-Founder", "Software Engineer"
+  department: text("department").notNull(), // Executive, Management, Engineering, Administration
+  memberType: text("member_type").notNull().default("employee"), // founder, management, engineer, admin
+  photoUrl: text("photo_url"), // URL or path to profile image
+  description: text("description"), // Bio/description
+  quote: text("quote"), // Optional quote for founders
+  focusAreas: text("focus_areas"), // Comma-separated focus areas
+  displayOrder: serial("display_order"), // For ordering in display
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const insertEmployeeSchema = createInsertSchema(employees).omit({
   id: true,
+  displayOrder: true,
   createdAt: true,
 });
 
