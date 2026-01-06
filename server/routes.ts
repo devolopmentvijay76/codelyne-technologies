@@ -253,6 +253,23 @@ export async function registerRoutes(
     }
   });
 
+  // Update display order - must be before :id route
+  app.put("/api/employees/reorder", isAuthenticated, async (req, res) => {
+    try {
+      const validated = updateDisplayOrderSchema.parse(req.body);
+      const success = await storage.updateDisplayOrders(validated.orders);
+      if (!success) {
+        return res.status(500).json({ message: "Failed to update display order" });
+      }
+      res.json({ message: "Display order updated successfully" });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: fromZodError(error).message });
+      }
+      res.status(500).json({ message: "Failed to update display order" });
+    }
+  });
+
   app.get("/api/employees/:id", isAuthenticated, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
@@ -306,23 +323,6 @@ export async function registerRoutes(
       res.json({ message: "Employee deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete employee" });
-    }
-  });
-
-  // Update display order for team members
-  app.put("/api/employees/reorder", isAuthenticated, async (req, res) => {
-    try {
-      const validated = updateDisplayOrderSchema.parse(req.body);
-      const success = await storage.updateDisplayOrders(validated.orders);
-      if (!success) {
-        return res.status(500).json({ message: "Failed to update display order" });
-      }
-      res.json({ message: "Display order updated successfully" });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: fromZodError(error).message });
-      }
-      res.status(500).json({ message: "Failed to update display order" });
     }
   });
 
