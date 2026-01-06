@@ -25,11 +25,11 @@ const founders = [
   },
   {
     name: "Hemant Nagrale",
-    title: "Co-Founder",
+    title: "Co-Founder & Strategic Advisor",
     image: hemantImg,
-    quote: "Great products emerge when business clarity meets strong engineering. Our focus is building platforms that scale with purpose.",
-    description: "Hemant leads product strategy and market alignment, converting complex business problems into scalable digital platforms. He oversees partnerships, growth strategy, and client success, bridging engineering execution with tangible business outcomes.",
-    focusAreas: ["Product Strategy", "Business Growth", "Market Expansion", "Client Alignment"],
+    quote: "Discipline, governance, and strategic clarity are the pillars of building institutions that endure and excel.",
+    description: "A distinguished 1987-batch IPS officer (Maharashtra cadre) and former Mumbai Police Commissioner, Hemant brings decades of leadership in governance and strategic decision-making. With degrees from VNIT Nagpur and JBIMS Mumbai, he guides Codelyne's long-term vision with disciplined execution and institutional expertise.",
+    focusAreas: ["Strategic Leadership", "Governance & Compliance", "Institutional Building", "Operational Excellence"],
     icon: Rocket
   },
   {
