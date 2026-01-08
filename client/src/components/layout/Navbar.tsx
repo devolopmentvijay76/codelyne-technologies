@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
+import { DemoModal } from "@/components/ui/DemoModal";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,14 +20,12 @@ export function Navbar() {
     <nav className="fixed top-0 w-full z-50 glass-card border-b border-white/10 bg-background/80 backdrop-blur-md transition-all duration-300">
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/">
-          <a className="flex items-center gap-4 group">
-            <JarvisLogo size="md" />
-            
-            <span className="text-lg md:text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
-              CODELYNE <span className="text-primary font-extrabold">TECHNOLOGIES</span>
-            </span>
-          </a>
+        <Link href="/" className="flex items-center gap-4 group">
+          <JarvisLogo size="md" />
+          
+          <span className="text-lg md:text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
+            CODELYNE <span className="text-primary font-extrabold">TECHNOLOGIES</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -41,12 +40,14 @@ export function Navbar() {
               {link.name}
             </a>
           ))}
-          <Button 
-            className="bg-primary hover:bg-primary/90 text-background font-bold shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all duration-300"
-            data-testid="btn-get-demo"
-          >
-            Get 24-Hour Demo
-          </Button>
+          <DemoModal trigger={
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-background font-bold shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all duration-300"
+              data-testid="btn-get-demo"
+            >
+              Get 24-Hour Demo
+            </Button>
+          } />
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -71,9 +72,11 @@ export function Navbar() {
               {link.name}
             </a>
           ))}
-          <Button className="w-full bg-primary text-background font-bold mt-4">
-            Get 24-Hour Demo
-          </Button>
+          <DemoModal trigger={
+            <Button className="w-full bg-primary text-background font-bold mt-4">
+              Get 24-Hour Demo
+            </Button>
+          } />
         </div>
       )}
     </nav>

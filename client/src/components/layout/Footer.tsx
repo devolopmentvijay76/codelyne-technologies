@@ -25,16 +25,22 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2 space-y-4">
             <h3 className="text-white font-heading font-semibold mb-4">Contact Us</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex gap-3 text-gray-400">
-                <MapPin className="w-5 h-5 text-primary shrink-0" />
+              <a 
+                href="https://maps.app.goo.gl/bIGhjbvh5lFg6gR96" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex gap-3 text-gray-400 hover:text-primary transition-colors group"
+              >
+                <MapPin className="w-5 h-5 text-primary shrink-0 group-hover:scale-110 transition-transform" />
                 <address className="not-italic text-sm leading-relaxed">
                   <strong>Vyasa House</strong>,<br />
                   Sr No: 23, Near 19 Grand West Society,<br />
                   Aditya Birla Hospital Road,<br />
                   Dange Chowk Rd, Thergaon,<br />
                   Pimpri-Chinchwad, Maharashtra – 411033
+                  <span className="block mt-2 text-primary text-xs">View on Google Maps →</span>
                 </address>
-              </div>
+              </a>
               <div className="space-y-3">
                 <a href="tel:+919922844271" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
                   <Phone className="w-5 h-5 text-primary" />

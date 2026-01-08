@@ -21,6 +21,8 @@ import {
   ArrowUp,
   ArrowDown,
   GripVertical,
+  Package,
+  Layers,
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -45,6 +47,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useContent } from "@/hooks/useContent";
 import { useUpload } from "@/hooks/use-upload";
+import { useProducts } from "@/hooks/useProducts";
 
 const employeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -57,11 +60,22 @@ const employeeSchema = z.object({
   focusAreas: z.string().optional(),
 });
 
+const productSchema = z.object({
+  name: z.string().min(2, "Product name is required"),
+  tagline: z.string().min(2, "Tagline is required"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  features: z.string().optional(),
+  icon: z.string().optional(),
+  status: z.string().default("active"),
+  displayOrder: z.number().optional(),
+});
+
 export default function Admin() {
   const [, setLocation] = useLocation();
   const { isAuthenticated, isLoading: authLoading, logout, user } = useAuth();
   const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee, reorderEmployees, isReordering } = useEmployees();
   const { allContent, updateContent, createContent, isUpdating } = useContent();
+  const { products, isLoading: productsLoading, createProduct, updateProduct, deleteProduct } = useProducts();
   const { toast } = useToast();
 
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -70,6 +84,8 @@ export default function Admin() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string>("");
   const [isFixingPhotos, setIsFixingPhotos] = useState(false);
+  const [editProduct, setEditProduct] = useState<any>(null);
+  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
 
   const [vision, setVision] = useState("");
   const [mission, setMission] = useState("");
@@ -109,6 +125,19 @@ export default function Admin() {
       description: "",
       quote: "",
       focusAreas: "",
+    },
+  });
+
+  const productForm = useForm<z.infer<typeof productSchema>>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      tagline: "",
+      description: "",
+      features: "",
+      icon: "Cpu",
+      status: "active",
+      displayOrder: 0,
     },
   });
 
@@ -262,6 +291,61 @@ export default function Admin() {
     });
   };
 
+  const handleAddProduct = () => {
+    setEditProduct(null);
+    productForm.reset({
+      name: "",
+      tagline: "",
+      description: "",
+      features: "",
+      icon: "Cpu",
+      status: "active",
+      displayOrder: 0,
+    });
+    setIsProductDialogOpen(true);
+  };
+
+  const handleEditProduct = (product: any) => {
+    setEditProduct(product);
+    productForm.reset({
+      name: product.name,
+      tagline: product.tagline,
+      description: product.description,
+      features: product.features || "",
+      icon: product.icon || "Cpu",
+      status: product.status,
+      displayOrder: product.displayOrder || 0,
+    });
+    setIsProductDialogOpen(true);
+  };
+
+  const handleDeleteProduct = (id: number) => {
+    deleteProduct(id, {
+      onSuccess: () => toast({ title: "Product Deleted", variant: "destructive" }),
+      onError: (error: Error) => toast({ title: "Delete Failed", description: error.message, variant: "destructive" }),
+    });
+  };
+
+  const onSubmitProduct = (values: z.infer<typeof productSchema>) => {
+    if (editProduct) {
+      updateProduct({ id: editProduct.id, data: values }, {
+        onSuccess: () => {
+          toast({ title: "Product Updated", description: `${values.name} has been updated.` });
+          setIsProductDialogOpen(false);
+        },
+        onError: (error: Error) => toast({ title: "Update Failed", description: error.message, variant: "destructive" }),
+      });
+    } else {
+      createProduct(values, {
+        onSuccess: () => {
+          toast({ title: "Product Added", description: `${values.name} has been added.` });
+          setIsProductDialogOpen(false);
+        },
+        onError: (error: Error) => toast({ title: "Creation Failed", description: error.message, variant: "destructive" }),
+      });
+    }
+  };
+
   const handleFixPhotos = async () => {
     setIsFixingPhotos(true);
     try {
@@ -326,6 +410,18 @@ export default function Admin() {
              <Users className="w-4 h-4" />
              Team Management
            </button>
+           <button 
+             onClick={() => setActiveTab("products")}
+             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+               activeTab === "products" 
+                 ? "bg-primary/10 text-primary border border-primary/20" 
+                 : "text-gray-400 hover:text-white hover:bg-white/5"
+             }`}
+             data-testid="button-tab-products"
+           >
+             <Package className="w-4 h-4" />
+             Products
+           </button>
         </nav>
 
         <Button 
@@ -343,7 +439,7 @@ export default function Admin() {
       <div className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-white" data-testid="text-page-title">
-            {activeTab === "dashboard" ? "Dashboard Overview" : "Team Management"}
+            {activeTab === "dashboard" ? "Dashboard Overview" : activeTab === "team" ? "Team Management" : "Products"}
           </h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400" data-testid="text-user-email">{user?.username}</span>
@@ -752,6 +848,187 @@ export default function Admin() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {activeTab === "products" && (
+          <div className="space-y-6">
+            <div className="flex justify-end">
+              <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={handleAddProduct} className="bg-primary text-background font-bold hover:bg-primary/90" data-testid="button-add-product">
+                    <Plus className="w-4 h-4 mr-2" /> Add Product
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-[#0b0f19] border-white/10 text-white max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle className="text-xl font-heading">{editProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      {editProduct ? "Update product details below." : "Fill in the product details."}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <Form {...productForm}>
+                    <form onSubmit={productForm.handleSubmit(onSubmitProduct)} className="space-y-4">
+                      <FormField
+                        control={productForm.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Name</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="CogniFlow ERP" className="bg-white/5 border-white/10 text-white" data-testid="input-product-name" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={productForm.control}
+                        name="tagline"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Tagline</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="AI-powered enterprise resource planning" className="bg-white/5 border-white/10 text-white" data-testid="input-product-tagline" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={productForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea {...field} placeholder="Full description of the product..." className="bg-white/5 border-white/10 text-white min-h-[100px]" data-testid="input-product-description" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={productForm.control}
+                        name="features"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Features (comma-separated)</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="Real-time analytics, AI predictions, Automated workflows" className="bg-white/5 border-white/10 text-white" data-testid="input-product-features" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={productForm.control}
+                          name="icon"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Icon Name</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                                    <SelectValue placeholder="Select icon" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-[#0b0f19] border-white/10">
+                                  <SelectItem value="Cpu">Cpu</SelectItem>
+                                  <SelectItem value="Bot">Bot</SelectItem>
+                                  <SelectItem value="Brain">Brain</SelectItem>
+                                  <SelectItem value="Shield">Shield</SelectItem>
+                                  <SelectItem value="Zap">Zap</SelectItem>
+                                  <SelectItem value="Database">Database</SelectItem>
+                                  <SelectItem value="Network">Network</SelectItem>
+                                  <SelectItem value="Layers">Layers</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={productForm.control}
+                          name="status"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Status</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                                    <SelectValue placeholder="Status" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-[#0b0f19] border-white/10">
+                                  <SelectItem value="active">Active</SelectItem>
+                                  <SelectItem value="coming_soon">Coming Soon</SelectItem>
+                                  <SelectItem value="inactive">Inactive</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit" className="bg-primary text-background font-bold" data-testid="button-submit-product">
+                          {editProduct ? "Update Product" : "Add Product"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Package className="w-5 h-5 text-primary" />
+                  Products
+                  <Badge className="bg-primary/20 text-primary">{products.length}</Badge>
+                </CardTitle>
+                <CardDescription className="text-gray-400">Manage your product offerings</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {productsLoading ? (
+                  <div className="text-center py-8 text-gray-400">Loading products...</div>
+                ) : products.length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">No products found. Add your first product!</div>
+                ) : (
+                  <div className="grid gap-4">
+                    {products.map((product) => (
+                      <div key={product.id} className="p-4 bg-white/5 rounded-lg border border-white/10 flex items-center justify-between group hover:border-primary/30 transition-colors" data-testid={`card-product-${product.id}`}>
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                            <Package className="w-6 h-6 text-primary" />
+                          </div>
+                          <div>
+                            <h4 className="text-white font-medium">{product.name}</h4>
+                            <p className="text-sm text-gray-400">{product.tagline}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Badge variant="outline" className={product.status === "active" ? "border-green-500/50 text-green-400" : product.status === "coming_soon" ? "border-yellow-500/50 text-yellow-400" : "border-gray-500/50 text-gray-400"}>
+                            {product.status.replace("_", " ")}
+                          </Badge>
+                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={() => handleEditProduct(product)} data-testid={`button-edit-product-${product.id}`}>
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10" onClick={() => handleDeleteProduct(product.id)} data-testid={`button-delete-product-${product.id}`}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </CardContent>

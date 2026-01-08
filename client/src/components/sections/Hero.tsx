@@ -5,6 +5,7 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { DemoModal } from "@/components/ui/DemoModal";
 
 const slides = [
   {
@@ -99,16 +100,21 @@ export function Hero() {
                  </p>
                  
                  <div className="flex flex-col sm:flex-row gap-4">
-                   <Button 
-                     size="lg" 
-                     className="bg-primary hover:bg-primary/90 text-background font-bold h-14 px-8 text-lg shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)] transition-all duration-300"
-                   >
-                     {slide.cta}
-                   </Button>
+                   <DemoModal trigger={
+                     <Button 
+                       size="lg" 
+                       className="bg-primary hover:bg-primary/90 text-background font-bold h-14 px-8 text-lg shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)] transition-all duration-300"
+                       data-testid="button-hero-demo"
+                     >
+                       {slide.cta}
+                     </Button>
+                   } />
                    <Button 
                      size="lg" 
                      variant="outline" 
                      className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white h-14 px-8 text-lg backdrop-blur-sm"
+                     onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+                     data-testid="button-explore-products"
                    >
                      Explore Products
                      <ArrowRight className="ml-2 w-5 h-5" />

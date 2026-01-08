@@ -24,11 +24,25 @@ export function FloatingActions() {
     setMessages(prev => [...prev, { role: "user", content: text }]);
     setInput("");
 
-    // Mock response
     setTimeout(() => {
       let response = "Thank you for your interest. A human specialist will assist you shortly.";
-      if (text.includes("Product")) response = "Our products include CogniFlow ERP, AutoSupport Bot, and more. Would you like details on a specific one?";
-      if (text.includes("Demo")) response = "I can help you schedule a 24-hour demo. Please provide your email in the contact form.";
+      const lowerText = text.toLowerCase();
+      
+      if (lowerText.includes("product")) {
+        response = "Our products include CogniFlow ERP, AutoSupport Bot, and more. Would you like details on a specific one?";
+      } else if (lowerText.includes("demo")) {
+        response = "I can help you schedule a 24-hour demo. Please click the 'Request 24-Hour Demo' button or fill the contact form with your details.";
+      } else if (lowerText.includes("contact") || lowerText.includes("email") || lowerText.includes("phone")) {
+        response = "You can reach us at Codelynetechnologies@gmail.com or call +91 99228 44271. You can also use the contact form on our website.";
+      } else if (lowerText.includes("location") || lowerText.includes("address") || lowerText.includes("office")) {
+        response = "Our office is located at Vyasa House, Dange Chowk Rd, Thergaon, Pimpri-Chinchwad, Maharashtra. Check the footer for the full address and Google Maps link.";
+      } else if (lowerText.includes("founder") || lowerText.includes("ceo") || lowerText.includes("team")) {
+        response = "Codelyne Technologies was founded by experienced professionals in AI and enterprise software. Visit our About page to learn more about our leadership team.";
+      } else if (lowerText.includes("personal") || lowerText.includes("private") || lowerText.includes("family") || lowerText.includes("married") || lowerText.includes("age") || lowerText.includes("salary")) {
+        response = "I can only provide information about Codelyne Technologies, our products, and services. For other inquiries, please contact our team directly.";
+      } else if (lowerText.includes("price") || lowerText.includes("cost") || lowerText.includes("pricing")) {
+        response = "For pricing information, please contact our sales team or request a demo. We offer customized solutions based on your requirements.";
+      }
       
       setMessages(prev => [...prev, { role: "bot", content: response }]);
     }, 1000);

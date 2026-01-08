@@ -69,13 +69,15 @@ export type InsertContent = z.infer<typeof insertContentSchema>;
 export type UpdateContent = z.infer<typeof updateContentSchema>;
 export type Content = typeof content.$inferSelect;
 
-// Contact submissions table
+// Contact submissions table (enquiries and demo requests)
 export const contactSubmissions = pgTable("contact_submissions", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull(),
+  company: text("company"),
   subject: text("subject").notNull(),
   message: text("message").notNull(),
+  type: text("type").notNull().default("enquiry"), // enquiry, demo
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -86,3 +88,24 @@ export const insertContactSubmissionSchema = createInsertSchema(contactSubmissio
 
 export type InsertContactSubmission = z.infer<typeof insertContactSubmissionSchema>;
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
+
+// Products table
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  tagline: text("tagline").notNull(),
+  description: text("description").notNull(),
+  features: text("features"), // Comma-separated features
+  icon: text("icon"), // Icon name from lucide
+  status: text("status").notNull().default("active"), // active, coming_soon, inactive
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertProductSchema = createInsertSchema(products).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertProduct = z.infer<typeof insertProductSchema>;
+export type Product = typeof products.$inferSelect;

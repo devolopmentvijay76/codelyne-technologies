@@ -30,21 +30,37 @@ export function Contact() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, this would be an API call
-    console.log("Form submitted to Codelynetechnologies@gmail.com:", values);
-    
-    // Simulating success
-    setIsSubmitted(true);
-    toast({
-      title: "Request Sent!",
-      description: "We've received your enquiry and will contact you shortly.",
-    });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          subject: "General Enquiry",
+          type: "enquiry",
+        }),
+      });
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-      form.reset();
-    }, 3000);
+      if (!response.ok) throw new Error("Failed to submit");
+
+      setIsSubmitted(true);
+      toast({
+        title: "Enquiry Sent!",
+        description: "Codelyne team will connect you soon.",
+      });
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+        form.reset();
+      }, 5000);
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
