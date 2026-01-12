@@ -21,6 +21,7 @@ const demoFormSchema = z.object({
   name: z.string().min(2, "Name is required"),
   company: z.string().min(2, "Company name is required"),
   email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Valid phone number is required"),
   message: z.string().optional(),
 });
 
@@ -40,6 +41,7 @@ export function DemoModal({ trigger }: DemoModalProps) {
       name: "",
       company: "",
       email: "",
+      phone: "",
       message: "",
     },
   });
@@ -138,19 +140,34 @@ export function DemoModal({ trigger }: DemoModalProps) {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="john@company.com" className="bg-white/5 border-white/10 text-white" data-testid="input-demo-email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="john@company.com" className="bg-white/5 border-white/10 text-white" data-testid="input-demo-email" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="+91 99999 99999" className="bg-white/5 border-white/10 text-white" data-testid="input-demo-phone" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}

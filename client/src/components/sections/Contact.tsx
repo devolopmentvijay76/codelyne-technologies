@@ -12,6 +12,7 @@ import { useState } from "react";
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Valid phone number is required"),
   company: z.string().min(2, "Company name is required"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
@@ -25,6 +26,7 @@ export function Contact() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       company: "",
       message: "",
     },
@@ -142,19 +144,34 @@ export function Contact() {
                     />
                   </div>
 
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-300">Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="john@example.com" {...field} className="bg-white/5 border-white/10 text-white focus:border-primary/50" data-testid="input-email" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-300">Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="john@example.com" {...field} className="bg-white/5 border-white/10 text-white focus:border-primary/50" data-testid="input-email" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-300">Phone</FormLabel>
+                          <FormControl>
+                            <Input placeholder="+91 99999 99999" {...field} className="bg-white/5 border-white/10 text-white focus:border-primary/50" data-testid="input-phone" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <FormField
                     control={form.control}

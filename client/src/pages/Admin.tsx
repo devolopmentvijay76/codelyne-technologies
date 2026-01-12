@@ -27,6 +27,7 @@ import {
   Calendar,
   Mail,
   Building2,
+  Phone,
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -1101,6 +1102,7 @@ export default function Admin() {
                           <th className="p-4">Name</th>
                           <th className="p-4">Company</th>
                           <th className="p-4">Email</th>
+                          <th className="p-4">Phone</th>
                           <th className="p-4">Message</th>
                           <th className="p-4">Date</th>
                           <th className="p-4 text-right">Actions</th>
@@ -1121,6 +1123,14 @@ export default function Admin() {
                                 <Mail className="w-3 h-3" />
                                 {submission.email}
                               </a>
+                            </td>
+                            <td className="p-4">
+                              {submission.phone ? (
+                                <a href={`tel:${submission.phone}`} className="text-green-400 hover:underline flex items-center gap-1">
+                                  <Phone className="w-3 h-3" />
+                                  {submission.phone}
+                                </a>
+                              ) : "-"}
                             </td>
                             <td className="p-4 text-gray-400 max-w-[200px] truncate">{submission.message || "-"}</td>
                             <td className="p-4 text-gray-500 text-xs">{new Date(submission.createdAt).toLocaleDateString()}</td>
@@ -1171,6 +1181,7 @@ export default function Admin() {
                           <th className="p-4">Name</th>
                           <th className="p-4">Company</th>
                           <th className="p-4">Email</th>
+                          <th className="p-4">Phone</th>
                           <th className="p-4">Message</th>
                           <th className="p-4">Date</th>
                           <th className="p-4 text-right">Actions</th>
@@ -1191,6 +1202,14 @@ export default function Admin() {
                                 <Mail className="w-3 h-3" />
                                 {submission.email}
                               </a>
+                            </td>
+                            <td className="p-4">
+                              {submission.phone ? (
+                                <a href={`tel:${submission.phone}`} className="text-green-400 hover:underline flex items-center gap-1">
+                                  <Phone className="w-3 h-3" />
+                                  {submission.phone}
+                                </a>
+                              ) : "-"}
                             </td>
                             <td className="p-4 text-gray-400 max-w-[200px] truncate">{submission.message}</td>
                             <td className="p-4 text-gray-500 text-xs">{new Date(submission.createdAt).toLocaleDateString()}</td>
