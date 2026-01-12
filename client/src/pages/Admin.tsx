@@ -23,6 +23,10 @@ import {
   GripVertical,
   Package,
   Layers,
+  MessageSquare,
+  Calendar,
+  Mail,
+  Building2,
 } from "lucide-react";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import {
@@ -48,6 +52,7 @@ import { useEmployees } from "@/hooks/useEmployees";
 import { useContent } from "@/hooks/useContent";
 import { useUpload } from "@/hooks/use-upload";
 import { useProducts } from "@/hooks/useProducts";
+import { useContactSubmissions } from "@/hooks/useContactSubmissions";
 
 const employeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -76,6 +81,7 @@ export default function Admin() {
   const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee, reorderEmployees, isReordering } = useEmployees();
   const { allContent, updateContent, createContent, isUpdating } = useContent();
   const { products, isLoading: productsLoading, createProduct, updateProduct, deleteProduct } = useProducts();
+  const { submissions, isLoading: submissionsLoading, deleteSubmission, isDeleting } = useContactSubmissions();
   const { toast } = useToast();
 
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -422,6 +428,18 @@ export default function Admin() {
              <Package className="w-4 h-4" />
              Products
            </button>
+           <button 
+             onClick={() => setActiveTab("enquiries")}
+             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+               activeTab === "enquiries" 
+                 ? "bg-primary/10 text-primary border border-primary/20" 
+                 : "text-gray-400 hover:text-white hover:bg-white/5"
+             }`}
+             data-testid="button-tab-enquiries"
+           >
+             <MessageSquare className="w-4 h-4" />
+             Enquiries
+           </button>
         </nav>
 
         <Button 
@@ -439,7 +457,7 @@ export default function Admin() {
       <div className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-white" data-testid="text-page-title">
-            {activeTab === "dashboard" ? "Dashboard Overview" : activeTab === "team" ? "Team Management" : "Products"}
+            {activeTab === "dashboard" ? "Dashboard Overview" : activeTab === "team" ? "Team Management" : activeTab === "products" ? "Products" : "Enquiries & Demo Requests"}
           </h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400" data-testid="text-user-email">{user?.username}</span>
@@ -1029,6 +1047,173 @@ export default function Admin() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {activeTab === "enquiries" && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-white/5 border-white/10">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-400">Total Enquiries</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-white">
+                    {submissionsLoading ? "..." : submissions.filter(s => s.type === "enquiry").length}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/5 border-white/10">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-400">Demo Requests</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-primary">
+                    {submissionsLoading ? "..." : submissions.filter(s => s.type === "demo").length}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-primary" />
+                  24-Hour Demo Requests
+                  <Badge className="bg-primary/20 text-primary">{submissions.filter(s => s.type === "demo").length}</Badge>
+                </CardTitle>
+                <CardDescription className="text-gray-400">People who requested a 24-hour demo</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {submissionsLoading ? (
+                  <div className="text-center py-8 text-gray-400">Loading demo requests...</div>
+                ) : submissions.filter(s => s.type === "demo").length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">No demo requests yet.</div>
+                ) : (
+                  <div className="rounded-md border border-white/10 overflow-hidden">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-white/5 text-gray-300 font-medium">
+                        <tr>
+                          <th className="p-4">Name</th>
+                          <th className="p-4">Company</th>
+                          <th className="p-4">Email</th>
+                          <th className="p-4">Message</th>
+                          <th className="p-4">Date</th>
+                          <th className="p-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {submissions.filter(s => s.type === "demo").map((submission) => (
+                          <tr key={submission.id} className="hover:bg-white/5 transition-colors group" data-testid={`row-demo-${submission.id}`}>
+                            <td className="p-4 text-white font-medium">{submission.name}</td>
+                            <td className="p-4 text-gray-400">
+                              <div className="flex items-center gap-2">
+                                <Building2 className="w-4 h-4 text-primary" />
+                                {submission.company || "-"}
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <a href={`mailto:${submission.email}`} className="text-primary hover:underline flex items-center gap-1">
+                                <Mail className="w-3 h-3" />
+                                {submission.email}
+                              </a>
+                            </td>
+                            <td className="p-4 text-gray-400 max-w-[200px] truncate">{submission.message || "-"}</td>
+                            <td className="p-4 text-gray-500 text-xs">{new Date(submission.createdAt).toLocaleDateString()}</td>
+                            <td className="p-4 text-right">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => {
+                                  deleteSubmission(submission.id, {
+                                    onSuccess: () => toast({ title: "Deleted", variant: "destructive" }),
+                                  });
+                                }}
+                                disabled={isDeleting}
+                                data-testid={`button-delete-demo-${submission.id}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-purple-400" />
+                  General Enquiries
+                  <Badge className="bg-purple-500/20 text-purple-400">{submissions.filter(s => s.type === "enquiry").length}</Badge>
+                </CardTitle>
+                <CardDescription className="text-gray-400">Contact form submissions from the website</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {submissionsLoading ? (
+                  <div className="text-center py-8 text-gray-400">Loading enquiries...</div>
+                ) : submissions.filter(s => s.type === "enquiry").length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">No enquiries yet.</div>
+                ) : (
+                  <div className="rounded-md border border-white/10 overflow-hidden">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-white/5 text-gray-300 font-medium">
+                        <tr>
+                          <th className="p-4">Name</th>
+                          <th className="p-4">Company</th>
+                          <th className="p-4">Email</th>
+                          <th className="p-4">Message</th>
+                          <th className="p-4">Date</th>
+                          <th className="p-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {submissions.filter(s => s.type === "enquiry").map((submission) => (
+                          <tr key={submission.id} className="hover:bg-white/5 transition-colors group" data-testid={`row-enquiry-${submission.id}`}>
+                            <td className="p-4 text-white font-medium">{submission.name}</td>
+                            <td className="p-4 text-gray-400">
+                              <div className="flex items-center gap-2">
+                                <Building2 className="w-4 h-4 text-purple-400" />
+                                {submission.company || "-"}
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <a href={`mailto:${submission.email}`} className="text-primary hover:underline flex items-center gap-1">
+                                <Mail className="w-3 h-3" />
+                                {submission.email}
+                              </a>
+                            </td>
+                            <td className="p-4 text-gray-400 max-w-[200px] truncate">{submission.message}</td>
+                            <td className="p-4 text-gray-500 text-xs">{new Date(submission.createdAt).toLocaleDateString()}</td>
+                            <td className="p-4 text-right">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => {
+                                  deleteSubmission(submission.id, {
+                                    onSuccess: () => toast({ title: "Deleted", variant: "destructive" }),
+                                  });
+                                }}
+                                disabled={isDeleting}
+                                data-testid={`button-delete-enquiry-${submission.id}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </CardContent>
