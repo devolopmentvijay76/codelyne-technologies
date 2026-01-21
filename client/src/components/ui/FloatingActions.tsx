@@ -33,7 +33,7 @@ export function FloatingActions() {
       } else if (lowerText.includes("demo")) {
         response = "I can help you schedule a 24-hour demo. Please click the 'Request 24-Hour Demo' button or fill the contact form with your details.";
       } else if (lowerText.includes("contact") || lowerText.includes("email") || lowerText.includes("phone")) {
-        response = "You can reach us at Codelynetechnologies@gmail.com or call +91 99228 44271. You can also use the contact form on our website.";
+        response = "You can reach us at support@codelynetechnologies.com or call +91 99228 44271. You can also use the contact form on our website.";
       } else if (lowerText.includes("location") || lowerText.includes("address") || lowerText.includes("office")) {
         response = "Our office is located at Vyasa House, Dange Chowk Rd, Thergaon, Pimpri-Chinchwad, Maharashtra. Check the footer for the full address and Google Maps link.";
       } else if (lowerText.includes("founder") || lowerText.includes("ceo") || lowerText.includes("team")) {
