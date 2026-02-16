@@ -90,10 +90,10 @@ export function Products() {
                           View Details <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="glass-card bg-[#0f172a]/95 border-primary/20 text-white max-w-2xl">
+                      <DialogContent className="glass-card bg-[#0f172a]/95 border-primary/20 text-white max-w-2xl max-h-[85vh] overflow-y-auto">
                         <DialogHeader>
                           <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/50 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/50 flex items-center justify-center shrink-0">
                               <IconComponent className="w-6 h-6 text-primary" />
                             </div>
                             <DialogTitle className="text-2xl font-bold font-heading">{product.name}</DialogTitle>
@@ -117,7 +117,7 @@ export function Products() {
                           </div>
                         )}
 
-                        <div className="mt-8 flex justify-end gap-4">
+                        <div className="mt-8 flex justify-end gap-4 sticky bottom-0 bg-[#0f172a]/95 pt-4 pb-1">
                           <DemoModal trigger={
                             <Button className="bg-primary text-background font-bold hover:bg-primary/90" data-testid="button-request-demo-product">Request Demo</Button>
                           } />
