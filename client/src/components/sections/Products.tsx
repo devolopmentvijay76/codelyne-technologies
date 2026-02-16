@@ -16,47 +16,12 @@ const iconMap: Record<string, LucideIcon> = {
   Box, BarChart, MessageSquare, Layers, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket,
 };
 
-const fallbackProducts = [
-  {
-    name: "CogniFlow ERP",
-    tagline: "AI Analytics, Supply Chain",
-    description: "Next-generation Enterprise Resource Planning driven by predictive AI analytics to optimize supply chains.",
-    features: "Predictive Inventory Management,Automated Supplier Negotiations,Real-time Logistics Tracking,Demand Forecasting",
-    icon: "Box",
-    status: "active",
-  },
-  {
-    name: "AutoSupport Bot",
-    tagline: "NLP, Automation",
-    description: "Intelligent customer service automation that understands context, sentiment, and complex queries.",
-    features: "Sentiment Analysis Engine,Multi-language Support (100+),CRM Integration,Voice & Text Capable",
-    icon: "MessageSquare",
-    status: "active",
-  },
-  {
-    name: "DataSense BI",
-    tagline: "Big Data, Visualization",
-    description: "Business Intelligence platform that turns raw data into actionable strategic insights in real-time.",
-    features: "Real-time Data Streaming,Customizable Dashboards,Anomaly Detection,Automated Reporting",
-    icon: "BarChart",
-    status: "active",
-  },
-  {
-    name: "SecureStack",
-    tagline: "Cybersecurity, Integration",
-    description: "Full-stack security infrastructure wrapper protecting legacy systems from modern cyber threats.",
-    features: "Zero-Trust Architecture,Legacy System Wrapper,Real-time Threat Neutralization,Compliance Auditing",
-    icon: "Layers",
-    status: "active",
-  },
-];
-
 export function Products() {
   const { products: dbProducts, isLoading } = useProducts();
 
-  const displayProducts = dbProducts.length > 0
-    ? dbProducts.filter(p => p.status === "active").sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
-    : fallbackProducts;
+  const displayProducts = dbProducts
+    .filter(p => p.status === "active")
+    .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
 
   return (
     <section id="products" className="py-24 bg-gradient-to-b from-background to-[#0b1221]">
@@ -82,6 +47,12 @@ export function Products() {
             {[1, 2, 3, 4].map(i => (
               <Card key={i} className="glass-card border-white/5 bg-[#0f172a]/50 h-64 animate-pulse" />
             ))}
+          </div>
+        ) : displayProducts.length === 0 ? (
+          <div className="text-center py-16 text-gray-400">
+            <Box className="w-16 h-16 mx-auto mb-4 text-primary/30" />
+            <p className="text-xl font-heading text-white/60">Products coming soon</p>
+            <p className="text-sm mt-2">Our innovative solutions are being prepared for you.</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-8">
