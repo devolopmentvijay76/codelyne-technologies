@@ -37,9 +37,9 @@ export function FloatingActions() {
       } else if (lowerText.includes("location") || lowerText.includes("address") || lowerText.includes("office")) {
         response = "Our office is located at Vyasa House, Dange Chowk Rd, Thergaon, Pimpri-Chinchwad, Maharashtra. Check the footer for the full address and Google Maps link.";
       } else if (lowerText.includes("founder") || lowerText.includes("ceo") || lowerText.includes("team")) {
-        response = "Codelyne Technologies was founded by experienced professionals in AI and enterprise software. Visit our About page to learn more about our leadership team.";
+        response = "Codelyne Technologiess was founded by experienced professionals in AI and enterprise software. Visit our About page to learn more about our leadership team.";
       } else if (lowerText.includes("personal") || lowerText.includes("private") || lowerText.includes("family") || lowerText.includes("married") || lowerText.includes("age") || lowerText.includes("salary")) {
-        response = "I can only provide information about Codelyne Technologies, our products, and services. For other inquiries, please contact our team directly.";
+        response = "I can only provide information about Codelyne Technologiess, our products, and services. For other inquiries, please contact our team directly.";
       } else if (lowerText.includes("price") || lowerText.includes("cost") || lowerText.includes("pricing")) {
         response = "For pricing information, please contact our sales team or request a demo. We offer customized solutions based on your requirements.";
       }

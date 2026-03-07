@@ -12,7 +12,7 @@ const slides = [
     icon: Cpu,
     title: "Building the Intelligent Future",
     subtitle: "Next-Gen Enterprise AI Solutions",
-    description: "Codelyne Technologies engineers enterprise-grade software infused with advanced artificial intelligence. Secure, scalable, and future-ready.",
+    description: "Codelyne Technologiess engineers enterprise-grade software infused with advanced artificial intelligence. Secure, scalable, and future-ready.",
     cta: "Get 24-Hour Demo",
     highlight: "Intelligent"
   },

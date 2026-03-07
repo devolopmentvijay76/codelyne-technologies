@@ -14,7 +14,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
                <JarvisLogo size="sm" />
-              <span className="text-lg font-heading font-bold text-white">CODELYNE TECHNOLOGIES</span>
+              <span className="text-lg font-heading font-bold text-white">CODELYNE TECHNOLOGIESS</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Pioneering AI-driven software solutions for the enterprise of tomorrow. Building trust through technical excellence.
@@ -74,7 +74,7 @@ export function Footer() {
         <Separator className="bg-white/10 mb-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-4">
-          <p>&copy; {new Date().getFullYear()} Codelyne Technologies. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Codelyne Technologiess. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
