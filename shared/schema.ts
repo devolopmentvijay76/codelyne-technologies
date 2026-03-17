@@ -98,6 +98,7 @@ export const products = pgTable("products", {
   description: text("description").notNull(),
   features: text("features"), // Comma-separated features
   icon: text("icon"), // Icon name from lucide
+  videoUrl: text("video_url"), // YouTube/Vimeo/video link to share
   status: text("status").notNull().default("active"), // active, coming_soon, inactive
   displayOrder: integer("display_order").default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),

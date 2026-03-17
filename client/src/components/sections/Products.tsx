@@ -1,6 +1,6 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, BarChart, MessageSquare, Layers, CheckCircle2, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket, LucideIcon } from "lucide-react";
+import { ArrowRight, Box, BarChart, MessageSquare, Layers, CheckCircle2, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket, LucideIcon, ExternalLink, Play } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,18 @@ import { DemoModal } from "@/components/ui/DemoModal";
 const iconMap: Record<string, LucideIcon> = {
   Box, BarChart, MessageSquare, Layers, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket,
 };
+
+function getYouTubeEmbedUrl(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return `https://www.youtube.com/embed/${match[1]}`;
+  }
+  return null;
+}
 
 export function Products() {
   const { products: dbProducts, isLoading } = useProducts();
@@ -102,6 +114,45 @@ export function Products() {
                             {product.description}
                           </DialogDescription>
                         </DialogHeader>
+
+                        {product.videoUrl && (
+                          <div className="mt-6">
+                            {(() => {
+                              const embedUrl = getYouTubeEmbedUrl(product.videoUrl);
+                              if (embedUrl) {
+                                return (
+                                  <div className="relative w-full rounded-lg overflow-hidden border border-white/10" style={{ paddingBottom: "56.25%" }}>
+                                    <iframe
+                                      src={embedUrl}
+                                      className="absolute inset-0 w-full h-full"
+                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                      allowFullScreen
+                                      title={`${product.name} video`}
+                                    />
+                                  </div>
+                                );
+                              }
+                              return (
+                                <a
+                                  href={product.videoUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-3 p-4 rounded-lg bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-colors group"
+                                  data-testid="link-product-video"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                                    <Play className="w-5 h-5 text-primary" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-white">Watch Product Video</p>
+                                    <p className="text-xs text-gray-400 truncate">{product.videoUrl}</p>
+                                  </div>
+                                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-primary shrink-0" />
+                                </a>
+                              );
+                            })()}
+                          </div>
+                        )}
 
                         {features.length > 0 && (
                           <div className="mt-6 space-y-4">

@@ -72,6 +72,7 @@ const productSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters"),
   features: z.string().optional(),
   icon: z.string().optional(),
+  videoUrl: z.string().optional(),
   status: z.string().default("active"),
   displayOrder: z.number().optional(),
 });
@@ -306,6 +307,7 @@ export default function Admin() {
       description: "",
       features: "",
       icon: "Cpu",
+      videoUrl: "",
       status: "active",
       displayOrder: 0,
     });
@@ -320,6 +322,7 @@ export default function Admin() {
       description: product.description,
       features: product.features || "",
       icon: product.icon || "Cpu",
+      videoUrl: product.videoUrl || "",
       status: product.status,
       displayOrder: product.displayOrder || 0,
     });
@@ -939,6 +942,19 @@ export default function Admin() {
                             <FormLabel>Features (comma-separated)</FormLabel>
                             <FormControl>
                               <Input {...field} placeholder="Real-time analytics, AI predictions, Automated workflows" className="bg-white/5 border-white/10 text-white" data-testid="input-product-features" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={productForm.control}
+                        name="videoUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Video / Share Link</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="https://youtube.com/watch?v=... or any video link" className="bg-white/5 border-white/10 text-white" data-testid="input-product-video-url" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
