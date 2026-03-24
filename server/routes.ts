@@ -424,6 +424,17 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/products/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const product = await storage.getProduct(id);
+      if (!product) return res.status(404).json({ message: "Product not found" });
+      res.json(product);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch product" });
+    }
+  });
+
   app.post("/api/products", isAuthenticated, async (req, res) => {
     try {
       const validated = insertProductSchema.parse(req.body);

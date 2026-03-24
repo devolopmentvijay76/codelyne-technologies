@@ -1,35 +1,16 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Box, BarChart, MessageSquare, Layers, CheckCircle2, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket, LucideIcon, ExternalLink, Play } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { ArrowRight, Box, BarChart, MessageSquare, Layers, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket, LucideIcon } from "lucide-react";
 import { useProducts } from "@/hooks/useProducts";
-import { DemoModal } from "@/components/ui/DemoModal";
+import { useLocation } from "wouter";
 
 const iconMap: Record<string, LucideIcon> = {
   Box, BarChart, MessageSquare, Layers, Shield, Brain, Cpu, Database, Globe, Zap, Cloud, Code, Settings, Rocket,
 };
 
-function getYouTubeEmbedUrl(url: string): string | null {
-  const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match) return `https://www.youtube.com/embed/${match[1]}`;
-  }
-  return null;
-}
-
 export function Products() {
   const { products: dbProducts, isLoading } = useProducts();
+  const [, setLocation] = useLocation();
 
   const displayProducts = dbProducts
     .filter(p => p.status === "active")
@@ -71,10 +52,14 @@ export function Products() {
             {displayProducts.map((product, index) => {
               const IconComponent = iconMap[product.icon || "Box"] || Box;
               const tags = product.tagline ? product.tagline.split(",").map(t => t.trim()) : [];
-              const features = product.features ? product.features.split(",").map(f => f.trim()) : [];
 
               return (
-                <Card key={index} className="glass-card border-white/5 bg-[#0f172a]/50 hover:border-primary/50 transition-all duration-300 group overflow-hidden" data-testid={`card-product-${index}`}>
+                <Card
+                  key={product.id}
+                  className="glass-card border-white/5 bg-[#0f172a]/50 hover:border-primary/50 transition-all duration-300 group overflow-hidden cursor-pointer"
+                  data-testid={`card-product-${index}`}
+                  onClick={() => setLocation(`/products/${product.id}`)}
+                >
                   <div className="absolute top-0 right-0 p-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors pointer-events-none -mr-16 -mt-16" />
 
                   <CardHeader className="relative">
@@ -91,90 +76,19 @@ export function Products() {
                     </div>
                   </CardHeader>
                   <CardContent className="relative">
-                    <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+                    <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-3">
                       {product.description}
                     </p>
                   </CardContent>
                   <CardFooter className="relative">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" className="p-0 text-primary hover:text-white hover:bg-transparent group-hover:translate-x-2 transition-all" data-testid={`button-view-details-${index}`}>
-                          View Details <ArrowRight className="ml-2 w-4 h-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="glass-card bg-[#0f172a]/95 border-primary/20 text-white max-w-2xl max-h-[85vh] overflow-y-auto">
-                        <DialogHeader>
-                          <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/50 flex items-center justify-center shrink-0">
-                              <IconComponent className="w-6 h-6 text-primary" />
-                            </div>
-                            <DialogTitle className="text-2xl font-bold font-heading">{product.name}</DialogTitle>
-                          </div>
-                          <DialogDescription className="text-gray-300 text-base leading-relaxed">
-                            {product.description}
-                          </DialogDescription>
-                        </DialogHeader>
-
-                        {product.videoUrl && (
-                          <div className="mt-6">
-                            {(() => {
-                              const embedUrl = getYouTubeEmbedUrl(product.videoUrl);
-                              if (embedUrl) {
-                                return (
-                                  <div className="relative w-full rounded-lg overflow-hidden border border-white/10" style={{ paddingBottom: "56.25%" }}>
-                                    <iframe
-                                      src={embedUrl}
-                                      className="absolute inset-0 w-full h-full"
-                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                      allowFullScreen
-                                      title={`${product.name} video`}
-                                    />
-                                  </div>
-                                );
-                              }
-                              return (
-                                <a
-                                  href={product.videoUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-3 p-4 rounded-lg bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-colors group"
-                                  data-testid="link-product-video"
-                                >
-                                  <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
-                                    <Play className="w-5 h-5 text-primary" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-white">Watch Product Video</p>
-                                    <p className="text-xs text-gray-400 truncate">{product.videoUrl}</p>
-                                  </div>
-                                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-primary shrink-0" />
-                                </a>
-                              );
-                            })()}
-                          </div>
-                        )}
-
-                        {features.length > 0 && (
-                          <div className="mt-6 space-y-4">
-                            <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Key Features</h4>
-                            <div className="grid grid-cols-2 gap-4">
-                              {features.map((feature, i) => (
-                                <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                                  <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
-                                  {feature}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="mt-8 flex justify-end gap-4 sticky bottom-0 bg-[#0f172a]/95 pt-4 pb-1">
-                          <DemoModal trigger={
-                            <Button className="bg-primary text-background font-bold hover:bg-primary/90" data-testid="button-request-demo-product">Request Demo</Button>
-                          } />
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <Button
+                      variant="ghost"
+                      className="p-0 text-primary hover:text-white hover:bg-transparent group-hover:translate-x-2 transition-all"
+                      data-testid={`button-view-details-${index}`}
+                      onClick={e => { e.stopPropagation(); setLocation(`/products/${product.id}`); }}
+                    >
+                      View Details <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
                   </CardFooter>
                 </Card>
               );

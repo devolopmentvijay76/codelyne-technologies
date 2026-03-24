@@ -99,6 +99,8 @@ export const products = pgTable("products", {
   features: text("features"), // Comma-separated features
   icon: text("icon"), // Icon name from lucide
   videoUrl: text("video_url"), // YouTube/Vimeo/video link to share
+  usp: text("usp"), // Unique Selling Points - pipe-separated (e.g. "10x faster|AI-powered|Zero downtime")
+  domains: text("domains"), // Industry domains - comma-separated (e.g. "FinTech,HealthTech,Manufacturing")
   status: text("status").notNull().default("active"), // active, coming_soon, inactive
   displayOrder: integer("display_order").default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),

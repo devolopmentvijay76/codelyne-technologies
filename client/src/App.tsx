@@ -9,6 +9,7 @@ import Admin from "@/pages/Admin";
 import Login from "@/pages/Login";
 import Founders from "@/pages/Founders";
 import AboutUs from "@/pages/AboutUs";
+import ProductDetail from "@/pages/ProductDetail";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/admin" component={Admin} />
       <Route path="/founders" component={Founders} />
       <Route path="/about-us" component={AboutUs} />
+      <Route path="/products/:id" component={ProductDetail} />
       <Route component={NotFound} />
     </Switch>
   );

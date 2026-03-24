@@ -24,7 +24,7 @@ export function Navbar() {
           <JarvisLogo size="md" />
           
           <span className="text-lg md:text-xl font-heading font-bold tracking-wide text-white group-hover:text-primary transition-colors">
-            CODELYNE <span className="text-primary font-extrabold">TECHNOLOGIES</span>
+            CODELYNE <span className="text-primary font-extrabold">TECHNOLOGIESS</span>
           </span>
         </Link>
 

@@ -73,6 +73,8 @@ const productSchema = z.object({
   features: z.string().optional(),
   icon: z.string().optional(),
   videoUrl: z.string().optional(),
+  usp: z.string().optional(),
+  domains: z.string().optional(),
   status: z.string().default("active"),
   displayOrder: z.number().optional(),
 });
@@ -308,6 +310,8 @@ export default function Admin() {
       features: "",
       icon: "Cpu",
       videoUrl: "",
+      usp: "",
+      domains: "",
       status: "active",
       displayOrder: 0,
     });
@@ -323,6 +327,8 @@ export default function Admin() {
       features: product.features || "",
       icon: product.icon || "Cpu",
       videoUrl: product.videoUrl || "",
+      usp: product.usp || "",
+      domains: product.domains || "",
       status: product.status,
       displayOrder: product.displayOrder || 0,
     });
@@ -956,6 +962,34 @@ export default function Admin() {
                             <FormControl>
                               <Input {...field} placeholder="https://youtube.com/watch?v=... or any video link" className="bg-white/5 border-white/10 text-white" data-testid="input-product-video-url" />
                             </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={productForm.control}
+                        name="usp"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Unique Selling Points (USP)</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="10x faster|AI-powered|Zero downtime|Enterprise-grade" className="bg-white/5 border-white/10 text-white" data-testid="input-product-usp" />
+                            </FormControl>
+                            <p className="text-xs text-gray-500">Separate each USP with a pipe character |</p>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={productForm.control}
+                        name="domains"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Industry Domains</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="FinTech,HealthTech,Manufacturing,Retail,Logistics" className="bg-white/5 border-white/10 text-white" data-testid="input-product-domains" />
+                            </FormControl>
+                            <p className="text-xs text-gray-500">Separate domains with commas</p>
                             <FormMessage />
                           </FormItem>
                         )}
