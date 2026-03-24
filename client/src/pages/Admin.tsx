@@ -313,7 +313,7 @@ export default function Admin() {
       usp: "",
       domains: "",
       status: "active",
-      displayOrder: 0,
+      displayOrder: sortedProducts.length + 1,
     });
     setIsProductDialogOpen(true);
   };
@@ -345,22 +345,18 @@ export default function Admin() {
   const sortedProducts = [...products].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
 
   const handleMoveProductUp = (index: number) => {
-    if (index === 0) return;
-    const newOrder = sortedProducts.map((p, i) => {
-      if (i === index) return { id: p.id, displayOrder: (sortedProducts[index - 1].displayOrder ?? index - 1) };
-      if (i === index - 1) return { id: p.id, displayOrder: (sortedProducts[index].displayOrder ?? index) };
-      return { id: p.id, displayOrder: p.displayOrder ?? i };
-    });
+    if (index === 0 || isProductReordering) return;
+    const reordered = [...sortedProducts];
+    [reordered[index], reordered[index - 1]] = [reordered[index - 1], reordered[index]];
+    const newOrder = reordered.map((p, i) => ({ id: p.id, displayOrder: i + 1 }));
     reorderProducts(newOrder);
   };
 
   const handleMoveProductDown = (index: number) => {
-    if (index === sortedProducts.length - 1) return;
-    const newOrder = sortedProducts.map((p, i) => {
-      if (i === index) return { id: p.id, displayOrder: (sortedProducts[index + 1].displayOrder ?? index + 1) };
-      if (i === index + 1) return { id: p.id, displayOrder: (sortedProducts[index].displayOrder ?? index) };
-      return { id: p.id, displayOrder: p.displayOrder ?? i };
-    });
+    if (index === sortedProducts.length - 1 || isProductReordering) return;
+    const reordered = [...sortedProducts];
+    [reordered[index], reordered[index + 1]] = [reordered[index + 1], reordered[index]];
+    const newOrder = reordered.map((p, i) => ({ id: p.id, displayOrder: i + 1 }));
     reorderProducts(newOrder);
   };
 
