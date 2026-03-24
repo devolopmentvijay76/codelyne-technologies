@@ -51,6 +51,7 @@ export interface IStorage {
   createProduct(product: InsertProduct): Promise<Product>;
   updateProduct(id: number, product: InsertProduct): Promise<Product | undefined>;
   deleteProduct(id: number): Promise<boolean>;
+  updateProductDisplayOrders(orders: { id: number; displayOrder: number }[]): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -187,6 +188,21 @@ export class DatabaseStorage implements IStorage {
   async deleteProduct(id: number): Promise<boolean> {
     const result = await db.delete(products).where(eq(products.id, id)).returning();
     return result.length > 0;
+  }
+
+  async updateProductDisplayOrders(orders: { id: number; displayOrder: number }[]): Promise<boolean> {
+    try {
+      for (const order of orders) {
+        await db
+          .update(products)
+          .set({ displayOrder: order.displayOrder })
+          .where(eq(products.id, order.id));
+      }
+      return true;
+    } catch (error) {
+      console.error("Error updating product display orders:", error);
+      return false;
+    }
   }
 }
 

@@ -59,11 +59,29 @@ export function useProducts() {
     },
   });
 
+  const reorderProducts = useMutation({
+    mutationFn: async (orders: { id: number; displayOrder: number }[]) => {
+      const res = await fetch("/api/products/reorder", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ orders }),
+      });
+      if (!res.ok) throw new Error("Failed to reorder products");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+    },
+  });
+
   return {
     products,
     isLoading,
     createProduct: createProduct.mutate,
     updateProduct: updateProduct.mutate,
     deleteProduct: deleteProduct.mutate,
+    reorderProducts: reorderProducts.mutate,
+    isReordering: reorderProducts.isPending,
   };
 }

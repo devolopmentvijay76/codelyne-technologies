@@ -82,9 +82,9 @@ const productSchema = z.object({
 export default function Admin() {
   const [, setLocation] = useLocation();
   const { isAuthenticated, isLoading: authLoading, logout, user } = useAuth();
-  const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee, reorderEmployees, isReordering } = useEmployees();
+  const { employees, isLoading: employeesLoading, createEmployee, updateEmployee, deleteEmployee, reorderEmployees, isReordering: isEmployeeReordering } = useEmployees();
   const { allContent, updateContent, createContent, isUpdating } = useContent();
-  const { products, isLoading: productsLoading, createProduct, updateProduct, deleteProduct } = useProducts();
+  const { products, isLoading: productsLoading, createProduct, updateProduct, deleteProduct, reorderProducts, isReordering: isProductReordering } = useProducts();
   const { submissions, isLoading: submissionsLoading, deleteSubmission, isDeleting } = useContactSubmissions();
   const { toast } = useToast();
 
@@ -340,6 +340,28 @@ export default function Admin() {
       onSuccess: () => toast({ title: "Product Deleted", variant: "destructive" }),
       onError: (error: Error) => toast({ title: "Delete Failed", description: error.message, variant: "destructive" }),
     });
+  };
+
+  const sortedProducts = [...products].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
+  const handleMoveProductUp = (index: number) => {
+    if (index === 0) return;
+    const newOrder = sortedProducts.map((p, i) => {
+      if (i === index) return { id: p.id, displayOrder: (sortedProducts[index - 1].displayOrder ?? index - 1) };
+      if (i === index - 1) return { id: p.id, displayOrder: (sortedProducts[index].displayOrder ?? index) };
+      return { id: p.id, displayOrder: p.displayOrder ?? i };
+    });
+    reorderProducts(newOrder);
+  };
+
+  const handleMoveProductDown = (index: number) => {
+    if (index === sortedProducts.length - 1) return;
+    const newOrder = sortedProducts.map((p, i) => {
+      if (i === index) return { id: p.id, displayOrder: (sortedProducts[index + 1].displayOrder ?? index + 1) };
+      if (i === index + 1) return { id: p.id, displayOrder: (sortedProducts[index].displayOrder ?? index) };
+      return { id: p.id, displayOrder: p.displayOrder ?? i };
+    });
+    reorderProducts(newOrder);
   };
 
   const onSubmitProduct = (values: z.infer<typeof productSchema>) => {
@@ -748,7 +770,7 @@ export default function Admin() {
                               size="icon" 
                               className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
                               onClick={() => handleMoveUp(founders, index)}
-                              disabled={index === 0 || isReordering}
+                              disabled={index === 0 || isEmployeeReordering}
                               data-testid={`button-move-up-founder-${member.id}`}
                             >
                               <ArrowUp className="w-3 h-3" />
@@ -759,7 +781,7 @@ export default function Admin() {
                               size="icon" 
                               className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
                               onClick={() => handleMoveDown(founders, index)}
-                              disabled={index === founders.length - 1 || isReordering}
+                              disabled={index === founders.length - 1 || isEmployeeReordering}
                               data-testid={`button-move-down-founder-${member.id}`}
                             >
                               <ArrowDown className="w-3 h-3" />
@@ -830,7 +852,7 @@ export default function Admin() {
                                   size="icon" 
                                   className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
                                   onClick={() => handleMoveUp(teamMembers, index)}
-                                  disabled={index === 0 || isReordering}
+                                  disabled={index === 0 || isEmployeeReordering}
                                   data-testid={`button-move-up-${member.id}`}
                                 >
                                   <ArrowUp className="w-3 h-3" />
@@ -841,7 +863,7 @@ export default function Admin() {
                                   size="icon" 
                                   className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-30" 
                                   onClick={() => handleMoveDown(teamMembers, index)}
-                                  disabled={index === teamMembers.length - 1 || isReordering}
+                                  disabled={index === teamMembers.length - 1 || isEmployeeReordering}
                                   data-testid={`button-move-down-${member.id}`}
                                 >
                                   <ArrowDown className="w-3 h-3" />
@@ -1066,24 +1088,59 @@ export default function Admin() {
                 <CardDescription className="text-gray-400">Manage your product offerings</CardDescription>
               </CardHeader>
               <CardContent>
+                {isProductReordering && (
+                  <div className="text-xs text-primary/70 text-center py-1 animate-pulse">Saving order...</div>
+                )}
                 {productsLoading ? (
                   <div className="text-center py-8 text-gray-400">Loading products...</div>
-                ) : products.length === 0 ? (
+                ) : sortedProducts.length === 0 ? (
                   <div className="text-center py-8 text-gray-400">No products found. Add your first product!</div>
                 ) : (
-                  <div className="grid gap-4">
-                    {products.map((product) => (
-                      <div key={product.id} className="p-4 bg-white/5 rounded-lg border border-white/10 flex items-center justify-between group hover:border-primary/30 transition-colors" data-testid={`card-product-${product.id}`}>
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
-                            <Package className="w-6 h-6 text-primary" />
+                  <div className="grid gap-3">
+                    {sortedProducts.map((product, index) => (
+                      <div key={product.id} className="p-4 bg-white/5 rounded-lg border border-white/10 flex items-center gap-3 group hover:border-primary/30 transition-colors" data-testid={`card-product-${product.id}`}>
+                        {/* Order controls */}
+                        <div className="flex flex-col gap-1 shrink-0">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-20"
+                            disabled={index === 0 || isProductReordering}
+                            onClick={() => handleMoveProductUp(index)}
+                            data-testid={`button-product-up-${product.id}`}
+                          >
+                            <ArrowUp className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 text-gray-500 hover:text-primary disabled:opacity-20"
+                            disabled={index === sortedProducts.length - 1 || isProductReordering}
+                            onClick={() => handleMoveProductDown(index)}
+                            data-testid={`button-product-down-${product.id}`}
+                          >
+                            <ArrowDown className="w-3 h-3" />
+                          </Button>
+                        </div>
+
+                        {/* Order number */}
+                        <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-bold text-primary">{index + 1}</span>
+                        </div>
+
+                        {/* Product info */}
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                            <Package className="w-5 h-5 text-primary" />
                           </div>
-                          <div>
-                            <h4 className="text-white font-medium">{product.name}</h4>
-                            <p className="text-sm text-gray-400">{product.tagline}</p>
+                          <div className="min-w-0">
+                            <h4 className="text-white font-medium truncate">{product.name}</h4>
+                            <p className="text-xs text-gray-400 truncate">{product.tagline}</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
+
+                        {/* Status + actions */}
+                        <div className="flex items-center gap-2 shrink-0">
                           <Badge variant="outline" className={product.status === "active" ? "border-green-500/50 text-green-400" : product.status === "coming_soon" ? "border-yellow-500/50 text-yellow-400" : "border-gray-500/50 text-gray-400"}>
                             {product.status.replace("_", " ")}
                           </Badge>
@@ -1098,6 +1155,7 @@ export default function Admin() {
                         </div>
                       </div>
                     ))}
+                    <p className="text-xs text-gray-500 text-center pt-2">Use the arrows to set which product appears first on the website</p>
                   </div>
                 )}
               </CardContent>

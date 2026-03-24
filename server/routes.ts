@@ -424,6 +424,17 @@ export async function registerRoutes(
     }
   });
 
+  app.put("/api/products/reorder", isAuthenticated, async (req, res) => {
+    try {
+      const { orders } = req.body;
+      if (!Array.isArray(orders)) return res.status(400).json({ message: "Invalid orders format" });
+      await storage.updateProductDisplayOrders(orders);
+      res.json({ message: "Product order updated" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update product order" });
+    }
+  });
+
   app.get("/api/products/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
