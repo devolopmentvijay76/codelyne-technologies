@@ -63,8 +63,12 @@ export function Products() {
                   <div className="absolute top-0 right-0 p-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors pointer-events-none -mr-16 -mt-16" />
 
                   <CardHeader className="relative">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
-                      <IconComponent className="w-7 h-7 text-primary" />
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform overflow-hidden">
+                      {product.logoUrl ? (
+                        <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain p-2" />
+                      ) : (
+                        <IconComponent className="w-7 h-7 text-primary" />
+                      )}
                     </div>
                     <CardTitle className="text-2xl text-white mb-2">{product.name}</CardTitle>
                     <div className="flex gap-2 flex-wrap">

@@ -72,6 +72,7 @@ const productSchema = z.object({
   tagline: z.string().min(2, "Tagline is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   features: z.string().optional(),
+  logoUrl: z.string().optional(),
   icon: z.string().optional(),
   videoUrl: z.string().optional(),
   usp: z.string().optional(),
@@ -98,6 +99,8 @@ export default function Admin() {
   const [isFixingPhotos, setIsFixingPhotos] = useState(false);
   const [editProduct, setEditProduct] = useState<any>(null);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
+  const [productLogoPreview, setProductLogoPreview] = useState("");
+  const [isUploadingProductLogo, setIsUploadingProductLogo] = useState(false);
   const [editClient, setEditClient] = useState<any>(null);
   const [isClientDialogOpen, setIsClientDialogOpen] = useState(false);
   const [clientName, setClientName] = useState("");
@@ -309,13 +312,38 @@ export default function Admin() {
     });
   };
 
+  const handleProductLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingProductLogo(true);
+    try {
+      const res = await fetch("/api/uploads/request-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: file.name, size: file.size, contentType: file.type || "image/png" }),
+      });
+      const { uploadURL, objectPath } = await res.json();
+      await fetch(uploadURL, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+      await fetch("/api/uploads/make-public", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ objectPath }) });
+      productForm.setValue("logoUrl", objectPath);
+      setProductLogoPreview(objectPath);
+      toast({ title: "Logo Uploaded" });
+    } catch {
+      toast({ title: "Upload Failed", variant: "destructive" });
+    } finally {
+      setIsUploadingProductLogo(false);
+    }
+  };
+
   const handleAddProduct = () => {
     setEditProduct(null);
+    setProductLogoPreview("");
     productForm.reset({
       name: "",
       tagline: "",
       description: "",
       features: "",
+      logoUrl: "",
       icon: "Cpu",
       videoUrl: "",
       usp: "",
@@ -328,11 +356,13 @@ export default function Admin() {
 
   const handleEditProduct = (product: any) => {
     setEditProduct(product);
+    setProductLogoPreview(product.logoUrl || "");
     productForm.reset({
       name: product.name,
       tagline: product.tagline,
       description: product.description,
       features: product.features || "",
+      logoUrl: product.logoUrl || "",
       icon: product.icon || "Cpu",
       videoUrl: product.videoUrl || "",
       usp: product.usp || "",
@@ -996,6 +1026,37 @@ export default function Admin() {
                   </DialogHeader>
                   <Form {...productForm}>
                     <form onSubmit={productForm.handleSubmit(onSubmitProduct)} className="space-y-4">
+
+                      {/* Product Logo Upload */}
+                      <div className="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/10">
+                        <div className="w-16 h-16 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden shrink-0">
+                          {productLogoPreview ? (
+                            <img src={productLogoPreview} alt="logo" className="w-full h-full object-contain p-1" />
+                          ) : (
+                            <ImageIcon className="w-7 h-7 text-gray-500" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-white font-medium mb-1">Product Logo</p>
+                          <p className="text-xs text-gray-500 mb-2">PNG, SVG, or JPG · Displayed on product cards &amp; detail page</p>
+                          <div className="flex gap-2">
+                            <label className="cursor-pointer">
+                              <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-primary/30 text-primary hover:bg-primary/10 transition-colors ${isUploadingProductLogo ? "opacity-50 cursor-not-allowed" : ""}`}>
+                                <Upload className="w-3 h-3" />
+                                {isUploadingProductLogo ? "Uploading..." : "Upload Logo"}
+                              </span>
+                              <input type="file" accept="image/*" className="hidden" disabled={isUploadingProductLogo} onChange={handleProductLogoUpload} data-testid="input-product-logo" />
+                            </label>
+                            {productLogoPreview && (
+                              <button type="button" className="text-xs text-red-400 hover:text-red-300"
+                                onClick={() => { productForm.setValue("logoUrl", ""); setProductLogoPreview(""); }}>
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
                       <FormField
                         control={productForm.control}
                         name="name"

@@ -114,7 +114,8 @@ export const products = pgTable("products", {
   tagline: text("tagline").notNull(),
   description: text("description").notNull(),
   features: text("features"), // Comma-separated features
-  icon: text("icon"), // Icon name from lucide
+  logoUrl: text("logo_url"), // Uploaded product logo image
+  icon: text("icon"), // Icon name from lucide (fallback)
   videoUrl: text("video_url"), // YouTube/Vimeo/video link to share
   usp: text("usp"), // Unique Selling Points - pipe-separated (e.g. "10x faster|AI-powered|Zero downtime")
   domains: text("domains"), // Industry domains - comma-separated (e.g. "FinTech,HealthTech,Manufacturing")

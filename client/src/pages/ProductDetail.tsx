@@ -157,8 +157,12 @@ export default function ProductDetail() {
               </div>
 
               <div className="flex items-start gap-5 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/5 border border-primary/30 flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
-                  <IconComponent className="w-8 h-8 text-primary" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/5 border border-primary/30 flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden">
+                  {product.logoUrl ? (
+                    <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain p-2" />
+                  ) : (
+                    <IconComponent className="w-8 h-8 text-primary" />
+                  )}
                 </div>
                 <div>
                   <h1 className="text-4xl md:text-5xl font-heading font-bold text-white leading-tight" data-testid="text-product-name">
