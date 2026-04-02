@@ -114,6 +114,11 @@
   }
 }
 
+@keyframes marquee-rtl {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 @keyframes background-pan {
   0% {
     background-position: 0% 0%, 0% 100%, 0 0, 0 0;
@@ -142,6 +147,16 @@
 
   .border-glow {
     box-shadow: 0 0 10px hsla(190, 90%, 50%, 0.2);
+  }
+
+  .animate-marquee-rtl {
+    display: flex;
+    width: max-content;
+    animation: marquee-rtl 40s linear infinite;
+  }
+
+  .animate-marquee-rtl:hover {
+    animation-play-state: paused;
   }
 }
 
