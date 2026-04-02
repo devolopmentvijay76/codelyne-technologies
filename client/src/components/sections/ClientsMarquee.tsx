@@ -1,49 +1,79 @@
 import { cn } from "@/lib/utils";
+import { useClients } from "@/hooks/useClients";
+import { Building2 } from "lucide-react";
 
-const clients = [
-  { name: "TechNova Corp",        initials: "TN", color: "#3b82f6", glow: "rgba(59,130,246,0.5)"  },
-  { name: "Infra Dynamics",       initials: "ID", color: "#8b5cf6", glow: "rgba(139,92,246,0.5)"  },
-  { name: "Nexgen Solutions",     initials: "NG", color: "#06b6d4", glow: "rgba(6,182,212,0.5)"   },
-  { name: "PrimeTech Industries", initials: "PT", color: "#10b981", glow: "rgba(16,185,129,0.5)"  },
-  { name: "Apex Enterprises",     initials: "AE", color: "#f59e0b", glow: "rgba(245,158,11,0.5)"  },
-  { name: "CoreLogic Systems",    initials: "CL", color: "#ef4444", glow: "rgba(239,68,68,0.5)"   },
-  { name: "Vortex Analytics",     initials: "VA", color: "#6366f1", glow: "rgba(99,102,241,0.5)"  },
-  { name: "Synapse Networks",     initials: "SN", color: "#14b8a6", glow: "rgba(20,184,166,0.5)"  },
-  { name: "GlobalTech Hub",       initials: "GT", color: "#f97316", glow: "rgba(249,115,22,0.5)"  },
-  { name: "Quantum Ventures",     initials: "QV", color: "#a855f7", glow: "rgba(168,85,247,0.5)"  },
-  { name: "DataBridge Inc",       initials: "DB", color: "#0ea5e9", glow: "rgba(14,165,233,0.5)"  },
-  { name: "Pinnacle Group",       initials: "PG", color: "#22c55e", glow: "rgba(34,197,94,0.5)"   },
-  { name: "StratoCloud Ltd",      initials: "SC", color: "#ec4899", glow: "rgba(236,72,153,0.5)"  },
-  { name: "ZenithAI Systems",     initials: "ZA", color: "#06b6d4", glow: "rgba(6,182,212,0.5)"   },
-  { name: "OmniCore Tech",        initials: "OC", color: "#8b5cf6", glow: "rgba(139,92,246,0.5)"  },
+const FALLBACK_CLIENTS = [
+  { id: -1,  name: "TechNova Corp",        logoUrl: null, displayOrder: 0, createdAt: new Date() },
+  { id: -2,  name: "Infra Dynamics",       logoUrl: null, displayOrder: 1, createdAt: new Date() },
+  { id: -3,  name: "Nexgen Solutions",     logoUrl: null, displayOrder: 2, createdAt: new Date() },
+  { id: -4,  name: "PrimeTech Industries", logoUrl: null, displayOrder: 3, createdAt: new Date() },
+  { id: -5,  name: "Apex Enterprises",     logoUrl: null, displayOrder: 4, createdAt: new Date() },
+  { id: -6,  name: "CoreLogic Systems",    logoUrl: null, displayOrder: 5, createdAt: new Date() },
+  { id: -7,  name: "Vortex Analytics",     logoUrl: null, displayOrder: 6, createdAt: new Date() },
+  { id: -8,  name: "Synapse Networks",     logoUrl: null, displayOrder: 7, createdAt: new Date() },
+  { id: -9,  name: "GlobalTech Hub",       logoUrl: null, displayOrder: 8, createdAt: new Date() },
+  { id: -10, name: "Quantum Ventures",     logoUrl: null, displayOrder: 9, createdAt: new Date() },
+  { id: -11, name: "DataBridge Inc",       logoUrl: null, displayOrder: 10, createdAt: new Date() },
+  { id: -12, name: "Pinnacle Group",       logoUrl: null, displayOrder: 11, createdAt: new Date() },
 ];
 
-function LogoCard({ client }: { client: typeof clients[0] }) {
+const GLOW_COLORS = [
+  { color: "#3b82f6", glow: "rgba(59,130,246,0.5)" },
+  { color: "#8b5cf6", glow: "rgba(139,92,246,0.5)" },
+  { color: "#06b6d4", glow: "rgba(6,182,212,0.5)" },
+  { color: "#10b981", glow: "rgba(16,185,129,0.5)" },
+  { color: "#f59e0b", glow: "rgba(245,158,11,0.5)" },
+  { color: "#ef4444", glow: "rgba(239,68,68,0.5)" },
+  { color: "#6366f1", glow: "rgba(99,102,241,0.5)" },
+  { color: "#14b8a6", glow: "rgba(20,184,166,0.5)" },
+  { color: "#f97316", glow: "rgba(249,115,22,0.5)" },
+  { color: "#a855f7", glow: "rgba(168,85,247,0.5)" },
+  { color: "#0ea5e9", glow: "rgba(14,165,233,0.5)" },
+  { color: "#22c55e", glow: "rgba(34,197,94,0.5)" },
+];
+
+type ClientItem = { id: number; name: string; logoUrl: string | null; displayOrder: number | null; createdAt: Date };
+
+function getInitials(name: string) {
+  return name.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase();
+}
+
+function LogoCard({ client, colorIdx }: { client: ClientItem; colorIdx: number }) {
+  const { color, glow } = GLOW_COLORS[colorIdx % GLOW_COLORS.length];
+
   return (
     <div
       className="flex items-center gap-3 px-5 py-3 rounded-2xl border mx-3 shrink-0 group transition-transform duration-300 hover:scale-105"
       style={{
-        background: `linear-gradient(135deg, ${client.color}18, ${client.color}08)`,
-        borderColor: `${client.color}40`,
-        boxShadow: `0 0 18px ${client.glow}22`,
+        background: `linear-gradient(135deg, ${color}18, ${color}08)`,
+        borderColor: `${color}40`,
+        boxShadow: `0 0 18px ${glow}22`,
       }}
     >
-      {/* Logo circle */}
+      {/* Logo / initials circle */}
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 font-heading"
+        className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden shrink-0 font-bold text-sm font-heading"
         style={{
-          background: `linear-gradient(135deg, ${client.color}40, ${client.color}20)`,
-          border: `1.5px solid ${client.color}60`,
-          boxShadow: `0 0 14px ${client.glow}`,
-          color: client.color,
+          background: `linear-gradient(135deg, ${color}40, ${color}20)`,
+          border: `1.5px solid ${color}60`,
+          boxShadow: `0 0 14px ${glow}`,
+          color,
         }}
       >
-        {client.initials}
+        {client.logoUrl ? (
+          <img
+            src={client.logoUrl}
+            alt={client.name}
+            className="w-full h-full object-contain p-1"
+          />
+        ) : (
+          getInitials(client.name)
+        )}
       </div>
       {/* Company name */}
       <span
         className="text-sm font-semibold whitespace-nowrap"
-        style={{ color: `${client.color}dd` }}
+        style={{ color: `${color}dd` }}
       >
         {client.name}
       </span>
@@ -52,7 +82,14 @@ function LogoCard({ client }: { client: typeof clients[0] }) {
 }
 
 export function ClientsMarquee() {
-  const doubledClients = [...clients, ...clients];
+  const { clients: dbClients, isLoading } = useClients();
+
+  const displayClients: ClientItem[] = (dbClients.length > 0 ? dbClients : FALLBACK_CLIENTS);
+  const minItems = 10;
+  const repeated = displayClients.length < minItems
+    ? Array.from({ length: Math.ceil(minItems / displayClients.length) }, () => displayClients).flat()
+    : displayClients;
+  const doubled = [...repeated, ...repeated];
 
   return (
     <section className="relative py-16 overflow-hidden">
@@ -76,11 +113,17 @@ export function ClientsMarquee() {
         <div className="absolute right-0 top-0 bottom-0 w-32 z-20 pointer-events-none bg-gradient-to-l from-[#0b1221] to-transparent" />
 
         <div className="overflow-hidden">
-          <div className="flex animate-marquee-rtl">
-            {doubledClients.map((client, i) => (
-              <LogoCard key={`${client.name}-${i}`} client={client} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center py-6">
+              <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="flex animate-marquee-rtl">
+              {doubled.map((client, i) => (
+                <LogoCard key={`${client.id}-${i}`} client={client} colorIdx={i % GLOW_COLORS.length} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

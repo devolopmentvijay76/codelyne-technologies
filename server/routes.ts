@@ -11,6 +11,7 @@ import {
   insertContactSubmissionSchema,
   insertContentSchema,
   insertProductSchema,
+  insertClientSchema,
   updateDisplayOrderSchema,
   type User,
 } from "@shared/schema";
@@ -486,6 +487,55 @@ export async function registerRoutes(
       res.json({ message: "Product deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete product" });
+    }
+  });
+
+  // ─── Clients routes ───────────────────────────────────────────
+  app.get("/api/clients", async (_req, res) => {
+    try {
+      const allClients = await storage.getAllClients();
+      res.json(allClients);
+    } catch {
+      res.status(500).json({ message: "Failed to fetch clients" });
+    }
+  });
+
+  app.post("/api/clients", isAuthenticated, async (req, res) => {
+    try {
+      const validated = insertClientSchema.parse(req.body);
+      const client = await storage.createClient(validated);
+      res.status(201).json(client);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: fromZodError(error).message });
+      }
+      res.status(500).json({ message: "Failed to create client" });
+    }
+  });
+
+  app.put("/api/clients/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validated = insertClientSchema.partial().parse(req.body);
+      const client = await storage.updateClient(id, validated);
+      if (!client) return res.status(404).json({ message: "Client not found" });
+      res.json(client);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: fromZodError(error).message });
+      }
+      res.status(500).json({ message: "Failed to update client" });
+    }
+  });
+
+  app.delete("/api/clients/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteClient(id);
+      if (!success) return res.status(404).json({ message: "Client not found" });
+      res.json({ message: "Client deleted successfully" });
+    } catch {
+      res.status(500).json({ message: "Failed to delete client" });
     }
   });
 

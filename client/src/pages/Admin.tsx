@@ -54,6 +54,7 @@ import { useContent } from "@/hooks/useContent";
 import { useUpload } from "@/hooks/use-upload";
 import { useProducts } from "@/hooks/useProducts";
 import { useContactSubmissions } from "@/hooks/useContactSubmissions";
+import { useClients } from "@/hooks/useClients";
 
 const employeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -86,6 +87,7 @@ export default function Admin() {
   const { allContent, updateContent, createContent, isUpdating } = useContent();
   const { products, isLoading: productsLoading, createProduct, updateProduct, deleteProduct, reorderProducts, isReordering: isProductReordering } = useProducts();
   const { submissions, isLoading: submissionsLoading, deleteSubmission, isDeleting } = useContactSubmissions();
+  const { clients, isLoading: clientsLoading, createClient, updateClient, deleteClient } = useClients();
   const { toast } = useToast();
 
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -96,6 +98,12 @@ export default function Admin() {
   const [isFixingPhotos, setIsFixingPhotos] = useState(false);
   const [editProduct, setEditProduct] = useState<any>(null);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
+  const [editClient, setEditClient] = useState<any>(null);
+  const [isClientDialogOpen, setIsClientDialogOpen] = useState(false);
+  const [clientName, setClientName] = useState("");
+  const [clientLogoPreview, setClientLogoPreview] = useState("");
+  const [clientLogoPath, setClientLogoPath] = useState("");
+  const [isUploadingClientLogo, setIsUploadingClientLogo] = useState(false);
 
   const [vision, setVision] = useState("");
   const [mission, setMission] = useState("");
@@ -360,6 +368,63 @@ export default function Admin() {
     reorderProducts(newOrder);
   };
 
+  const handleClientLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingClientLogo(true);
+    try {
+      const res = await fetch("/api/uploads/request-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: file.name, size: file.size, contentType: file.type || "image/png" }),
+      });
+      const { uploadURL, objectPath } = await res.json();
+      await fetch(uploadURL, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+      await fetch("/api/uploads/make-public", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ objectPath }) });
+      setClientLogoPath(objectPath);
+      setClientLogoPreview(objectPath);
+      toast({ title: "Logo Uploaded" });
+    } catch {
+      toast({ title: "Upload Failed", variant: "destructive" });
+    } finally {
+      setIsUploadingClientLogo(false);
+    }
+  };
+
+  const handleOpenClientDialog = (client?: any) => {
+    if (client) {
+      setEditClient(client);
+      setClientName(client.name);
+      setClientLogoPath(client.logoUrl || "");
+      setClientLogoPreview(client.logoUrl || "");
+    } else {
+      setEditClient(null);
+      setClientName("");
+      setClientLogoPath("");
+      setClientLogoPreview("");
+    }
+    setIsClientDialogOpen(true);
+  };
+
+  const handleSaveClient = () => {
+    if (!clientName.trim()) {
+      toast({ title: "Client name is required", variant: "destructive" });
+      return;
+    }
+    const data = { name: clientName.trim(), logoUrl: clientLogoPath || null, displayOrder: editClient?.displayOrder ?? clients.length };
+    if (editClient) {
+      updateClient({ id: editClient.id, data }, {
+        onSuccess: () => { toast({ title: "Client Updated" }); setIsClientDialogOpen(false); },
+        onError: () => toast({ title: "Update Failed", variant: "destructive" }),
+      });
+    } else {
+      createClient(data as any, {
+        onSuccess: () => { toast({ title: "Client Added" }); setIsClientDialogOpen(false); },
+        onError: () => toast({ title: "Create Failed", variant: "destructive" }),
+      });
+    }
+  };
+
   const onSubmitProduct = (values: z.infer<typeof productSchema>) => {
     if (editProduct) {
       updateProduct({ id: editProduct.id, data: values }, {
@@ -456,6 +521,18 @@ export default function Admin() {
              <Package className="w-4 h-4" />
              Products
            </button>
+           <button
+             onClick={() => setActiveTab("clients")}
+             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+               activeTab === "clients"
+                 ? "bg-primary/10 text-primary border border-primary/20"
+                 : "text-gray-400 hover:text-white hover:bg-white/5"
+             }`}
+             data-testid="button-tab-clients"
+           >
+             <Building2 className="w-4 h-4" />
+             Clients
+           </button>
            <button 
              onClick={() => setActiveTab("enquiries")}
              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
@@ -485,7 +562,7 @@ export default function Admin() {
       <div className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-white" data-testid="text-page-title">
-            {activeTab === "dashboard" ? "Dashboard Overview" : activeTab === "team" ? "Team Management" : activeTab === "products" ? "Products" : "Enquiries & Demo Requests"}
+            {activeTab === "dashboard" ? "Dashboard Overview" : activeTab === "team" ? "Team Management" : activeTab === "products" ? "Products" : activeTab === "clients" ? "Clients" : "Enquiries & Demo Requests"}
           </h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400" data-testid="text-user-email">{user?.username}</span>
@@ -1152,6 +1229,157 @@ export default function Admin() {
                       </div>
                     ))}
                     <p className="text-xs text-gray-500 text-center pt-2">Use the arrows to set which product appears first on the website</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {activeTab === "clients" && (
+          <div className="space-y-6">
+            {/* Add/Edit Dialog */}
+            <Dialog open={isClientDialogOpen} onOpenChange={setIsClientDialogOpen}>
+              <DialogContent className="bg-[#0b0f19] border-white/10 text-white sm:max-w-[460px]">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-heading">{editClient ? "Edit Client" : "Add Client"}</DialogTitle>
+                  <DialogDescription className="text-gray-400">
+                    {editClient ? "Update client name or logo." : "Add a client to the homepage marquee."}
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="space-y-5 py-2">
+                  {/* Logo preview + upload */}
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-24 h-24 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden">
+                      {clientLogoPreview ? (
+                        <img src={clientLogoPreview} alt="logo" className="w-full h-full object-contain p-2" />
+                      ) : (
+                        <Building2 className="w-10 h-10 text-gray-500" />
+                      )}
+                    </div>
+                    <label className="cursor-pointer">
+                      <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-white/10 bg-white/5 hover:bg-white/10 transition-colors ${isUploadingClientLogo ? "opacity-50 cursor-not-allowed" : ""}`}>
+                        <Upload className="w-4 h-4" />
+                        {isUploadingClientLogo ? "Uploading..." : "Upload Logo"}
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={isUploadingClientLogo}
+                        onChange={handleClientLogoUpload}
+                        data-testid="input-client-logo"
+                      />
+                    </label>
+                    {clientLogoPreview && (
+                      <button
+                        className="text-xs text-red-400 hover:text-red-300"
+                        onClick={() => { setClientLogoPath(""); setClientLogoPreview(""); }}
+                      >
+                        Remove logo
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Client name */}
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-300 font-medium">Client / Company Name</label>
+                    <Input
+                      value={clientName}
+                      onChange={e => setClientName(e.target.value)}
+                      placeholder="e.g. Acme Corporation"
+                      className="bg-white/5 border-white/10 text-white"
+                      data-testid="input-client-name"
+                    />
+                  </div>
+                </div>
+
+                <DialogFooter>
+                  <Button variant="ghost" onClick={() => setIsClientDialogOpen(false)} className="text-gray-400">Cancel</Button>
+                  <Button
+                    onClick={handleSaveClient}
+                    className="bg-primary text-background font-bold"
+                    disabled={!clientName.trim() || isUploadingClientLogo}
+                    data-testid="button-save-client"
+                  >
+                    {editClient ? "Update Client" : "Add Client"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-primary" />
+                    Clients Marquee
+                    <Badge className="bg-primary/20 text-primary">{clients.length}</Badge>
+                  </CardTitle>
+                  <CardDescription className="text-gray-400 mt-1">
+                    These appear in the "Trusted By" scrolling section on the homepage
+                  </CardDescription>
+                </div>
+                <Button
+                  onClick={() => handleOpenClientDialog()}
+                  className="bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-background"
+                  data-testid="button-add-client"
+                >
+                  <Plus className="w-4 h-4 mr-2" /> Add Client
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {clientsLoading ? (
+                  <div className="text-center py-8 text-gray-400">Loading clients...</div>
+                ) : clients.length === 0 ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <Building2 className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                    <p>No clients added yet. The homepage will show placeholder logos until you add real ones.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {clients.map(client => (
+                      <div
+                        key={client.id}
+                        className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 group hover:border-primary/30 transition-colors"
+                        data-testid={`card-client-${client.id}`}
+                      >
+                        {/* Logo */}
+                        <div className="w-12 h-12 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
+                          {client.logoUrl ? (
+                            <img src={client.logoUrl} alt={client.name} className="w-full h-full object-contain p-1" />
+                          ) : (
+                            <Building2 className="w-6 h-6 text-gray-500" />
+                          )}
+                        </div>
+
+                        {/* Name */}
+                        <span className="text-white font-medium flex-1 truncate">{client.name}</span>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                          <Button
+                            variant="ghost" size="icon"
+                            className="h-8 w-8 text-gray-400 hover:text-white"
+                            onClick={() => handleOpenClientDialog(client)}
+                            data-testid={`button-edit-client-${client.id}`}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost" size="icon"
+                            className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                            onClick={() => deleteClient(client.id, {
+                              onSuccess: () => toast({ title: "Client Removed", variant: "destructive" }),
+                            })}
+                            data-testid={`button-delete-client-${client.id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </CardContent>
