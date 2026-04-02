@@ -43,7 +43,7 @@ function LogoCard({ client, colorIdx }: { client: ClientItem; colorIdx: number }
 
   return (
     <div
-      className="flex items-center gap-3 px-5 py-3 rounded-2xl border mx-3 shrink-0 group transition-transform duration-300 hover:scale-105"
+      className="flex items-center gap-4 px-5 py-3 rounded-2xl border mx-3 shrink-0 group transition-transform duration-300 hover:scale-105"
       style={{
         background: `linear-gradient(135deg, ${color}18, ${color}08)`,
         borderColor: `${color}40`,
@@ -52,7 +52,7 @@ function LogoCard({ client, colorIdx }: { client: ClientItem; colorIdx: number }
     >
       {/* Logo / initials circle */}
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden shrink-0 font-bold text-sm font-heading"
+        className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden shrink-0 font-bold text-base font-heading"
         style={{
           background: `linear-gradient(135deg, ${color}40, ${color}20)`,
           border: `1.5px solid ${color}60`,
@@ -64,7 +64,7 @@ function LogoCard({ client, colorIdx }: { client: ClientItem; colorIdx: number }
           <img
             src={client.logoUrl}
             alt={client.name}
-            className="w-full h-full object-contain p-1"
+            className="w-full h-full object-contain"
           />
         ) : (
           getInitials(client.name)
