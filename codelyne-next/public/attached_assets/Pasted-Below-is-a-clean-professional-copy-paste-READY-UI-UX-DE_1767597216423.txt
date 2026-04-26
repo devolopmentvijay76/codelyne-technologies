@@ -1,0 +1,232 @@
+Below is a **clean, professional, copy-paste READY UI/UX DESIGN PROMPT** you can give to **any AI UI/UX generator, Framer AI, Webflow AI, Figma AI, Relume, Uizard, Galileo, Replit, or design agency**.
+
+This prompt is **strictly UI/UX focused** (not development), exactly as you asked.
+
+---
+
+# 🎨 **UI/UX DESIGN PROMPT – CODELYNE TECHNOLOGIES**
+
+## 🎯 Objective
+
+Design a **modern, enterprise-grade, AI-first website UI/UX** for **Codelyne Technologies**, an AI-driven software and product engineering company.
+
+The design must communicate:
+
+* **Artificial Intelligence**
+* **Technical strength**
+* **Enterprise trust**
+* **Future-ready innovation**
+
+---
+
+## 🎨 THEME & VISUAL IDENTITY
+
+### 🎨 Color Palette
+
+* **Primary:** Deep Tech Blue
+* **Secondary:** Clean White
+* **Accents:** Light cyan / electric blue AI glow highlights
+
+Use blue & white as the **core theme**, maintaining:
+
+* High contrast
+* Clean readability
+* Professional enterprise feel
+
+---
+
+## 🧠 AI-INSPIRED DESIGN LANGUAGE (MANDATORY)
+
+The entire website must visually feel **AI-driven**, including:
+
+* Subtle **neural network patterns**
+* Abstract **data flow lines**
+* Soft animated **AI grid backgrounds**
+* Light particle movements (very subtle)
+* Circuit / intelligence-inspired dividers
+* Smooth micro-interactions
+
+⚠️ **No heavy animations** – keep it elegant, premium, and fast.
+
+---
+
+## 📱 RESPONSIVE DESIGN REQUIREMENTS
+
+* Fully responsive on **desktop, tablet, and mobile**
+* Mobile-first approach
+* Touch-friendly buttons
+* Collapsible smart navigation
+* Sticky CTA buttons on mobile (Demo / WhatsApp)
+
+---
+
+## 🧭 GLOBAL UI STRUCTURE
+
+### Header
+
+* Logo (left)
+* Navigation menu (right)
+* CTA Button: **“Get 24-Hour Demo”**
+* Sticky header on scroll
+
+### Footer
+
+Include:
+
+* Company address
+* Contact number
+* WhatsApp button
+* Social icons
+* Copyright notice
+
+---
+
+## 🧩 UI COMPONENTS TO DESIGN
+
+### 1️⃣ Hero Section
+
+* Large bold headline
+* AI-inspired background
+* CTA buttons:
+
+  * Get 24-Hour Demo
+  * Explore Products
+
+---
+
+### 2️⃣ Cards & Sections
+
+* Glassmorphism or soft shadow cards
+* Rounded edges (not sharp)
+* Hover effects with AI glow
+* Consistent spacing system
+
+---
+
+### 3️⃣ Product UI
+
+* Product cards with icons
+* “View Details” hover animation
+* Consistent layout across all products
+
+---
+
+### 4️⃣ Forms (Very Important)
+
+Design **clean, minimal, enterprise-grade forms**:
+
+Forms Required:
+
+* Contact form
+* Demo request form
+
+Form behavior:
+
+* On submit → **send email to:**
+  **[kadamatulp@gmail.com](mailto:kadamatulp@gmail.com)**
+* Success animation + confirmation message
+
+---
+
+## 💬 INTERACTIVE ELEMENTS (MANDATORY)
+
+### ✅ WhatsApp Enquiry
+
+* Floating WhatsApp icon (bottom-right)
+* On click → open WhatsApp chat to:
+  **+91 99228 44271**
+
+---
+
+### 🤖 AI Chatbot UI
+
+* Floating chatbot icon (bottom-left)
+* Chat UI design only (no backend logic)
+* Tone: Professional, AI assistant
+* Suggested quick prompts:
+
+  * “Explore Products”
+  * “Book Demo”
+  * “Talk to Sales”
+
+---
+
+## 🔐 ADMIN LOGIN UI (MANDATORY)
+
+Design a **secure Admin Login UI** for site management.
+
+### Admin Capabilities (UI Only)
+
+Admin dashboard must visually support:
+
+* Upload / change website content
+* Update text & pages
+* Upload / change images
+* Change logo
+* Enable / disable sections
+* Manage enquiry form submissions
+
+### Admin Login Page UI
+
+* Simple & secure layout
+* Email + Password fields
+* “Forgot Password” option
+
+### Admin Credentials (UI Placeholder)
+
+```
+Username: admin@codelyne.tech
+Password: Admin@123
+```
+
+⚠️ *This is for UI/UX demo only, not production.*
+
+---
+
+## 📍 CONTACT SECTION UI
+
+### Address (Display Exactly)
+
+**Vyasa House**,
+Sr No: 23, Near 19 Grand West Society,
+Aditya Birla Hospital Road,
+Dange Chowk Rd, Thergaon,
+Pimpri-Chinchwad, Maharashtra – 411033
+
+### Contact Number
+
+📞 **+91 99228 44271**
+
+Include:
+
+* Google Map embed placeholder
+* Icons for phone, email, location
+
+---
+
+## 🧠 UX PRINCIPLES TO FOLLOW
+
+* Minimal clicks to reach key pages
+* Clear visual hierarchy
+* Strong CTA placement
+* Consistent typography
+* Enterprise-grade trust feeling
+* No clutter, no gimmicks
+
+---
+
+## 🏁 FINAL DESIGN GOAL
+
+The UI/UX should make visitors feel:
+
+> “This company builds serious AI systems for enterprises and the future.”
+
+---
+
+If you want next, I can:
+✅ Convert this into **Figma-ready wireframes**
+✅ Create **Framer / Webflow UI prompt**
+✅ Design **Admin Dashboard UI layout**
+✅ Generate **exact UI component tokens (colors, fonts, spacing)**
+
+Just tell me the next step.

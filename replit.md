@@ -4,6 +4,18 @@
 
 Codelyne Technologies is an AI-driven software and product engineering company website built with a modern full-stack architecture. The application features a marketing website with company information, founder profiles, team pages, and a contact system, along with an admin panel for content management. The design follows an AI-first, enterprise-grade aesthetic with a deep tech blue and white color palette.
 
+## Next.js Migration (in progress, sibling at `codelyne-next/`)
+
+A Next.js 15 App Router rewrite lives alongside the original Vite app and does **not** replace it. Original `client/`, `server/`, root `package.json`, and `Start application` workflow are untouched.
+
+- **Pages**: `app/page.tsx`, `app/about-us/`, `app/founders/`, `app/login/`, `app/products/[id]/`, `app/admin/`, `app/not-found.tsx`.
+- **Auth**: Express+Passport replaced by `iron-session` cookie `codelyne_session`. Requires `SESSION_SECRET` (≥32 chars) at startup.
+- **Setup endpoint**: `app/api/setup/init` requires both `SETUP_KEY` (≥16 chars) and `ADMIN_INITIAL_PASSWORD` (≥12 chars) env vars. No insecure default credentials.
+- **Object storage**: `/objects/[...path]` route enforces ACL via `canAccessObject` (public-readable allowed; otherwise requires authenticated session).
+- **Routing**: wouter → `next/navigation` (`useRouter`, `useParams`) and `next/link`.
+- **Assets**: Vite `@assets/*` imports → `/attached_assets/*` absolute public paths (special chars URL-encoded).
+- **Run**: from `codelyne-next/`, `npm install` then `npm run dev` (port 5000). Not yet wired to a Replit workflow.
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
