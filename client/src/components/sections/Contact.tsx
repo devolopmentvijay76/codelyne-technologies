@@ -49,7 +49,7 @@ export function Contact() {
       setIsSubmitted(true);
       toast({
         title: "Enquiry Sent!",
-        description: "Codelyne team will connect you soon.",
+        description: "Codelyne Technologies team will connect you soon.",
       });
 
       setTimeout(() => {

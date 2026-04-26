@@ -83,6 +83,30 @@ function isAuthenticated(req: any, res: any, next: any) {
   res.status(401).json({ message: "Unauthorized" });
 }
 
+function getSiteOrigin(req: any): string {
+  const fromEnv = process.env.SITE_URL?.replace(/\/$/, "");
+  if (fromEnv) return fromEnv;
+  const proto = (req.headers["x-forwarded-proto"] as string) || req.protocol || "https";
+  const host = (req.headers["x-forwarded-host"] as string) || req.get?.("host") || "";
+  return `${proto}://${host}`.replace(/\/$/, "");
+}
+
+const STATIC_SITEMAP_ENTRIES: Array<{
+  path: string;
+  changefreq: string;
+  priority: string;
+}> = [
+  { path: "/", changefreq: "weekly", priority: "1.0" },
+  { path: "/about-us", changefreq: "monthly", priority: "0.8" },
+  { path: "/founders", changefreq: "monthly", priority: "0.7" },
+];
+
+function escapeXml(value: string): string {
+  return value.replace(/[<>&'"]/g, (c) =>
+    c === "<" ? "&lt;" : c === ">" ? "&gt;" : c === "&" ? "&amp;" : c === "'" ? "&apos;" : "&quot;"
+  );
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -91,6 +115,74 @@ export async function registerRoutes(
   if (process.env.NODE_ENV === "production") {
     app.set("trust proxy", 1);
   }
+
+  // SEO: robots.txt
+  app.get("/robots.txt", (req, res) => {
+    const origin = getSiteOrigin(req);
+    const body = [
+      "User-agent: *",
+      "Allow: /",
+      "Disallow: /admin",
+      "Disallow: /login",
+      "Disallow: /api/",
+      "",
+      `Sitemap: ${origin}/sitemap.xml`,
+      "",
+    ].join("\n");
+    res.type("text/plain; charset=utf-8").send(body);
+  });
+
+  // SEO: sitemap.xml (static + dynamic product routes)
+  app.get("/sitemap.xml", async (req, res) => {
+    try {
+      const origin = getSiteOrigin(req);
+      const today = new Date().toISOString().slice(0, 10);
+
+      let products: Array<{ id: number; updatedAt?: Date | null; createdAt?: Date | null }> = [];
+      try {
+        products = (await storage.getAllProducts()) as any[];
+      } catch (err) {
+        console.error("Sitemap: failed to load products", err);
+      }
+
+      const staticUrls = STATIC_SITEMAP_ENTRIES.map(
+        (entry) => `  <url>
+    <loc>${escapeXml(origin + entry.path)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${entry.changefreq}</changefreq>
+    <priority>${entry.priority}</priority>
+  </url>`,
+      ).join("\n");
+
+      const productUrls = products
+        .map((p) => {
+          const lastmod = (p.updatedAt || p.createdAt || new Date()) as Date;
+          const lastmodStr = (lastmod instanceof Date ? lastmod : new Date(lastmod))
+            .toISOString()
+            .slice(0, 10);
+          return `  <url>
+    <loc>${escapeXml(origin + "/products/" + p.id)}</loc>
+    <lastmod>${lastmodStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>`;
+        })
+        .join("\n");
+
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${staticUrls}${productUrls ? "\n" + productUrls : ""}
+</urlset>
+`;
+      res
+        .type("application/xml; charset=utf-8")
+        .setHeader("Cache-Control", "public, max-age=3600")
+        .send(xml);
+    } catch (error) {
+      console.error("Sitemap generation failed", error);
+      res.status(500).type("text/plain").send("Failed to generate sitemap");
+    }
+  });
 
   // Session setup
   app.use(

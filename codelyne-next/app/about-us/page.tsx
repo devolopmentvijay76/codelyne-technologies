@@ -42,7 +42,7 @@ export default function AboutUsPage() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
-              The Founders Behind <span className="text-primary">Codelyne</span>
+              The Founders Behind <span className="text-primary">Codelyne Technologies</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Engineering Intelligence Through Vision, Technology, and Leadership.

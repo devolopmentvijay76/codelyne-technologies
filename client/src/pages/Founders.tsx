@@ -9,14 +9,15 @@ import nilimaImg from "@assets/generated_images/professional_portrait_of_nilima_
 import heroBg from "@assets/generated_images/abstract_neural_network_background,_deep_blue_and_cyan_connection_lines.png";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SEO } from "@/components/SEO";
 
 const founders = [
   {
     name: "Atul Kadam",
     title: "Founder & CEO",
     image: atulImg,
-    quote: "Technology should not just automate tasks — it should think, learn, and evolve. At Codelyne, we engineer intelligence at the core.",
-    description: "As the chief architect of AI-first platforms, Atul leads the long-term vision, innovation, and R&D at Codelyne. He specializes in designing scalable, secure, enterprise-grade architectures with deep expertise in AI, ML, full-stack development, and cloud systems.",
+    quote: "Technology should not just automate tasks — it should think, learn, and evolve. At Codelyne Technologies, we engineer intelligence at the core.",
+    description: "As the chief architect of AI-first platforms, Atul leads the long-term vision, innovation, and R&D at Codelyne Technologies. He specializes in designing scalable, secure, enterprise-grade architectures with deep expertise in AI, ML, full-stack development, and cloud systems.",
     focusAreas: ["AI Architecture", "Product Engineering", "System Design", "Innovation Strategy"],
     icon: Brain
   },
@@ -57,6 +58,12 @@ const trustFactors = [
 export default function Founders() {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
+      <SEO
+        title="Our Founders"
+        description="Meet the founders of Codelyne Technologies — Atul Kadam, Hemant Nagrale and Nilima Shitole. A founder-led, product-driven, enterprise-ready AI engineering company."
+        url="/founders"
+        type="profile"
+      />
       <Navbar />
 
       {/* Hero Section */}
@@ -68,7 +75,7 @@ export default function Founders() {
         
         <div className="container mx-auto px-6 relative z-10 text-center">
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            The Founders Behind <span className="text-primary text-glow">Codelyne</span>
+            The Founders Behind <span className="text-primary text-glow">Codelyne Technologies</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             Engineering Intelligence Through Vision, Technology, and Leadership.
@@ -179,7 +186,7 @@ export default function Founders() {
             <div className="relative p-8 rounded-3xl bg-gradient-to-br from-primary/10 to-transparent border border-white/10">
               <h3 className="text-2xl font-bold text-white mb-6">Leadership That Builds</h3>
               <p className="text-gray-300 mb-8">
-                Under founder leadership, Codelyne is actively building:
+                Under founder leadership, Codelyne Technologies is actively building:
               </p>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center gap-3 text-white">

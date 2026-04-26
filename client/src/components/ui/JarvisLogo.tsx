@@ -25,7 +25,7 @@ export function JarvisLogo({ className, heartbeat = false, size = "md" }: Jarvis
       )}>
         <img 
           src={logo} 
-          alt="Codelyne Logo" 
+          alt="Codelyne Technologies Logo" 
           // Scale increased to 1.8 to emphasize the "C" as requested previously
           // Translate X slightly to center the "C" perfectly in the circle
           className="w-full h-full object-cover scale-[1.8] translate-x-[2%]" 

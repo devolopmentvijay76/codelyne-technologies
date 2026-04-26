@@ -44,7 +44,7 @@ function getBotResponse(text: string): string {
   }
 
   if (!isCompanyRelated(text)) {
-    return "I'm the Codelyne AI Assistant and I'm here to help with questions about our company, products, and services. Could you ask me something about Codelyne?";
+    return "I'm the Codelyne Technologies AI Assistant and I'm here to help with questions about our company, products, and services. Could you ask me something about Codelyne Technologies?";
   }
 
   if (lower.includes("cogniflow") || (lower.includes("erp"))) {
@@ -92,7 +92,7 @@ function getBotResponse(text: string): string {
   }
 
   if (lower.includes("service") || lower.includes("solution")) {
-    return "Codelyne offers AI-first enterprise software solutions including ERP, customer support automation, business intelligence, and cybersecurity. Shall I tell you more about any specific service?";
+    return "Codelyne Technologies offers AI-first enterprise software solutions including ERP, customer support automation, business intelligence, and cybersecurity. Shall I tell you more about any specific service?";
   }
 
   if (lower.includes("career") || lower.includes("job") || lower.includes("hiring") || lower.includes("hire")) {
@@ -117,7 +117,7 @@ function getBotResponse(text: string): string {
 export function FloatingActions() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", content: "Hello! I'm the Codelyne AI Assistant. I can help you with questions about our products, services, team, or how to get in touch. How can I assist you?" }
+    { role: "bot", content: "Hello! I'm the Codelyne Technologies AI Assistant. I can help you with questions about our products, services, team, or how to get in touch. How can I assist you?" }
   ]);
   const [input, setInput] = useState("");
 
@@ -174,7 +174,7 @@ export function FloatingActions() {
               <Bot className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h4 className="text-white font-bold text-sm">Codelyne Assistant</h4>
+              <h4 className="text-white font-bold text-sm">Codelyne Technologies Assistant</h4>
               <p className="text-xs text-green-400 flex items-center gap-1">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /> Online
               </p>

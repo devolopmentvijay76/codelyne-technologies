@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -36,6 +37,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center p-4 relative overflow-hidden">
+      <SEO title="Admin Login" description="Codelyne Technologies admin portal." url="/login" noindex />
       {/* Animated background grid */}
       <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
       

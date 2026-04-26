@@ -12,9 +12,9 @@ const teamData = [
     memberType: "founder",
     photoUrl: "/objects/uploads/1f2ea25f-1465-4d29-bc45-a312a9f3192b",
     description:
-      "As the chief architect of AI-first platforms, Atul leads the long-term vision, innovation, and R&D at Codelyne. He specializes in designing scalable, secure, enterprise-grade architectures with deep expertise in AI, ML, full-stack development, and cloud systems.",
+      "As the chief architect of AI-first platforms, Atul leads the long-term vision, innovation, and R&D at Codelyne Technologies. He specializes in designing scalable, secure, enterprise-grade architectures with deep expertise in AI, ML, full-stack development, and cloud systems.",
     quote:
-      "Technology should not just automate tasks — it should think, learn, and evolve. At Codelyne, we engineer intelligence at the core.",
+      "Technology should not just automate tasks — it should think, learn, and evolve. At Codelyne Technologies, we engineer intelligence at the core.",
     focusAreas:
       "AI Architecture, Product Engineering, System Design, Innovation Strategy",
   },
@@ -25,7 +25,7 @@ const teamData = [
     memberType: "founder",
     photoUrl: "/objects/uploads/d34a714b-abd8-4600-9a2a-d0d29343a692",
     description:
-      "A distinguished 1987-batch IPS officer (Maharashtra cadre) and former Mumbai Police Commissioner, Hemant brings decades of leadership in governance and strategic decision-making. With degrees from VNIT Nagpur and JBIMS Mumbai, he guides Codelyne's long-term vision with disciplined execution and institutional expertise.",
+      "A distinguished 1987-batch IPS officer (Maharashtra cadre) and former Mumbai Police Commissioner, Hemant brings decades of leadership in governance and strategic decision-making. With degrees from VNIT Nagpur and JBIMS Mumbai, he guides Codelyne Technologies' long-term vision with disciplined execution and institutional expertise.",
     quote:
       "Discipline, governance, and strategic clarity are the pillars of building institutions that endure and excel.",
     focusAreas:

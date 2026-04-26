@@ -17,6 +17,7 @@ import {
   Phone, Mail, LucideIcon
 } from "lucide-react";
 import type { Product } from "@shared/schema";
+import { SEO } from "@/components/SEO";
 
 const iconMap: Record<string, LucideIcon> = {
   Box, BarChart, MessageSquare, Layers, Shield, Brain, Cpu, Database,
@@ -99,6 +100,7 @@ export default function ProductDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
+        <SEO title="Loading product" url={`/products/${id ?? ""}`} noindex />
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           <p className="text-gray-400">Loading product...</p>
@@ -110,6 +112,7 @@ export default function ProductDetail() {
   if (isError || !product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
+        <SEO title="Product not found" description="The requested product could not be found." noindex />
         <div className="text-center">
           <p className="text-2xl text-white font-heading mb-4">Product not found</p>
           <Button onClick={() => setLocation("/")} className="bg-primary text-background">Go Home</Button>
@@ -125,8 +128,19 @@ export default function ProductDetail() {
   const embedUrl = product.videoUrl ? getYouTubeEmbedUrl(product.videoUrl) : null;
   const tags = product.tagline ? product.tagline.split(",").map(t => t.trim()) : [];
 
+  const seoDescription =
+    (product.description && product.description.replace(/\s+/g, " ").trim().slice(0, 200)) ||
+    `${product.name} by Codelyne Technologies — AI-first enterprise solution.`;
+
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
+      <SEO
+        title={product.name}
+        description={seoDescription}
+        image={product.logoUrl || undefined}
+        url={`/products/${product.id}`}
+        type="product"
+      />
       <Navbar />
 
       {/* Hero Header */}

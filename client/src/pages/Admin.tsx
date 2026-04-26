@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { SEO } from "@/components/SEO";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -165,6 +166,7 @@ export default function Admin() {
   if (authLoading || !isAuthenticated) {
     return (
       <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center">
+        <SEO title="Admin" url="/admin" noindex />
         <div className="text-center">
           <JarvisLogo size="md" heartbeat />
           <p className="text-gray-400 mt-4">Loading...</p>
@@ -507,6 +509,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-[#0b0f19] flex" data-testid="page-admin">
+      <SEO title="Admin Dashboard" url="/admin" noindex />
       {/* Sidebar */}
       <div className="w-64 bg-card border-r border-white/5 p-6 hidden md:flex flex-col">
         <div className="flex items-center gap-3 mb-10">

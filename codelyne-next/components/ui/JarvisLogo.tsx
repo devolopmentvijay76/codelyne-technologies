@@ -24,7 +24,7 @@ export function JarvisLogo({ className, heartbeat = false, size = "md" }: Jarvis
       )}>
         <img
           src={LOGO_SRC}
-          alt="Codelyne Logo"
+          alt="Codelyne Technologies Logo"
           className="w-full h-full object-cover scale-[1.8] translate-x-[2%]"
         />
       </div>

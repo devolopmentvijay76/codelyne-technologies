@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProtectedImage } from "@/components/ui/ProtectedImage";
 import { Target, Lightbulb, ArrowDown, Brain, Rocket, Users } from "lucide-react";
 import { usePublicTeam } from "@/hooks/usePublicTeam";
+import { SEO } from "@/components/SEO";
 
 const iconMap: Record<string, any> = {
   "Atul Kadam": Brain,
@@ -18,6 +19,11 @@ export default function AboutUs() {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
+      <SEO
+        title="About Us"
+        description="Learn about Codelyne Technologies — an AI-driven product engineering company. Meet our founders, leadership team and engineers building enterprise-grade AI solutions."
+        url="/about-us"
+      />
       <Navbar />
 
       {/* Hero Section */}
@@ -42,7 +48,7 @@ export default function AboutUs() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
-              The Founders Behind <span className="text-primary">Codelyne</span>
+              The Founders Behind <span className="text-primary">Codelyne Technologies</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Engineering Intelligence Through Vision, Technology, and Leadership.

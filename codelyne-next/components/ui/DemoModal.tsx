@@ -66,7 +66,7 @@ export function DemoModal({ trigger }: DemoModalProps) {
       setIsSubmitted(true);
       toast({
         title: "Demo Request Sent!",
-        description: "Codelyne team will connect you soon.",
+        description: "Codelyne Technologies team will connect you soon.",
       });
 
       setTimeout(() => {
@@ -109,7 +109,7 @@ export function DemoModal({ trigger }: DemoModalProps) {
               <CheckCircle2 className="w-10 h-10 text-green-500" />
             </div>
             <h4 className="text-2xl font-bold text-white mb-2">Request Submitted!</h4>
-            <p className="text-gray-400">Codelyne team will connect you soon.</p>
+            <p className="text-gray-400">Codelyne Technologies team will connect you soon.</p>
           </div>
         ) : (
           <Form {...form}>
