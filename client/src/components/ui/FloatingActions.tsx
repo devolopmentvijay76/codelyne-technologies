@@ -40,7 +40,7 @@ function getBotResponse(text: string): string {
   const lower = text.toLowerCase();
 
   if (isOffTopic(text) && !isCompanyRelated(text)) {
-    return "I'm only able to assist with questions about Codelyne Technologiess — our products, services, team, or how to get in touch. Is there something company-related I can help you with?";
+    return "I'm only able to assist with questions about Codelyne Technologies — our products, services, team, or how to get in touch. Is there something company-related I can help you with?";
   }
 
   if (!isCompanyRelated(text)) {
@@ -80,7 +80,7 @@ function getBotResponse(text: string): string {
   }
 
   if (lower.includes("founder") || lower.includes("ceo") || lower.includes("leadership")) {
-    return "Codelyne Technologiess was founded by Atul Kadam (Founder & CEO), Hemant Nagrale (Co-Founder & Strategic Advisor), and Nilima Shitole (Co-Founder & Head of Management). Visit our Founders page to learn more!";
+    return "Codelyne Technologies was founded by Atul Kadam (Founder & CEO), Hemant Nagrale (Co-Founder & Strategic Advisor), and Nilima Shitole (Co-Founder & Head of Management). Visit our Founders page to learn more!";
   }
 
   if (lower.includes("team") || lower.includes("engineer") || lower.includes("staff")) {
@@ -96,7 +96,7 @@ function getBotResponse(text: string): string {
   }
 
   if (lower.includes("career") || lower.includes("job") || lower.includes("hiring") || lower.includes("hire")) {
-    return "Interested in joining Codelyne Technologiess? We're always looking for talented engineers and professionals. Please email your resume to support@codelynetechnologies.com.";
+    return "Interested in joining Codelyne Technologies? We're always looking for talented engineers and professionals. Please email your resume to support@codelynetechnologies.com.";
   }
 
   if (lower.includes("whatsapp")) {
@@ -104,7 +104,7 @@ function getBotResponse(text: string): string {
   }
 
   if (lower.includes("about") || lower.includes("company") || lower.includes("codelyne")) {
-    return "Codelyne Technologiess is an AI-driven software and product engineering company headquartered in Pune, India. We build enterprise-grade AI solutions for businesses across industries.";
+    return "Codelyne Technologies is an AI-driven software and product engineering company headquartered in Pune, India. We build enterprise-grade AI solutions for businesses across industries.";
   }
 
   if (lower.includes("mission") || lower.includes("vision")) {

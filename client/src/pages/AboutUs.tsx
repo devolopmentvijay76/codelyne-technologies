@@ -26,7 +26,7 @@ export default function AboutUs() {
         <div className="container mx-auto px-6 relative z-10 text-center">
           <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors">Who We Are</Badge>
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            About <span className="text-primary text-glow">Codelyne Technologiess</span>
+            About <span className="text-primary text-glow">Codelyne Technologies</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             AI-Driven Engineering. Founder-Led Innovation. Scalable Execution.

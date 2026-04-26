@@ -99,7 +99,7 @@ export default function Login() {
             </Button>
             
             <p className="text-xs text-gray-500 text-center">
-              Codelyne Technologiess Admin Portal
+              Codelyne Technologies Admin Portal
             </p>
           </CardFooter>
         </form>

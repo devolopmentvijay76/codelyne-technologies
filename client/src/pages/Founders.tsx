@@ -207,7 +207,7 @@ export default function Founders() {
       <section className="py-24 text-center bg-gradient-to-b from-transparent to-[#050a14]">
         <div className="container mx-auto px-6 max-w-4xl">
            <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-12 leading-tight">
-             “Codelyne Technologiess is built to engineer intelligence, empower businesses, and scale trust in the AI-driven world.”
+             “Codelyne Technologies is built to engineer intelligence, empower businesses, and scale trust in the AI-driven world.”
            </h2>
            
            <div className="flex flex-col sm:flex-row justify-center gap-6">
