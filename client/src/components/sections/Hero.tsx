@@ -95,11 +95,14 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background Video with Overlay */}
       <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
+        <video
+          autoPlay
+          loop
+          muted
           playsInline
+          preload="metadata"
+          poster=""
+          aria-hidden="true"
           className="w-full h-full object-cover opacity-60"
         >
           <source src={heroVideo} type="video/mp4" />

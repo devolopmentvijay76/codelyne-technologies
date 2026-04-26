@@ -63,8 +63,12 @@ function LogoCard({ client, colorIdx }: { client: ClientItem; colorIdx: number }
         {client.logoUrl ? (
           <img
             src={client.logoUrl}
-            alt={client.name}
+            alt={`${client.name} logo`}
             className="w-full h-full object-contain"
+            loading="lazy"
+            decoding="async"
+            width={56}
+            height={56}
           />
         ) : (
           getInitials(client.name)

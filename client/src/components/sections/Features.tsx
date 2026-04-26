@@ -40,7 +40,7 @@ export function Features() {
     <section id="features" className="py-24 relative overflow-hidden bg-background">
       {/* Background Texture */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <img src={techBg} alt="Tech Texture" className="w-full h-full object-cover" />
+        <img src={techBg} alt="" aria-hidden="true" className="w-full h-full object-cover" loading="lazy" decoding="async" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">

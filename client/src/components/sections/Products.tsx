@@ -65,7 +65,15 @@ export function Products() {
                   <CardHeader className="relative">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform overflow-hidden">
                       {product.logoUrl ? (
-                        <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain p-2" />
+                        <img
+                          src={product.logoUrl}
+                          alt={`${product.name} logo`}
+                          className="w-full h-full object-contain p-2"
+                          loading="lazy"
+                          decoding="async"
+                          width={56}
+                          height={56}
+                        />
                       ) : (
                         <IconComponent className="w-7 h-7 text-primary" />
                       )}

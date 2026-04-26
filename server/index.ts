@@ -1,10 +1,13 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
+import { applySecurityHeaders } from "./security";
 import { createServer } from "http";
 
 const app = express();
 const httpServer = createServer(app);
+
+applySecurityHeaders(app);
 
 declare module "http" {
   interface IncomingMessage {

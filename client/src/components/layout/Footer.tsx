@@ -78,6 +78,14 @@ export function Footer() {
           <div className="flex gap-6">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("codelyne:open-cookie-settings"))}
+              className="hover:text-primary transition-colors"
+              data-testid="button-footer-cookie-settings"
+            >
+              Cookie Settings
+            </button>
           </div>
         </div>
       </div>

@@ -16,6 +16,39 @@ A Next.js 15 App Router rewrite lives alongside the original Vite app and does *
 - **Assets**: Vite `@assets/*` imports → `/attached_assets/*` absolute public paths (special chars URL-encoded).
 - **Run**: from `codelyne-next/`, `npm install` then `npm run dev` (port 5000). Not yet wired to a Replit workflow.
 
+## Performance, Security & Compliance (April 2026)
+
+### Security Headers (`server/security.ts`)
+- `helmet()` provides X-Content-Type-Options, X-Frame-Options (SAMEORIGIN), Referrer-Policy (strict-origin-when-cross-origin), Cross-Origin-Opener-Policy (same-origin-allow-popups), Cross-Origin-Resource-Policy (cross-origin), and HSTS (1y, includeSubDomains) in production only.
+- Custom Permissions-Policy disables camera/microphone/geolocation/FLoC/Topics/payment.
+- Custom strict CSP applied **only in production** (allows Google Fonts, GA/GTM, YouTube/Vimeo embeds, blob/data images, https media). In development a permissive `Content-Security-Policy-Report-Only` header is used so Vite HMR (`unsafe-inline`/`unsafe-eval`/`ws:`) keeps working.
+- Wired in `server/index.ts` via `applySecurityHeaders(app)` *before* any routes/middleware.
+
+### Static caching (`server/static.ts`)
+- `/assets/*` (Vite-hashed) → `public, max-age=31536000, immutable`.
+- `index.html` and SPA fallback → `no-cache, must-revalidate`.
+- All other static files → `public, max-age=86400`.
+
+### Code splitting (`client/src/App.tsx`)
+- All routes except `/` and 404 are loaded via `React.lazy` (`Admin`, `Login`, `Founders`, `AboutUs`, `ProductDetail`).
+- Wrapped in `<Suspense>` with an accessible loading spinner.
+
+### Image / media performance
+- `loading="lazy"` + `decoding="async"` + explicit `width`/`height` on Products logos, ClientsMarquee logos, Features background and `ProtectedImage`.
+- Decorative images marked `alt=""` `aria-hidden="true"` (e.g. Features bg).
+- Hero background `<video>` uses `preload="metadata"` and `aria-hidden="true"`.
+- `ProtectedImage` now accepts `loading`, `fetchPriority`, `decoding`, `width`, `height` props (default `lazy` + `async`).
+
+### Cookie Consent (DPDPA + GDPR) — `client/src/components/CookieConsent.tsx`
+- Categories: **Necessary** (locked on), **Analytics**, **Marketing**, **Preferences**.
+- Default state = necessary-only (rejected). Banner shows until the user makes a choice.
+- Buttons: **Accept all**, **Reject non-essential**, **Customize** (per-category switches → **Save preferences**).
+- Persisted to `localStorage` under `codelyne_cookie_consent_v1`.
+- Emits `window` `CustomEvent('codelyne:consent-change', detail)` so analytics/marketing scripts can gate themselves.
+- Listens for `codelyne:open-cookie-settings` → re-opens the banner from anywhere; the Footer **Cookie Settings** link uses this.
+- Helpers exported: `getStoredConsent()`, `hasConsent(category)`.
+- No analytics scripts are currently loaded in `index.html`; future GA/GTM injection should call `hasConsent('analytics')` before initialising.
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
