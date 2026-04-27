@@ -1,4 +1,27 @@
-import { MapPin, Phone, Mail, Linkedin, Twitter, Instagram } from "lucide-react";
+import { MapPin, Phone, Mail, Linkedin, Instagram, Facebook, Youtube } from "lucide-react";
+
+const SOCIAL_LINKS = [
+  {
+    name: "LinkedIn",
+    href: "https://in.linkedin.com/in/codelyne-technologies-4197783a9",
+    Icon: Linkedin,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/codelynetechnologies/",
+    Icon: Instagram,
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61582263276144",
+    Icon: Facebook,
+  },
+  {
+    name: "YouTube",
+    href: "https://www.youtube.com/@CODELYNETECHNOLOGIES-YT",
+    Icon: Youtube,
+  },
+] as const;
 import { Separator } from "@/components/ui/separator";
 import { JarvisLogo } from "@/components/ui/JarvisLogo";
 
@@ -57,16 +80,21 @@ export function Footer() {
           {/* Social & Links */}
           <div className="space-y-4">
             <h3 className="text-white font-heading font-semibold mb-4">Connect</h3>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-background transition-all duration-300">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-background transition-all duration-300">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-background transition-all duration-300">
-                <Instagram className="w-5 h-5" />
-              </a>
+            <div className="flex flex-wrap gap-3">
+              {SOCIAL_LINKS.map(({ name, href, Icon }) => (
+                <a
+                  key={name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Codelyne Technologies on ${name}`}
+                  title={name}
+                  data-testid={`link-social-${name.toLowerCase()}`}
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-300 hover:bg-primary hover:text-background transition-all duration-300"
+                >
+                  <Icon className="w-5 h-5" aria-hidden="true" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
