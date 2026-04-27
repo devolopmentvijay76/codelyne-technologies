@@ -46,7 +46,7 @@ export function Footer() {
             <h3 className="text-white font-heading font-semibold mb-4">Contact Us</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <a
-                href="https://maps.app.goo.gl/bIGhjbvh5lFg6gR96"
+                href="https://share.google/MwvLNpy5gFOlIv7sU"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex gap-3 text-gray-400 hover:text-primary transition-colors group"
