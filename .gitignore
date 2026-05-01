@@ -4,3 +4,11 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+
+# Local/Replit/Cursor metadata (do not publish)
+.meta/
+.replit
+replit.md
+.agents/
+.config/
+.local/
