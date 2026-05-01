@@ -1,0 +1,36 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[1G[0K11:24:08 AM [express] serving on port 5000
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+11:24:14 AM [express] GET /api/products 200 in 10ms :: [{"id":2,"name":"AutoSupport Bot","tagline":"NLP, Automation","description":"Intelligent customer service automation that understands context, sentiment, and complex queries.","features":"Sentiment Analysis Engine,Multi-language Support (100+),CRM Integration,Voice & Text Capable","logoUrl":null,"icon":"MessageSquare","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":1,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":4,"name":"SecureStack","tagline":"Cybersecurity, Integration","description":"Full-stack security infrastructure wrapper protecting legacy systems from modern cyber threats.","features":"Zero-Trust Architecture,Legacy System Wrapper,Real-time Threat Neutralization,Compliance Auditing","logoUrl":null,"icon":"Layers","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":2,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":3,"name":"DataSense BI","tagline":"Big Data, Visualization","description":"Business Intelligence platform that turns raw data into actionable strategic insights in real-time.","features":"Real-time Data Streaming,Customizable Dashboards,Anomaly Detection,Automated Reporting","logoUrl":null,"icon":"BarChart","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":3,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":1,"name":"CogniFlow ERP","tagline":"AI Analytics, Supply Chain","description":"Next-generation Enterprise Resource Planning driven by predictive AI analytics to optimize supply chains.","features":"Predictive Inventory Management,Automated Supplier Negotiations,Real-time Logistics Tracking,Demand Forecasting","logoUrl":null,"icon":"Box","videoUrl":"https://www.youtube.com/watch?v=keEi0LoZwL0&t=556s","usp":null,"domains":null,"status":"active","displayOrder":4,"createdAt":"2026-02-16T05:59:01.126Z"}]
+11:24:14 AM [express] GET /api/clients 200 in 13ms :: [{"id":1,"name":"Codelyne tecgnologies","logoUrl":"/objects/uploads/464bd261-33e9-4091-a736-7378d57c5bbd","displayOrder":0,"createdAt":"2026-04-02T06:06:07.813Z"}]
+Error serving object: ObjectNotFoundError: Object not found
+    at ObjectStorageService.getObjectEntityFile [90m(/home/runner/workspace/[39mserver/replit_integrations/object_storage/objectStorage.ts:179:13[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at async <anonymous> [90m(/home/runner/workspace/[39mserver/replit_integrations/object_storage/routes.ts:100:26[90m)[39m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m11:24:37 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/layout/Footer.tsx[22m

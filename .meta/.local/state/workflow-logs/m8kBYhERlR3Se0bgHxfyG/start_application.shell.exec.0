@@ -1,0 +1,992 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[1G[0K8:27:37 AM [express] serving on port 5000
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+9:53:46 AM [express] GET /api/clients 200 in 13ms :: [{"id":1,"name":"Codelyne tecgnologies","logoUrl":"/objects/uploads/464bd261-33e9-4091-a736-7378d57c5bbd","displayOrder":0,"createdAt":"2026-04-02T06:06:07.813Z"}]
+9:53:46 AM [express] GET /api/products 200 in 19ms :: [{"id":2,"name":"AutoSupport Bot","tagline":"NLP, Automation","description":"Intelligent customer service automation that understands context, sentiment, and complex queries.","features":"Sentiment Analysis Engine,Multi-language Support (100+),CRM Integration,Voice & Text Capable","logoUrl":null,"icon":"MessageSquare","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":1,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":4,"name":"SecureStack","tagline":"Cybersecurity, Integration","description":"Full-stack security infrastructure wrapper protecting legacy systems from modern cyber threats.","features":"Zero-Trust Architecture,Legacy System Wrapper,Real-time Threat Neutralization,Compliance Auditing","logoUrl":null,"icon":"Layers","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":2,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":3,"name":"DataSense BI","tagline":"Big Data, Visualization","description":"Business Intelligence platform that turns raw data into actionable strategic insights in real-time.","features":"Real-time Data Streaming,Customizable Dashboards,Anomaly Detection,Automated Reporting","logoUrl":null,"icon":"BarChart","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":3,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":1,"name":"CogniFlow ERP","tagline":"AI Analytics, Supply Chain","description":"Next-generation Enterprise Resource Planning driven by predictive AI analytics to optimize supply chains.","features":"Predictive Inventory Management,Automated Supplier Negotiations,Real-time Logistics Tracking,Demand Forecasting","logoUrl":null,"icon":"Box","videoUrl":"https://www.youtube.com/watch?v=keEi0LoZwL0&t=556s","usp":null,"domains":null,"status":"active","displayOrder":4,"createdAt":"2026-02-16T05:59:01.126Z"}]
+9:53:55 AM [express] GET /api/clients 304 in 3ms :: [{"id":1,"name":"Codelyne tecgnologies","logoUrl":"/objects/uploads/464bd261-33e9-4091-a736-7378d57c5bbd","displayOrder":0,"createdAt":"2026-04-02T06:06:07.813Z"}]
+9:53:55 AM [express] GET /api/products 304 in 3ms :: [{"id":2,"name":"AutoSupport Bot","tagline":"NLP, Automation","description":"Intelligent customer service automation that understands context, sentiment, and complex queries.","features":"Sentiment Analysis Engine,Multi-language Support (100+),CRM Integration,Voice & Text Capable","logoUrl":null,"icon":"MessageSquare","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":1,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":4,"name":"SecureStack","tagline":"Cybersecurity, Integration","description":"Full-stack security infrastructure wrapper protecting legacy systems from modern cyber threats.","features":"Zero-Trust Architecture,Legacy System Wrapper,Real-time Threat Neutralization,Compliance Auditing","logoUrl":null,"icon":"Layers","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":2,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":3,"name":"DataSense BI","tagline":"Big Data, Visualization","description":"Business Intelligence platform that turns raw data into actionable strategic insights in real-time.","features":"Real-time Data Streaming,Customizable Dashboards,Anomaly Detection,Automated Reporting","logoUrl":null,"icon":"BarChart","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":3,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":1,"name":"CogniFlow ERP","tagline":"AI Analytics, Supply Chain","description":"Next-generation Enterprise Resource Planning driven by predictive AI analytics to optimize supply chains.","features":"Predictive Inventory Management,Automated Supplier Negotiations,Real-time Logistics Tracking,Demand Forecasting","logoUrl":null,"icon":"Box","videoUrl":"https://www.youtube.com/watch?v=keEi0LoZwL0&t=556s","usp":null,"domains":null,"status":"active","displayOrder":4,"createdAt":"2026-02-16T05:59:01.126Z"}]
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:53:57 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEiPjEjtxUjCbx2zQTESXkKT9eL5pMJYwHV1vIdElR2Z9jFezUdg73x9e_RmonaGuz1T'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:53:58 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEgefMmCRxqlipbZsmd7_pfjutBeMA2_tk-ruGziWgy5K3GddoXQhbZSvT07Q7BLucNXIgHdzRg'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:31 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEinuH2znndVUUI8QGpz4JYcbmkXkxxtykn52KARNf7HAO6mdgajQFHFwAi4ia1Bzs3M'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:34 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEiL0Z-UAckbM4uxHz5Ph120-0tL0pFCz5voUhoserDwOnGNrgNx0JPFW6kvZuKT3f11'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+9:54:35 AM [express] GET /api/public/team 200 in 99ms :: [{"id":4,"name":"Pratik Bingewar","role":"Project Manager","department":"Management","memberType":"management","photoUrl":"/objects/uploads/3e8e6336-8cb4-4550-8701-5f0c4e07faa5","description":"Leads project planning and delivery across engineering teams.","quote":"","focusAreas":"Project Management, Team Coordination"},{"id":2,"name":"Hemant Nagrale","role":"Co-Founder & Strategic Advisor","department":"Executive","memberType":"founder","photoUrl":"/objects/uploads/d34a714b-abd8-4600-9a2a-d0d29343a692","description":"A distinguished 1987-batch IPS officer (Maharashtra cadre) and former Mumbai Police Commissioner, Hemant brings decades of leadership in governance and strategic decision-making. With degrees from VNIT Nagpur and JBIMS Mumbai, he guides Codelyne's long-term vision with disciplined execution and institutional expertise.","quote":"Discipline, governance, and strategic clarity are the pillars of building institutions that endure and excel.","focusAreas":"Strategic Leadership, Governance & Compliance, Institutional Building, Operational Excellence"},{"id":1,"name":"Atul Kadam","role":"Founder & CEO","department":"Executive","memberType":"founder","photoUrl":"/objects/uploads/1f2ea25f-1465-4d29-bc45-a312a9f3192b","description":"As the chief architect of AI-first platforms, Atul leads the long-term vision, innovation, and R&D at Codelyne. He specializes in designing scalable, secure, enterprise-grade architectures with deep expertise in AI, ML, full-stack development, and cloud systems.","quote":"Technology should not just automate tasks — it should think, learn, and evolve. At Codelyne, we engineer intelligence at the core.","focusAreas":"AI Architecture, Product Engineering, System Design, Innovation Strategy"},{"id":5,"name":"Divya Sakatkar","role":"Lead Tester","department":"Management","memberType":"management","photoUrl":"/objects/uploads/2b080d75-32a8-4ff8-8c43-214f5992cd3c","description":"Ensures quality assurance and testing standards across all products.","quote":"","focusAreas":"Quality Assurance, Testing"},{"id":9,"name":"Shubham Khamitkar","role":"Admin","department":"Administration","memberType":"admin","photoUrl":"/objects/uploads/82f6f947-35be-4ec2-bb80-efaddf00fa06","description":"Handles administrative operations and office management.","quote":"","focusAreas":"Administration, Operations"},{"id":3,"name":"Nilima Shitole","role":"Co-Founder & Head of Management","department":"Executive","memberType":"founder","photoUrl":"/objects/uploads/159c2cd7-85d3-4752-99ad-4323231469c5","description":"Nilima leads organizational structure, HR strategy, and governance. She ensures operational excellence, compliance, and stability, building high-performance teams and scalable internal processes for long-term sustainability.","quote":"Strong systems require strong people, processes, and governance. Sustainable growth begins with disciplined execution.","focusAreas":"Organizational Management, Human Resources, Operations & Governance, Process Optimization"},{"id":6,"name":"Rohit Sharma","role":"Software Engineer (Backend)","department":"Engineering","memberType":"engineer","photoUrl":"/objects/uploads/4db9a07e-379c-4fb9-acdd-cbbc305dddf9","description":"Specializes in backend development and API architecture.","quote":"","focusAreas":"Backend Development, API Design"},{"id":7,"name":"Vrushali Narkhede","role":"Software Engineer (Frontend)","department":"Engineering","memberType":"engineer","photoUrl":"/objects/uploads/74545f79-d161-4ee0-be72-e9bd41c01657","description":"Focuses on frontend development and user interface design.","quote":"","focusAreas":"Frontend Development, UI/UX"},{"id":8,"name":"Prithviraj Patil","role":"Software Engineer","department":"Engineering","memberType":"engineer","photoUrl":"/objects/uploads/67d40d45-1d73-49fa-98e6-3540a47cb4dc","description":"Full-stack software engineer contributing across the stack.","quote":"","focusAreas":"Full-Stack Development"}]
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2Fd34a714b-abd8-4600-9a2a-d0d29343a692?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:35 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEjYJfqpMXa5p8OnMceHOzPvDz2p3aambQeEztXsK_ZPVL5XtepiqI_q4d9VlqTNXDK8'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+9:54:36 AM [express] GET /api/products 304 in 2ms :: [{"id":2,"name":"AutoSupport Bot","tagline":"NLP, Automation","description":"Intelligent customer service automation that understands context, sentiment, and complex queries.","features":"Sentiment Analysis Engine,Multi-language Support (100+),CRM Integration,Voice & Text Capable","logoUrl":null,"icon":"MessageSquare","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":1,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":4,"name":"SecureStack","tagline":"Cybersecurity, Integration","description":"Full-stack security infrastructure wrapper protecting legacy systems from modern cyber threats.","features":"Zero-Trust Architecture,Legacy System Wrapper,Real-time Threat Neutralization,Compliance Auditing","logoUrl":null,"icon":"Layers","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":2,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":3,"name":"DataSense BI","tagline":"Big Data, Visualization","description":"Business Intelligence platform that turns raw data into actionable strategic insights in real-time.","features":"Real-time Data Streaming,Customizable Dashboards,Anomaly Detection,Automated Reporting","logoUrl":null,"icon":"BarChart","videoUrl":null,"usp":null,"domains":null,"status":"active","displayOrder":3,"createdAt":"2026-02-16T05:59:01.126Z"},{"id":1,"name":"CogniFlow ERP","tagline":"AI Analytics, Supply Chain","description":"Next-generation Enterprise Resource Planning driven by predictive AI analytics to optimize supply chains.","features":"Predictive Inventory Management,Automated Supplier Negotiations,Real-time Logistics Tracking,Demand Forecasting","logoUrl":null,"icon":"Box","videoUrl":"https://www.youtube.com/watch?v=keEi0LoZwL0&t=556s","usp":null,"domains":null,"status":"active","displayOrder":4,"createdAt":"2026-02-16T05:59:01.126Z"}]
+9:54:36 AM [express] GET /api/clients 304 in 10ms :: [{"id":1,"name":"Codelyne tecgnologies","logoUrl":"/objects/uploads/464bd261-33e9-4091-a736-7378d57c5bbd","displayOrder":0,"createdAt":"2026-04-02T06:06:07.813Z"}]
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F1f2ea25f-1465-4d29-bc45-a312a9f3192b?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:36 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEiH5pCHCi12n6_ViKeHahpK9PB51kMoHeIqef8BxuHo-6ieqZmHB6dOtLgHvT4pvFzb'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:36 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEi13jazPVNpy96F4dRki-oKBurYyNJtLQaXghrMXRqC8zjEmbCN0EVB_1AD5eM86FBt'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F159c2cd7-85d3-4752-99ad-4323231469c5?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:36 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEizkNQgmydloP6SltX9mBSUHs_fSodgC2g_xvcFXr8i3qd0yidEnAjIhmcMH2gA3Lom'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:39 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEij-68l7blc_DwXcGS5kGg--SWEovjk2AS9uroQPtKOSFVQXdG0csonNO9OF6GHb3dF'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:43 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEhLdADRsEkO2yjCvB6oGcQrKWg2eud9W9JjeqxGuD_xPoKYCvtbooj4MdtderTWaaG07Una7l0'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
+Error serving object: ApiError: heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).
+    at new ApiError [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:85:15[90m)[39m
+    at Util.parseHttpRespBody [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:222:38[90m)[39m
+    at Util.handleResp [90m(file:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:162:30[90m)[39m
+    at [90mfile:///home/runner/workspace/[39mnode_modules/[4m@google-cloud/storage[24m/build/esm/src/nodejs-common/util.js:552:22
+    at onResponse [90m(/home/runner/workspace/[39mnode_modules/[4mretry-request[24m/index.js:259:7[90m)[39m
+    at <anonymous> [90m(/home/runner/workspace/[39mnode_modules/[4mteeny-request[24m/src/index.ts:333:11[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[39m {
+  code: [33m403[39m,
+  errors: [
+    {
+      message: [32m"heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)."[39m,
+      domain: [32m'global'[39m,
+      reason: [32m'forbidden'[39m
+    }
+  ],
+  response: PassThrough {
+    _events: {
+      close: [90mundefined[39m,
+      error: [36m[Array][39m,
+      prefinish: [36m[Function: prefinish][39m,
+      finish: [90mundefined[39m,
+      drain: [90mundefined[39m,
+      data: [36m[Function (anonymous)][39m,
+      end: [36m[Function (anonymous)][39m,
+      readable: [90mundefined[39m,
+      unpipe: [90mundefined[39m
+    },
+    _readableState: ReadableState {
+      highWaterMark: [33m16384[39m,
+      buffer: [],
+      bufferIndex: [33m0[39m,
+      length: [33m0[39m,
+      pipes: [],
+      awaitDrainWriters: [1mnull[22m,
+      [[32mSymbol(kState)[39m]: [33m194512764[39m
+    },
+    _writableState: WritableState {
+      highWaterMark: [33m16384[39m,
+      length: [33m0[39m,
+      corked: [33m0[39m,
+      onwrite: [36m[Function: bound onwrite][39m,
+      writelen: [33m0[39m,
+      bufferedIndex: [33m0[39m,
+      pendingcb: [33m0[39m,
+      [[32mSymbol(kState)[39m]: [33m1091466620[39m,
+      [[32mSymbol(kBufferedValue)[39m]: [1mnull[22m,
+      [[32mSymbol(kWriteCbValue)[39m]: [1mnull[22m
+    },
+    allowHalfOpen: [33mtrue[39m,
+    _maxListeners: [90mundefined[39m,
+    _eventsCount: [33m4[39m,
+    statusCode: [33m403[39m,
+    statusMessage: [32m'Forbidden'[39m,
+    request: {
+      agent: [36m[Agent][39m,
+      headers: [36m[Object][39m,
+      href: [32m'https://storage.googleapis.com/storage/v1/b/replit-objstore-2af7d642-ff37-4125-9891-5f55dceea71b/o/.private%2Fuploads%2F464bd261-33e9-4091-a736-7378d57c5bbd?'[39m
+    },
+    body: [32m'{\n'[39m +
+      [32m'  "error": {\n'[39m +
+      [32m'    "code": 403,\n'[39m +
+      [32m`    "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'    "errors": [\n'[39m +
+      [32m'      {\n'[39m +
+      [32m`        "message": "heimdall-production@replit-user-deployments.iam.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).",\n`[39m +
+      [32m'        "domain": "global",\n'[39m +
+      [32m'        "reason": "forbidden"\n'[39m +
+      [32m'      }\n'[39m +
+      [32m'    ]\n'[39m +
+      [32m'  }\n'[39m +
+      [32m'}\n'[39m,
+    headers: {
+      [32m'cache-control'[39m: [32m'no-cache, no-store, max-age=0, must-revalidate'[39m,
+      [32m'content-length'[39m: [32m'614'[39m,
+      [32m'content-type'[39m: [32m'application/json; charset=UTF-8'[39m,
+      date: [32m'Mon, 27 Apr 2026 09:54:47 GMT'[39m,
+      expires: [32m'Mon, 01 Jan 1990 00:00:00 GMT'[39m,
+      pragma: [32m'no-cache'[39m,
+      server: [32m'UploadServer'[39m,
+      vary: [32m'Origin, X-Origin'[39m,
+      [32m'x-guploader-uploadid'[39m: [32m'AAVLpEgDFrxmneggAym1IbdvpohWBVFX4mH8HJVyn81I6-JOOFE0_VlQ6A_WxXGa1N_8rA7-'[39m
+    },
+    toJSON: [36m[Function: toJSON][39m,
+    [[32mSymbol(shapeMode)[39m]: [33mtrue[39m,
+    [[32mSymbol(kCapture)[39m]: [33mfalse[39m,
+    [[32mSymbol(kCallback)[39m]: [1mnull[22m
+  }
+}
