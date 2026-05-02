@@ -1,6 +1,6 @@
 # Codelyne Website V2 (Docker Local Development)
 
-This repository contains the **Codelyne Website V2** application exported from Replit.
+This repository contains the **Codelyne Website V2** full-stack application.
 
 The primary runnable app in this repository is the root project (`package.json` in repository root), which is a:
 
@@ -66,15 +66,15 @@ cp .env.example .env
 - `PUBLIC_OBJECT_SEARCH_PATHS`
 - `PRIVATE_OBJECT_DIR`
 
-These are required by the Replit object storage integration in `server/replit_integrations/object_storage/*`.
+These are required by the hosted object storage integration in `backend/server/platform_integrations/object_storage/*`.
 
 If these are not set, upload and object routes will fail.
 
 ---
 
-## 4) Secret / Key Migration from Replit
+## 4) Secret / Key Migration from Your Hosted Environment
 
-From your Replit project Secrets/Environment panel, migrate these values into local `.env`:
+From your deployment provider’s secrets/environment panel, migrate these values into local `.env`:
 
 - `DATABASE_URL` (if you want to use your existing hosted DB)
 - `SESSION_SECRET`
@@ -84,14 +84,14 @@ From your Replit project Secrets/Environment panel, migrate these values into lo
 - `PUBLIC_OBJECT_SEARCH_PATHS`
 - `PRIVATE_OBJECT_DIR`
 
-### Important Note on Replit Object Storage
+### Important Note on Hosted Object Storage
 
-The code uses Replit-specific sidecar endpoints (`http://127.0.0.1:1106`) for signed URLs and credentials.  
-In plain local Docker, that sidecar does not exist by default.
+The code uses a local sidecar endpoint (`http://127.0.0.1:1106`) for signed URLs and credentials in environments that provide it.  
+In plain local Docker, that sidecar does not exist by default (the project falls back to disk uploads — see `LOCAL_UPLOADS_DIR`).
 
-For full upload/media parity, you need one of the following:
+For full upload/media parity with a hosted provider, you need one of the following:
 
-- Keep using Replit-managed object storage with equivalent auth plumbing available to your local runtime, or
+- Run with the provider’s object-storage sidecar/credentials available to the runtime, or
 - Refactor storage integration to a local/cloud provider (e.g., S3/GCS/MinIO) in a future change.
 
 All non-object-storage features (API, frontend, auth, database CRUD) are fully runnable with this Docker setup.
@@ -155,7 +155,7 @@ docker compose down -v
 
 - Source code is bind-mounted into `/app` for fast local iteration.
 - `app_node_modules` is a named volume so Linux container modules are not overwritten by host mounts.
-- App listens on `0.0.0.0:5000`, matching the original Replit runtime behavior.
+- App listens on `0.0.0.0:5000`, suitable for containers and reverse proxies.
 
 ---
 
@@ -200,7 +200,7 @@ docker run --rm -p 5000:5000 --env-file .env codelyne-website-v2:prod
 ### D) Upload/Object routes fail
 
 - Verify `PUBLIC_OBJECT_SEARCH_PATHS` and `PRIVATE_OBJECT_DIR` are set.
-- Remember: Replit object sidecar is not available in plain local Docker unless separately reproduced.
+- Remember: the hosted object-storage sidecar is not available in plain local Docker unless separately reproduced; use the local upload fallback or configure paths accordingly.
 
 ### E) Port already in use (`5000` or `5432`)
 
@@ -213,7 +213,7 @@ docker run --rm -p 5000:5000 --env-file .env codelyne-website-v2:prod
 - Runtime: Node.js 20
 - Backend entrypoint (dev): `backend/server/index.ts` via `npm run dev`
 - Production entrypoint: `dist/index.cjs` via `npm run start`
-- Frontend: Vite + React in `client/`
+- Frontend: Vite + React in `frontend/`
 - Database: PostgreSQL + Drizzle (`backend/server/db.ts`, `database/drizzle.config.ts`, `backend/shared/schema.ts`)
-- Default service port: `5000` (from `.replit` and server runtime)
+- Default service port: `5000` (configured in server runtime / Docker)
 

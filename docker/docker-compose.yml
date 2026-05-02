@@ -15,7 +15,7 @@ services:
       SITE_URL: ${SITE_URL:-http://localhost:5000}
       VITE_SITE_URL: ${VITE_SITE_URL:-http://localhost:5000}
       SETUP_KEY: ${SETUP_KEY:-local-dev-setup-key}
-      LIVE_BASE_URL: ${LIVE_BASE_URL:-https://codelyne-website-v-2.replit.app}
+      LIVE_BASE_URL: ${LIVE_BASE_URL:-}
       SEED_FROM_LIVE: ${SEED_FROM_LIVE:-1}
       FORCE_SEED_FROM_LIVE: ${FORCE_SEED_FROM_LIVE:-0}
       PUBLIC_OBJECT_SEARCH_PATHS: ${PUBLIC_OBJECT_SEARCH_PATHS:-}

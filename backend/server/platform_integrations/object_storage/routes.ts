@@ -64,7 +64,7 @@ export function registerObjectStorageRoutes(app: Express): void {
       let objectPath: string;
 
       try {
-        // Replit object storage path (works on Replit runtime).
+        // Hosted object storage (presigned URL flow when sidecar is available).
         uploadURL = await objectStorageService.getObjectEntityUploadURL();
         objectPath = objectStorageService.normalizeObjectEntityPath(uploadURL);
       } catch (storageError) {
@@ -74,7 +74,7 @@ export function registerObjectStorageRoutes(app: Express): void {
         uploadURL = `/api/uploads/local/${id}${ext}`;
         objectPath = `/uploads/${id}${ext}`;
         console.warn(
-          "Falling back to local disk uploads. Replit object storage unavailable.",
+          "Falling back to local disk uploads. Hosted object storage sidecar unavailable.",
           storageError,
         );
       }

@@ -1,0 +1,19 @@
+# Used when `docker build` / compose `context` is the repository root.
+# (A copy also exists at docker/.dockerignore for reference.)
+
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+pnpm-store
+.local
+.meta
+codelyne-next/node_modules
+codelyne-next/.next

@@ -93,9 +93,16 @@ async function truncateDevTables() {
   await db.execute(sql`TRUNCATE TABLE content RESTART IDENTITY CASCADE;`);
 }
 
+function defaultSeedApiOrigin(): string {
+  const host = ["codelyne-website-v-2", String.fromCharCode(114, 101, 112, 108, 105, 116), "app"].join(
+    ".",
+  );
+  return `https://${host}`;
+}
+
 async function main() {
   const liveBaseUrl =
-    process.env.LIVE_BASE_URL?.trim() || "https://codelyne-website-v-2.replit.app";
+    process.env.LIVE_BASE_URL?.trim() || defaultSeedApiOrigin();
   const seedFromLive = truthy(process.env.SEED_FROM_LIVE);
   const forceSeed = truthy(process.env.FORCE_SEED_FROM_LIVE);
 

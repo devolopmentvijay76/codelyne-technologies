@@ -16,7 +16,7 @@ import {
   type User,
 } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
-import { registerObjectStorageRoutes, ObjectStorageService, setObjectAclPolicy } from "./replit_integrations/object_storage";
+import { registerObjectStorageRoutes, ObjectStorageService, setObjectAclPolicy } from "./platform_integrations/object_storage";
 
 // Extend Express Request to include user
 declare global {
@@ -111,7 +111,7 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // Trust proxy for production (Replit uses reverse proxy)
+  // Trust proxy for production (hosted environments often use a reverse proxy)
   if (process.env.NODE_ENV === "production") {
     app.set("trust proxy", 1);
   }

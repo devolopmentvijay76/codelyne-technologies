@@ -11,7 +11,7 @@ const DEFAULTS = {
   image: `${SITE_URL}/opengraph.jpg`,
   type: "website" as const,
   siteName: "Codelyne Technologies",
-  twitterSite: "@replit",
+  twitterSite: "@CodelyneTech",
 };
 
 export interface SEOProps {

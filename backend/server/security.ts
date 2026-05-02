@@ -53,7 +53,6 @@ export function applySecurityHeaders(app: Express): void {
           UNSAFE_INLINE,
           "https://www.googletagmanager.com",
           "https://www.google-analytics.com",
-          "https://*.replit.com",
         ],
         "style-src": [SELF, UNSAFE_INLINE, "https://fonts.googleapis.com"],
         "font-src": [SELF, DATA, "https://fonts.gstatic.com"],

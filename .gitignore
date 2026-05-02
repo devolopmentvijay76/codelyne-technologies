@@ -5,7 +5,7 @@ server/public
 vite.config.ts.*
 *.tar.gz
 
-# Local/Replit/Cursor metadata (do not publish)
+# Local IDE / export metadata (do not publish)
 .meta/
 .replit
 replit.md
